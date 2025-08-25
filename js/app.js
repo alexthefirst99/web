@@ -194,7 +194,7 @@ function changeSlide(direction) {
   }, 300);
 }
 
-function startAuto(intervalMs = 7000) {
+function startAuto(intervalMs = 5000) {
   stopAuto();
   autoTimer = setInterval(() => changeSlide(1), intervalMs);
 }
@@ -217,7 +217,7 @@ if (container) {
   container.addEventListener('mouseleave', () => {
     isHovering = false;
     hint.classList.remove('show');
-    startAuto(7000);            // resume auto-advance
+    startAuto(5000);            // resume auto-advance
   });
 }
 
@@ -228,7 +228,7 @@ window.addEventListener('load', () => {
     setSlide(found >= 0 ? found : 0);
   }
   setTimeout(() => showHintNow(), 800); // gentle nudge after load
-  startAuto(7000);                      // auto-advance every 7s
+  startAuto(5000);                      // auto-advance every 7s
 });
 
 // Expose for buttons/arrows if needed
