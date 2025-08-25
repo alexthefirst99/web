@@ -485,13 +485,13 @@ margin-top: -80px;
   margin-top: 200px;
 } */
 .column1{
- /* margin-left: -120px; */
+ margin-left: -120px;
  width: 500px;
 }
 .column2{
-  /* margin-left: 300px; */
+  margin-left: 210px;
   width: 500px;
-  padding-left: 100px;
+  padding-top: 120px;
 
 }
 .column1 .long{
