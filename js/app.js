@@ -1,3 +1,6 @@
+// =========================
+// Inline editor + save/restore/export
+// =========================
 var editElements = $('.edit');
 var pageId;
 
@@ -101,7 +104,8 @@ window.onload = () => {
     if (!disable) {
       restoreContent();
 
-      fetch('https://trantunhi99.github.io/web/js/json/localStorageData_' + pageId + '.json')
+      // fetch('https://trantunhi99.github.io/web/js/json/localStorageData_' + pageId + '.json')
+      fetch('http://localhost:8000/js/json/localStorageData_' + pageId + '.json')
         .then(response => {
           if (!response.ok) throw new Error('JSON file not found');
           return response.json();
@@ -123,11 +127,17 @@ window.onload = () => {
     }
   }, 500);
 
+  // Smooth transitions, but skip external/new-tab and hover-hint links
   for (let i = 0; i < anchors.length; i++) {
     const anchor = anchors[i];
     anchor.addEventListener('click', e => {
+      const a = e.currentTarget;
+      // Skip transition if link opens in new tab or is inside the hover-hint
+      if (a.getAttribute('target') === '_blank' || a.closest('.hover-hint')) {
+        return; // let the browser handle it (e.g., open DOI in new tab)
+      }
       e.preventDefault();
-      let target = e.target.href;
+      let target = a.href;
       transition_el.classList.add('is-active');
       setTimeout(() => {
         window.location.href = target;
@@ -136,47 +146,91 @@ window.onload = () => {
   }
 };
 
-// --- Image slider logic ---
+// =========================
+// Image slider + paper link (auto-play, hover pause only)
+// =========================
 
-const images = [
-  "./assets/loki_framework.png",
-  "./assets/cell_dancer_framework.png"
+// Map each image to its paper link
+const slides = [
+  { src: "./assets/Thor_framework.png",        href: "https://doi.org/10.1038/s41467-025-62593-1", label: "Thor" },
+  { src: "./assets/loki_framework.png",        href: "https://doi.org/10.1038/s41592-025-02707-1", label: "Loki" },
+  { src: "./assets/cell_dancer_framework.png", href: "https://doi.org/10.1038/s41587-023-01728-5", label: "cellDancer" }
 ];
+
 let currentIndex = 0;
-let lastHoverTime = 0;
-
-function changeSlide(direction) {
-  const now = Date.now();
-  if (now - lastHoverTime < 1000) return;
-  lastHoverTime = now;
-
-  const img = document.getElementById("slide-img");
-  img.style.opacity = 0;
-
-  setTimeout(() => {
-    currentIndex = (currentIndex + direction + images.length) % images.length;
-    img.src = images[currentIndex];
-    img.style.opacity = 1;
-  }, 300);
-}
-
-// --- Hint overlay logic ---
+let autoTimer = null;
+let isHovering = false;
 
 const hint = document.querySelector('.hover-hint');
 const container = document.querySelector('.slider-container');
-let isHovering = false;
+const img = document.getElementById('slide-img');
 
-container.addEventListener('mouseenter', () => isHovering = true);
-container.addEventListener('mouseleave', () => isHovering = false);
+function setSlide(index) {
+  currentIndex = ((index % slides.length) + slides.length) % slides.length;
+  img.src = slides[currentIndex].src;
+  updateHintLink();
+}
 
-function showHint() {
-  if (!isHovering) {
-    hint.classList.add('show');
-    setTimeout(() => hint.classList.remove('show'), 2000);
+function updateHintLink() {
+  const { href, label } = slides[currentIndex] || {};
+  hint.innerHTML = href
+    ? `<a href="${href}" target="_blank" rel="noopener">${label}</a>`
+    : `<span>No paper link available</span>`;
+}
+
+function showHintNow(duration = 1600) {
+  hint.classList.add('show');
+  setTimeout(() => {
+    if (!isHovering) hint.classList.remove('show');
+  }, duration);
+}
+
+function changeSlide(direction) {
+  img.style.opacity = 0;
+  setTimeout(() => {
+    setSlide(currentIndex + direction);
+    img.style.opacity = 1;
+    showHintNow(); // show hint whenever slide changes
+  }, 300);
+}
+
+function startAuto(intervalMs = 7000) {
+  stopAuto();
+  autoTimer = setInterval(() => changeSlide(1), intervalMs);
+}
+
+function stopAuto() {
+  if (autoTimer) {
+    clearInterval(autoTimer);
+    autoTimer = null;
   }
 }
 
+// Hover pause only — no slide change on hover
+if (container) {
+  container.addEventListener('mouseenter', () => {
+    isHovering = true;
+    stopAuto();                 // pause auto-advance
+    hint.classList.add('show'); // keep hint visible
+  });
+
+  container.addEventListener('mouseleave', () => {
+    isHovering = false;
+    hint.classList.remove('show');
+    startAuto(7000);            // resume auto-advance
+  });
+}
+
+// Initial sync + auto start
 window.addEventListener('load', () => {
-  showHint(); // show once on load
-  setInterval(showHint, 10000); // then every 10s
+  if (img && slides.length) {
+    const found = slides.findIndex(s => img.src.endsWith(s.src) || img.src === s.src);
+    setSlide(found >= 0 ? found : 0);
+  }
+  setTimeout(() => showHintNow(), 800); // gentle nudge after load
+  startAuto(7000);                      // auto-advance every 7s
 });
+
+// Expose for buttons/arrows if needed
+window.changeSlide = changeSlide;
+
