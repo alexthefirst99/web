@@ -1,7 +1,7 @@
 var editElements = $('.edit');
 var pageId; // Unique identifier for the current HTML page
 // put this near the top (after pageId is set)
-const NON_EDITABLE_PAGES = new Set(['software', 'index']);
+const NON_EDITABLE_PAGES = new Set(['software', 'index', '']);
 
 
 function generateUniqueId() {
