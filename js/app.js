@@ -1,52 +1,69 @@
-// =========================
-// Inline editor + save/restore/export
-// =========================
 var editElements = $('.edit');
-var pageId;
+var pageId; // Unique identifier for the current HTML page
+// put this near the top (after pageId is set)
+const NON_EDITABLE_PAGES = new Set(['software', 'index']);
+
 
 function generateUniqueId() {
-  var currentPage = window.location.pathname.split("/").pop();
-  pageId = currentPage.replace('.html', '');
-  localStorage.setItem('pageId', pageId);
+  var currentPage = window.location.pathname.split("/").pop(); // Get the current page's filename
+  pageId = currentPage.replace('.html', ''); // Use the filename as the page ID
+  localStorage.setItem('pageId', pageId); // Save the identifier in localStorage
 }
 
 function myFunction() {
+  if (NON_EDITABLE_PAGES.has(pageId)) {
+    alert("This page is not editable.");
+    return;
+  }
   let pass = prompt("Please enter your password");
-  if (pass === "000") {
+  if (pass == "000") {
     alert("Recommend edit content in Microsoft Word, then copy to website.\n • Big heading: font: Source Serif Pro, size: 37.5 \n • Small heading: font:Source Serif Pro, size 21. \n • Text: font:Calibri Light (Headings), size 12 \n\nAfter edit, click save and upload the downloaded file in ./js/json on github page ");
-    
     editElements.attr('contentEditable', true);
     editElements.css('border', '1px solid blue');
-
-    document.getElementById('saveBtn').style.display = 'inline-block';
-    document.getElementById('disableBtn').style.display = 'inline-block';
-    document.getElementById('enableBtn').style.display = 'inline-block';
-    document.getElementById('exportBtn').style.display = 'inline-block';
-  } else {
-    alert("Incorrect password.");
   }
 }
 
 function mySave() {
+  if (NON_EDITABLE_PAGES.has(pageId)) {
+    alert("This page is not editable.");
+    return;
+  }
+
   var editedContents = [];
 
   editElements.each(function(index) {
-    var html = $(this).html();
-    var key = 'newContent_' + pageId + '_' + (index + 1);
-    localStorage.setItem(key, html);
-    editedContents.push(html);
+    var editedContent = $(this).html();
+    var key = 'newContent_' + pageId + '_' + (index + 1); // Include the pageId in the key
+    localStorage.setItem(key, editedContent);
+
+    // Auto-wrap any links
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    var replacedContent = editedContent.replace(exp, function(match) {
+      var link = '<u><a href="' + match + '" class="link">' + match + '</a></u>';
+      var existingLinkCheck = '<u><a href="' + match + '" class="link">';
+      if (editedContent.includes(existingLinkCheck)) {
+        return match;
+      } else {
+        return link;
+      }
+    });
+
+    editedContents.push(replacedContent);
   });
 
+  // Save the array of contents as a JSON string
   var contentsJson = JSON.stringify(editedContents);
   var blob = new Blob([contentsJson], { type: 'application/json' });
-  saveAs(blob, 'localStorageData_' + pageId + '.json');
+  saveAs(blob, 'localStorageData_' + pageId + '.json'); // Include the pageId in the JSON file name
 
-  alert("Content saved and exported to JSON.");
   editElements.attr('contenteditable', 'false');
+  localStorage.removeItem('contentEditable');
   editElements.css('border', 'transparent');
 }
 
 function restoreContent() {
+  if (NON_EDITABLE_PAGES.has(pageId)) return;
+
   editElements.each(function(index) {
     var key = 'newContent_' + pageId + '_' + (index + 1);
     var savedContent = localStorage.getItem(key);
@@ -64,35 +81,6 @@ function restoreContent() {
   }
 }
 
-function disableRestore() {
-  localStorage.setItem('global_disableRestore', 'true');
-  alert("Restore from JSON is now disabled for ALL pages. Reload to see hard-coded HTML.");
-}
-
-function enableRestore() {
-  localStorage.removeItem('global_disableRestore');
-  alert("Restore from JSON is now enabled for ALL pages. Reload the page to apply changes.");
-}
-
-function exportEditedHTML() {
-  let fullHTML = document.documentElement.cloneNode(true);
-
-  $(fullHTML).find('.edit').each(function(index) {
-    var key = 'newContent_' + pageId + '_' + (index + 1);
-    var savedContent = localStorage.getItem(key);
-    if (savedContent) {
-      this.innerHTML = savedContent;
-    }
-  });
-
-  var serializer = new XMLSerializer();
-  var fullHTMLString = '<!DOCTYPE html>\n' + serializer.serializeToString(fullHTML);
-  var blob = new Blob([fullHTMLString], { type: 'text/html' });
-
-  saveAs(blob, pageId + '_edited.html');
-  alert("Full HTML page exported with saved edits.");
-}
-
 window.onload = () => {
   const anchors = document.querySelectorAll('a');
   const transition_el = document.querySelector('.transition');
@@ -100,44 +88,41 @@ window.onload = () => {
   setTimeout(() => {
     generateUniqueId();
 
-    const disable = localStorage.getItem('global_disableRestore');
-    if (!disable) {
-      restoreContent();
-
-      fetch('https://trantunhi99.github.io/web/js/json/localStorageData_' + pageId + '.json')
-      //fetch('http://localhost:8000/js/json/localStorageData_' + pageId + '.json')
-        .then(response => {
-          if (!response.ok) throw new Error('JSON file not found');
-          return response.json();
-        })
-        .then(parsedData => {
-          localStorage.setItem('importedData', JSON.stringify(parsedData));
-          restoreContent();
-          console.log('JSON file fetched and imported successfully.');
-          transition_el.classList.remove('is-active');
-        })
-        .catch(error => {
-          console.error('Error fetching JSON file:', error);
-          const errorContainer = document.getElementById('error');
-          if (errorContainer) errorContainer.textContent = 'Error: JSON file not found.';
-        });
-    } else {
-      console.log("Restore from JSON is globally disabled.");
+    if (NON_EDITABLE_PAGES.has(pageId)) {
       transition_el.classList.remove('is-active');
+      return;
     }
+
+    restoreContent();
+
+    // fetch('https://raw.githubusercontent.com/GuangyuWangLab/web/updated_web/js/json/localStorageData_' + pageId + '.json')
+    fetch('https://raw.githubusercontent.com/GuangyuWangLab/web/updated_web/js/json/localStorageData_' + pageId + '.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('JSON file not found');
+        }
+        return response.json();
+      })
+      .then(parsedData => {
+        localStorage.setItem('importedData', JSON.stringify(parsedData));
+        restoreContent();
+        console.log('JSON file fetched and imported successfully.');
+        transition_el.classList.remove('is-active');
+      })
+      .catch(error => {
+        console.error('Error fetching JSON file:', error);
+        var errorContainer = document.getElementById('error');
+        if (errorContainer) {
+          errorContainer.textContent = 'Error: JSON file not found.';
+        }
+      });
   }, 500);
 
-  // Smooth transitions, but skip external/new-tab and hover-hint links
   for (let i = 0; i < anchors.length; i++) {
     const anchor = anchors[i];
     anchor.addEventListener('click', e => {
-      const a = e.currentTarget;
-      // Skip transition if link opens in new tab or is inside the hover-hint
-      if (a.getAttribute('target') === '_blank' || a.closest('.hover-hint')) {
-        return; // let the browser handle it (e.g., open DOI in new tab)
-      }
       e.preventDefault();
-      let target = a.href;
+      let target = e.target.href;
       transition_el.classList.add('is-active');
       setTimeout(() => {
         window.location.href = target;
@@ -146,91 +131,85 @@ window.onload = () => {
   }
 };
 
-// =========================
-// Image slider + paper link (auto-play, hover pause only)
-// =========================
 
-// Map each image to its paper link
-const slides = [
-  { src: "./assets/Thor_framework.png",        href: "https://doi.org/10.1038/s41467-025-62593-1", label: "Thor" },
-  { src: "./assets/loki_framework.png",        href: "https://doi.org/10.1038/s41592-025-02707-1", label: "Loki" },
-  { src: "./assets/cell_dancer_framework.png", href: "https://doi.org/10.1038/s41587-023-01728-5", label: "cellDancer" }
-];
 
-let currentIndex = 0;
-let autoTimer = null;
-let isHovering = false;
 
-const hint = document.querySelector('.hover-hint');
-const container = document.querySelector('.slider-container');
-const img = document.getElementById('slide-img');
 
-function setSlide(index) {
-  currentIndex = ((index % slides.length) + slides.length) % slides.length;
-  img.src = slides[currentIndex].src;
-  updateHintLink();
-}
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.reveal-card').forEach(function(card){
+    const thumbImg = card.querySelector('.thumb img');
+    const heroImg  = card.querySelector('.panel-hero-img');
+    if (thumbImg && heroImg) {
+      heroImg.src = thumbImg.src;       // show same image in modal
+      heroImg.alt = thumbImg.alt || '';
+    }
+  });
+})
 
-function updateHintLink() {
-  const { href, label } = slides[currentIndex] || {};
-  hint.innerHTML = href
-    ? `<a href="${href}" target="_blank" rel="noopener">${label}</a>`
-    : `<span>No paper link available</span>`;
-}
 
-function showHintNow(duration = 1600) {
-  hint.classList.add('show');
-  setTimeout(() => {
-    if (!isHovering) hint.classList.remove('show');
-  }, duration);
-}
 
-function changeSlide(direction) {
-  img.style.opacity = 0;
-  setTimeout(() => {
-    setSlide(currentIndex + direction);
-    img.style.opacity = 1;
-    showHintNow(); // show hint whenever slide changes
-  }, 300);
-}
 
-function startAuto(intervalMs = 5000) {
-  stopAuto();
-  autoTimer = setInterval(() => changeSlide(1), intervalMs);
-}
 
-function stopAuto() {
-  if (autoTimer) {
-    clearInterval(autoTimer);
-    autoTimer = null;
+(function(){
+  const area  = document.querySelector('.showcase-area');
+  const wrap  = document.querySelector('.showcase-image');
+  const media = document.querySelector('.showcase-image video') || document.querySelector('.showcase-image img');
+  const title = document.querySelector('.showcase-area .name');
+  const sub   = document.querySelector('.showcase-area .heading_small');
+
+  if(!area || !wrap || !media) return;
+
+  const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
+
+  let ticking = false;
+
+  function update(){
+    ticking = false;
+
+    const total = area.offsetHeight - window.innerHeight; // scrollable distance inside hero
+    const start = area.offsetTop;
+    const scrolled = window.scrollY - start;
+    const p = clamp(scrolled / total, 0, 1); // 0 at top, 1 at end of hero
+
+    // Read tunables from CSS
+    const minScale = parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue('--hero-min-scale')) || 0.88;
+    const tyMax = parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue('--hero-ty-max')) || 24;
+
+    // Map progress -> transforms
+    const scale = 1 - (1 - minScale) * p;   // 1 -> minScale
+    const ty    = tyMax * p;                 // 0px -> tyMax
+    const br    = 28 * p;                    // border radius grows slightly
+    const shOpacity = 0.18 * p;              // shadow increases subtly
+
+    media.style.setProperty('--hero-scale', scale.toFixed(4));
+    media.style.setProperty('--hero-ty', ty.toFixed(1) + 'px');
+    wrap.style.setProperty('--hero-br', br.toFixed(1) + 'px');
+    wrap.style.setProperty('--hero-shadow', `0 30px 80px rgba(0,0,0,${shOpacity.toFixed(3)})`);
+
+    // Fade the titles as we scroll through the hero
+    const o = clamp(1 - p * 1.2, 0, 1);
+    if (title){ title.style.opacity = o; title.style.transform = `translateY(${(-12 * p).toFixed(1)}px)`; }
+    if (sub){   sub.style.opacity   = o; sub.style.transform   = `translateY(${(-8  * p).toFixed(1)}px)`; }
   }
-}
 
-// Hover pause only — no slide change on hover
-if (container) {
-  container.addEventListener('mouseenter', () => {
-    isHovering = true;
-    stopAuto();                 // pause auto-advance
-    hint.classList.add('show'); // keep hint visible
+  function onScroll(){
+    if (!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  // Initial paint
+  update();
+  // Events
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+})();
+  document.querySelectorAll('.reveal-card .toggle').forEach(cb => {
+    const card = cb.closest('.reveal-card');
+    cb.addEventListener('change', () => card.classList.toggle('open', cb.checked));
   });
 
-  container.addEventListener('mouseleave', () => {
-    isHovering = false;
-    hint.classList.remove('show');
-    startAuto(5000);            // resume auto-advance
-  });
-}
-
-// Initial sync + auto start
-window.addEventListener('load', () => {
-  if (img && slides.length) {
-    const found = slides.findIndex(s => img.src.endsWith(s.src) || img.src === s.src);
-    setSlide(found >= 0 ? found : 0);
-  }
-  setTimeout(() => showHintNow(), 800); // gentle nudge after load
-  startAuto(5000);                      // auto-advance every 7s
-});
-
-// Expose for buttons/arrows if needed
-window.changeSlide = changeSlide;
-
+  
