@@ -603,6 +603,8 @@ video {
 /* PI Section */
 .pi-container {
     margin-bottom: 4rem;
+    margin-top: 8rem;
+    /* Reduced scroll space */
 }
 
 .pi-card {
@@ -610,18 +612,21 @@ video {
     align-items: center;
     background: #fff;
     border-radius: 24px;
-    padding: 3rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-    gap: 3rem;
+    padding: 2rem;
+    /* Reduced from 3rem */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Softer shadow */
+    gap: 2rem;
+    /* Reduced gap */
     transition: var(--transition-normal);
     /* Add transition */
 }
 
 .pi-card:hover {
-    transform: translateY(-5px);
-    /* Lift effect */
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-    /* Deeper shadow */
+    transform: translateY(-3px);
+    /* Subtle lift */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    /* Softer hover shadow */
 }
 
 .pi-image-wrapper {
@@ -629,8 +634,9 @@ video {
 }
 
 .pi-image {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    /* Reduced from 250px */
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--border-color);
@@ -642,7 +648,7 @@ video {
 }
 
 .pi-name {
-    font-size: 2.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--secondary-color);
     margin-bottom: 0.5rem;
@@ -650,7 +656,7 @@ video {
 }
 
 .pi-role {
-    font-size: 1.25rem;
+    font-size: 0.8rem;
     color: var(--primary-color);
     font-weight: 600;
     margin-bottom: 1.5rem;
@@ -659,7 +665,7 @@ video {
 }
 
 .pi-bio {
-    font-size: 1.1rem;
+    font-size: 0.85rem;
     color: var(--text-main);
     line-height: 1.7;
 }
