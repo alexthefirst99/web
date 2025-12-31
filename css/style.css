@@ -208,7 +208,7 @@ video {
 }
 
 .navbar-brand {
-    font-size: 2rem;
+    font-size: 1.15rem;
     /* Slightly smaller than 2.5rem for better balance */
     font-weight: 400;
     font-family: 'Source Serif Pro', serif;
@@ -222,17 +222,10 @@ video {
 
 .navbar-brand span {
     color: inherit;
-    /* Match parent color */
     background-color: transparent;
-    /* Remove black box */
     padding: 0;
-    border-radius: 0;
-    font-size: 1em;
-    /* Same size as adjacent text */
     font-weight: 700;
-    /* Bold WANG, Regular LAB */
-    display: inline;
-    vertical-align: baseline;
+    margin-right: 3px;
 }
 
 .navbar-nav {
