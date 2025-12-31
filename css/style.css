@@ -1117,22 +1117,30 @@ video {
         padding-top: 120px;
     }
 
+    .hero-brand-logo {
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+    }
+
     .brand-box,
     .brand-text {
-        font-size: 2rem;
-        /* Significantly smaller: 32px */
-        padding: 4px 12px;
+        font-size: 3rem;
+        /* Increased to 3rem to be larger than section titles */
+        padding: 4px 8px;
+        /* Tighter padding */
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 1.5rem;
+        line-height: 1.3;
+        margin-top: 1rem;
     }
 
     .hero-content {
         padding: 1.5rem 0.5rem;
         width: 100%;
         margin: 0;
-        background: rgba(255, 255, 255, 0.75);
+        background: rgba(255, 255, 255, 0.85);
         /* More legible background */
     }
 
@@ -1140,8 +1148,10 @@ video {
         align-self: center;
         /* Center button on mobile */
         margin-top: 1.5rem;
-        width: 80%;
-        /* Easier to tap */
+        width: 60%;
+        /* Reduced from 80% */
+        font-size: 14px;
+        padding: 10px 20px;
         text-align: center;
     }
 
