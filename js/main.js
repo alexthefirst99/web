@@ -34,4 +34,40 @@ window.addEventListener('load', function () {
             }
         });
     }
+    // Hero Parallax Effect
+    const hero = document.querySelector('.hero');
+    const heroContent = document.querySelector('.hero-content');
+
+    if (hero && heroContent) {
+        hero.addEventListener('mousemove', function (e) {
+            // Get dimensions relative to viewport since hero is full screenish
+            // Or better, relative to element if it wasn't full screen, but tracking clientX/Y is fine for logic
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Calculate percentage from center (-1 to 1)
+            const xPct = (x / width - 0.5) * 2;
+            const yPct = (y / height - 0.5) * 2;
+
+            // Max rotation degrees
+            const maxTilt = 10;
+
+            // Calculate rotation
+            // RotateY: Mouse Right (x>0) -> Right side moves Away (Positive) -> Looks to Left? 
+            // Let's try standard "follow" tilt: Mouse Right -> Tilt Right (Right side Down/Close). 
+            // Right Side Close = Negative RotateY in CSS (if Y-axis up)?? No.
+            // Standard CSS: RotateY(pos) = Right Side Away. RotateY(neg) = Right Side Close.
+            // If I want "Apple TV" (Mouse Right -> Card tilts Right edge DOWN/CLOSE), need NEGATIVE RotateY.
+            const rotateY = xPct * maxTilt;
+            const rotateX = -yPct * maxTilt;
+
+            heroContent.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        hero.addEventListener('mouseleave', function () {
+            heroContent.style.transform = 'rotateX(0) rotateY(0)';
+        });
+    }
 });

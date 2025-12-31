@@ -52,12 +52,14 @@
             <source src="{{ hero.video }}" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <div class="hero-brand-logo">
-                <span class="brand-box">WANG</span> <span class="brand-text">LAB</span>
+        <div class="hero-perspective-wrapper">
+            <div class="hero-content">
+                <div class="hero-brand-logo">
+                    <span class="brand-box">WANG</span> <span class="brand-text">LAB</span>
+                </div>
+                <p class="hero-subtitle">{{ hero.subtitle }}</p>
+                <a href="{{ hero.button_link }}" class="btn hero-btn">{{ hero.button_text }}</a>
             </div>
-            <p class="hero-subtitle">{{ hero.subtitle }}</p>
-            <a href="{{ hero.button_link }}" class="btn hero-btn">{{ hero.button_text }}</a>
         </div>
     </section>
 

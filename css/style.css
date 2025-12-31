@@ -3,10 +3,10 @@
 
 :root {
     /* Bio-Tech Color Palette */
-    --primary-color: #0d9488;
-    /* Deep Teal - Scientific/Medical */
-    --primary-dark: #0f766e;
-    /* Darker Teal */
+    --primary-color: #0071e3;
+    /* Tech Blue - Premium/High-End */
+    --primary-dark: #005bb5;
+    /* Darker Blue */
     --secondary-color: #0f172a;
     /* Slate - Professional Dark */
     --text-main: #334155;
@@ -402,6 +402,17 @@ video {
     margin-bottom: var(--spacing-lg);
     padding-top: 10vh;
     /* Added padding to push content down */
+    position: relative;
+    /* Ensure z-index works, but NO perspective here */
+}
+
+.hero-perspective-wrapper {
+    perspective: 1000px;
+    /* Enable 3D space ONLY for content */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 1;
 }
 
 .hero-video {
@@ -452,6 +463,10 @@ video {
     align-items: center;
     /* Center flex items */
     justify-content: center;
+    transition: transform 0.1s ease-out;
+    /* Smooth but fast follow */
+    will-change: transform;
+    transform-style: preserve-3d;
 }
 
 .hero-brand-logo {
@@ -526,6 +541,12 @@ video {
     gap: 30px;
 }
 
+@media (min-width: 1024px) {
+    .research-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 .research-card {
     background: var(--bg-white);
     padding: 0;
@@ -549,13 +570,13 @@ video {
 }
 
 .research-icon-wrapper {
-    height: 240px;
+    height: 340px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #fafafa;
-    padding: 2rem;
+    background-color: var(--bg-light);
+    padding: 0.5rem;
 }
 
 .research-img {
@@ -778,6 +799,7 @@ video {
 .feature-row {
     display: flex;
     align-items: center;
+    /* Center vertically */
     justify-content: space-between;
     gap: 4rem;
     padding: 2rem 0;
@@ -806,6 +828,7 @@ video {
     border-radius: 20px;
     padding: 2rem;
     min-width: 300px;
+    /* Removed sticky positioning */
 }
 
 .feature-image {
@@ -1053,6 +1076,8 @@ video {
 
     .feature-image-wrapper {
         padding: 0;
+        position: static;
+        top: auto;
     }
 
     /* General */
