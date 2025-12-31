@@ -531,7 +531,11 @@ video {
 }
 
 .section-title::after {
-    display: none;
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 /* Research Section */
@@ -1212,11 +1216,15 @@ video {
 }
 
 .timeline-item {
-    position: relative;
+    position: sticky;
+    top: 150px;
+    /* Stick to top (below header) */
     width: 50%;
     padding: 0 40px;
     margin-bottom: 3rem;
     box-sizing: border-box;
+    z-index: 1;
+    /* Ensure basic stacking */
 }
 
 /* Left and Right Items */
@@ -1246,15 +1254,16 @@ video {
 }
 
 /* Dot positioning */
-.timeline-item:nth-child(odd)::after {
-    right: -8px;
-    /* Half of width (16px) */
-}
-
-.timeline-item:nth-child(even)::after {
+.timeline-item::after {
     left: -8px;
 }
 
+.timeline-item:nth-child(odd)::after {
+    right: -8px;
+    left: auto;
+}
+
+/* Content Box */
 /* Content Box */
 .timeline-content {
     background: #fff;
@@ -1265,6 +1274,13 @@ video {
     border: 1px solid rgba(0, 0, 0, 0.03);
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Ensure proper coverage */
+    min-height: 400px;
+    /* Standardize length */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Prevent date from stretching full width */
 }
 
 .timeline-content:hover {
@@ -1319,6 +1335,7 @@ video {
         margin-bottom: 0.5rem;
     }
 }
+
 
 /* Open Position Cards */
 .position-grid {
@@ -1552,4 +1569,21 @@ body.loaded {
 .pub-category-title.bordered {
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 0.5rem;
+}
+
+/* Force remove any borders/lines from page headers */
+header,
+header.section,
+.section-header,
+.page-header {
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Fix margin collapse causing white gap under headers */
+header.section .container> :last-child,
+header.section> :last-child {
+    margin-bottom: 0 !important;
 }
