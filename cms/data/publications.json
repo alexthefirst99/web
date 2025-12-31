@@ -1,0 +1,189 @@
+[
+    {
+        "category": "Feature Publications",
+        "entries": [
+            {
+                "citation": "Shengyu Li#, <b>Pengzhi Zhang#, Weiqing Chen</b> , Lingqun Ye, Kristopher W. Brannan, Nhat-Tu Le, Jun-ichi Abe, John P. Cooke<b>, Guangyu Wang</b>. A relay velocity model infers cell-dependent RNA velocity. Nature Biotechnology (2023)",
+                "link": "https://doi.org/10.1038/s41587-023-01728-5"
+            },
+            {
+                "citation": "<b>Pengzhi Zhang, Guangyu Wang</b>. Uncovering cell cycle speed modulations with statistical inference. Nature Methods (2024)",
+                "link": "https://doi.org/10.1038/s41592-024-02484-3"
+            },
+            {
+                "citation": "<b>Weiqing Chen#</b>, <b>Pengzhi Zhang#, Tu N Tran, Yiwei Xiao, Shengyu Li, </b>Vrutant V. Shah, Hao Cheng, Kristopher W. Brannan, Keith Youker, Li Lai, Longhou Fang, Yu Yang, Nhat-Tu Le, Jun-ichi Abe, Shu-Hsia Chen, Qin Ma, Ken Chen, Qianqian Song, John P. Cooke, <b>Guangyu Wang</b>. A visual\u2013omics foundation model to bridge histopathology with spatial transcriptomics. Nature Methods (2025)",
+                "link": "https://doi.org/10.1038/s41592-025-02707-1"
+            },
+            {
+                "citation": "<b>Pengzhi Zhang#</b>, <b>Weiqing Chen#</b>, <b>Tu N Tran</b>, Minghao Zhou, Kaylee N. Carter, <b>Ibrahem Kandel</b>, <b>Shengyu Li</b>, Xen Ping Hoi, Yuxing Sun, Li Lai, Keith Youker, Qianqian Song, Yu Yang, Fotis Nikolos, Zejuan Li, Keith Syson Chan, John P. Cooke, <b>Guangyu Wang</b>. Thor: a platform for cell-level investigation of spatial transcriptomics and histology. Nature Communications (2025)",
+                "link": "https://doi.org/10.1038/s41467-025-62593-1"
+            },
+            {
+                "citation": "Jun-ichi Abe#, Masaki Imanishi#, <b>Shengyu Li</b>#, Aijun Zhang, Kyung Ae Ko, Venkata S.K. Samanthapudi, Ling-Ling Lee, Angelica Paniagua Bojorges, Young Jin Gi, Brian P. Hobbs, Anita Deswal, Joerg Herrmann, Steven H. Lin, Eduardo N. Chini, Ying H. Shen, Keri L. Schadler, Thi-Hong-Minh Nguyen, Anisha A. Gupte, Cielito Reyes-Gibby, Sai-Ching J. Yeung, Rei J. Abe, Elizabeth A. Olmsted-Davis, Sunil Krishnan, Robert Dantzer, Nicolas L. Palaskas, John P. Cooke, Henry J. Pownall, Momoko Yoshimoto, Keigi Fujiwara, Dale J. Hamilton, Jared K. Burks, <b>Guangyu Wang</b>*, Nhat-Tu Le* and Sivareddy Kotla*. An ERK5-NRF2 Axis Mediates Senescence-Associated Stemness and Atherosclerosis. Circulation Research (2023)",
+                "link": "https://doi.org/10.1161/circresaha.122.322017"
+            }
+        ]
+    },
+    {
+        "category": "2022-2025",
+        "entries": [
+            {
+                "citation": "Qing Wang#, Yining Pan#, Minghao Zhou#, Zijia Tang, Yanfei Wang, <b>Guangyu Wang</b> & Qianqian Song. scDrugMap: benchmarking large foundation models for drug response prediction. Nature Communications (2025).",
+                "link": "https://doi.org/10.1038/s41467-025-67481-2"
+            },
+            {
+                "citation": "Jun-dae Kim#, Surbhi Chaudhary#, <b>Weiqing Chen</b>, Jonathan Astin, Philip S. Crosier, Pengchun Yu, John P. Cooke, Henry J. Pownall, Hugo J. Bellen, Nhat-Tu Le, Daniel L. Kiss, <b>Guangyu Wang</b>, Stanley G. Rockson, Hong Chen & Longhou Fang. APOA1 binding protein promotes lymphatic cell fate and lymphangiogenesis by relieving caveolae-mediated inhibition of VEGFR3 signaling. Nature Communications (2025) 16:9286.",
+                "link": "https://doi.org/10.1038/s41467-025-60611-w"
+            },
+            {
+                "citation": "<b>Pengzhi Zhang#</b>, <b>Weiqing Chen#</b>, <b>Tu N Tran</b>... <b>Guangyu Wang</b>. Thor: a platform for cell-level investigation of spatial transcriptomics and histology. Nature Communications (2025)",
+                "link": "https://doi.org/10.1038/s41467-025-62593-1"
+            },
+            {
+                "citation": "<b>Weiqing Chen#</b>, <b>Pengzhi Zhang#, Tu N Tran... Guangyu Wang</b>. A visual\u2013omics foundation model to bridge histopathology with spatial transcriptomics. Nature Methods (2025)",
+                "link": "https://doi.org/10.1038/s41592-025-02707-1"
+            },
+            {
+                "citation": "Fei Han#, Summer Simeroth#, Jie Zhu, Irma Gryniuk, Atul Pranay, <b>Weiqing Chen</b>, Yuan Wang, Yuanyuan Cai, Zhiyuan Shen, <b>Guangyu Wang</b>, Courtney T. Griffin, Lijun Xia, Pengchun Yu. Lymphatic endothelial mTORC1 instructs metabolic and developmental signaling during lymphangiogenesis. Developmental Cell (2025)",
+                "link": "https://doi.org/10.1016/j.devcel.2025.04.012"
+            },
+            {
+                "citation": "<b>Pengzhi Zhang, Guangyu Wang</b>. Uncovering cell cycle speed modulations with statistical inference. Nature Methods (2024)",
+                "link": "https://doi.org/10.1038/s41592-024-02484-3"
+            },
+            {
+                "citation": "Priyanka Banerjee... <b>Shengyu Li, Pengzhi Zhang, Guangyu Wang</b>... A Potential Role for MAGI-1 in the Bi-Directional Relationship Between Major Depressive Disorder and Cardiovascular Disease. Current Atherosclerosis Reports. (2024)",
+                "link": "https://doi.org/10.1007/s11883-024-01223-5"
+            },
+            {
+                "citation": "Sudipto Baul, Khandakar Tanvir Ahmed, Qibing Jiang, <b>Guangyu Wang</b>... Integrating spatial transcriptomics and bulk RNA-seq... Briefings in Bioinformatics. (2024)",
+                "link": "https://doi.org/10.1093/bib/bbae316"
+            },
+            {
+                "citation": "Khanh M Chau... <b>Shengyu Li</b>... <b>Guangyu Wang</b>... TNIK regulation of interferon signaling and endothelial cell response to virus infection. Frontiers in Cardiovascular Medicine. (2024)",
+                "link": "https://doi.org/10.3389/fcvm.2023.1213428"
+            },
+            {
+                "citation": "Bo Li, Yong Zhan*, Qing Wang, Chengyang Zhang, Mengran Li, <b>Guangyu Wang</b>, Qianqian Song*. Gene Expression Prediction from Histology Images via Hypergraph Neural Networks. bioRxiv. (2024)",
+                "link": "https://doi.org/10.1101/2024.08.05.606608"
+            },
+            {
+                "citation": "Abhijit Chakraborty... <b>Shengyu Li</b>... <b>Guangyu Wang</b>... Epigenetic Induction of Smooth Muscle Cell Phenotypic Alterations in Aortic Aneurysms and Dissections. Circulation (2023)",
+                "link": "https://doi.org/10.1161/circulationaha.123.063332"
+            },
+            {
+                "citation": "Hua Mao... <b>Shengyu Li#, Guangyu Wang</b>... CRAT links cholesterol metabolism to innate immune responses in the heart. Natural Metabolism (2023)",
+                "link": "https://doi.org/10.1038/s42255-023-00844-5"
+            },
+            {
+                "citation": "Jun-ichi Abe... <b>Shengyu Li#... Guangyu Wang*</b>... An ERK5-NRF2 Axis Mediates Senescence-Associated Stemness and Atherosclerosis. Circulation Research (2023)",
+                "link": "https://doi.org/10.1161/circresaha.122.322017"
+            },
+            {
+                "citation": "Hannah Savage... <b>Guangyu Wang</b>... Aerobic exercise alters the melanoma microenvironment... American Association for Cancer Research (2023)",
+                "link": "https://doi.org/10.1158/2326-6066.CIR-22-0465"
+            },
+            {
+                "citation": "Priyanka Banerjee... <b>Guangyu Wang</b>... Possible molecular mechanisms underlying the development of atherosclerosis in cancer survivors. Frontiers (2023)",
+                "link": "https://doi.org/10.3389/fcvm.2023.1186679"
+            },
+            {
+                "citation": "<b>Shengyu Li#, Pengzhi Zhang#, Weiqing Chen... Guangyu Wang</b>. A relay velocity model infers cell-dependent RNA velocity. Nature Biotechnology (2023)",
+                "link": "https://www.nature.com/articles/s41587-023-01728-5"
+            },
+            {
+                "citation": "Zhou P... <b>Wang G</b>... Dynamic changes in P300 enhancers and enhancer-promoter contacts control mouse cardiomyocyte maturation. Dev Cell. 2023",
+                "link": "https://pubmed.ncbi.nlm.nih.gov/37071996/"
+            },
+            {
+                "citation": "Jie Lv... <b>Guangyu Wang</b>... Epigenetic landscape reveals MECOM as an endothelial lineage regulator. Nat Commun 14, 2390 (2023)",
+                "link": "https://doi.org/10.1038/s41467-023-38002-w"
+            },
+            {
+                "citation": "Krishan Gupta#,<b>Guangyu Wang</b>#... StripeDiff: Model-based Algorithm for Differential Analysis of Chromatin Stripe. Science Advances. (2022)",
+                "link": "#"
+            }
+        ]
+    },
+    {
+        "category": "2015-2021",
+        "entries": [
+            {
+                "citation": "Anahita Mojiri...<b> Guangyu Wang </b>... Telomerase therapy reverses vascular senescence and extends lifespan in progeria mice. European Heart Journal. (2021)",
+                "link": "#"
+            },
+            {
+                "citation": "<b>Guangyu Wang</b>#... MACMIC reveals dual role of CTCF in epigenetic regulation of cell identity genes. Genomics, Proteomics, and Bioinformatics. (2021)",
+                "link": "#"
+            },
+            {
+                "citation": "<b>Guangyu Wang</b>... TADsplimer reveals splits and mergers of topologically associating domains for epigenetic regulation of transcription. Genome Biology. (2020)",
+                "link": "#"
+            },
+            {
+                "citation": "Bo Xia...<b> Guangyu Wang</b>#... Machine Learning uncovers cell identity regulator by histone code. Nature Communication. (2020)",
+                "link": "#"
+            },
+            {
+                "citation": "Dongyu Zhao... <b>Guangyu Wang</b>... Widespread H3K27me3 Signifies Super Repression Domains for Enhanced Silencing of Oncogenes. Nature Communication. (2020)",
+                "link": "#"
+            },
+            {
+                "citation": "<b>Guangyu Wang</b>... Role of Endothelial and Mesenchymal cell transitions in heart failure and recovery thereafter. Frontiers in Genetics. (2020)",
+                "link": "#"
+            },
+            {
+                "citation": "Lin Liu#,<b>Guangyu Wang</b>#... Computational identification and characterization of glioma candidate biomarkers through multi-omics integrative profiling. Biology direct. (2020)",
+                "link": "#"
+            },
+            {
+                "citation": "Qiaqia Li... <b>Guangyu Wang</b>#... Antihistamine Drug Ebastine inhibits cancer growth by targeting Polycomb Group Protein EZH2. Molecular Cancer Therapeutics. (2020)",
+                "link": "#"
+            },
+            {
+                "citation": "<b>Guangyu Wang</b>... Characterization and identification of long noncoding RNAs based on feature relationship. Bioinformatics. (2019)",
+                "link": "#"
+            },
+            {
+                "citation": "Qipeng Liu#, <b>Guangyu Wang</b>#... Polycomb group proteins EZH2 and EED directly regulate androgen receptor in advanced prostate cancer. International Journal of Cancer. (2019)",
+                "link": "#"
+            },
+            {
+                "citation": "Long Zhi... <b>Guangyu Wang</b>... Roles of the HOXA10 Gene during Castrate Resistant Prostate Cancer Progression. Endocrine-Related Cancer. (2019)",
+                "link": "#"
+            },
+            {
+                "citation": "Sen Zhu... <b>Guangyu Wang</b>... BMI1 is directly regulated by androgen receptor to promote castration-resistance in prostate cancer. Oncogene (2019)",
+                "link": "#"
+            },
+            {
+                "citation": "Yang Yu... <b>Guangyu Wang</b>... Dna2 nuclease deficiency results in large and complex DNA insertions at chromosomal breaks. Nature. (2018)",
+                "link": "#"
+            },
+            {
+                "citation": "<b>Guangyu Wang</b># listed in BIG Data Center Members (2017) Database resources of the BIG Data Center in 2018. Nucleic Acids Res. (2018)",
+                "link": "#"
+            },
+            {
+                "citation": "<b>Guangyu Wang</b># listed in BIG Data Center Members (2017) The BIG Data Center: from deposition to integration to translation. Nucleic Acids Res. (2017)",
+                "link": "#"
+            },
+            {
+                "citation": "Hongyan Yin#, <b>Guangyu Wang</b>#... What Signatures Dominantly Associate with Gene Age? Genome biology and evolution. (2016)",
+                "link": "#"
+            },
+            {
+                "citation": "Hongyan Yin, Lina Ma, <b>Guangyu Wang</b>#... Old genes experience stronger translational selection than young genes. Gene. (2016)",
+                "link": "#"
+            },
+            {
+                "citation": "<b>Guangyu Wang</b>, Shixiang Sun, Zhang Zhang. Randomness in Sequence Evolution Increases over Time. PLoS One. (2016)",
+                "link": "#"
+            },
+            {
+                "citation": "Cheng Xu... <b>Guangyu Wang</b>#... A novel strategy for forensic age prediction by DNA methylation and support vector regression model. Scientific reports. (2015)",
+                "link": "#"
+            }
+        ]
+    }
+]
