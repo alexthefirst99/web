@@ -26,19 +26,19 @@ To manage content (Team, News, Publications, etc.) via a visual interface:
 ```bash
 python3 cms/app.py
 ```
-- Open **http://127.0.0.1:5000** in your browser.
+- The browser will **automatically open** to **http://127.0.0.1:5000**.
 - Edit content and click **"Publish Changes"**.
-- This automatically updates the JSON data and regenerates the HTML files.
+- This automatically saves your changes and **rebuilds the entire website** (updates HTML files).
 
-### 4. Manual Build
-If you prefer to edit the JSON data files directly in `cms/data/`, you MUST run the build script to update the website:
+### 4. Manual Build / Advanced
+If you prefer to edit the JSON data files manually in `cms/data/`, you must run the build script to update the HTML:
 
 ```bash
 python3 cms/build.py
 ```
 
-### 5. Publish Changes
-After rebuilding the site, push your changes to GitHub to go live:
+### 5. Deploying Updates
+After publishing changes via the CMS (or building manually), push the updated files to GitHub:
 
 ```bash
 git add .
@@ -49,9 +49,9 @@ git push
 ## 📂 Project Structure
 
 ```
-make_new/
-├── index.html           # Homepage (Static)
-├── contact.html         # Contact Page (Static)
+.
+├── index.html           # Homepage
+├── team.html, etc.      # Generated Pages
 ├── css/                 # Global Styles (style.css)
 ├── js/                  # Global Scripts (main.js)
 ├── assets/              # Images, icons, videos
@@ -59,6 +59,9 @@ make_new/
 │   ├── app.py           # Admin Dashboard (Flask App)
 │   ├── build.py         # Static Site Generator Script
 │   ├── data/            # Content Data (JSON Source of Truth)
+│   └── templates/       # HTML Templates (Jinja2)
+└── README.md            # This file
+```│   ├── data/            # Content Data (JSON Source of Truth)
 │   └── templates/       # HTML Templates (Jinja2)
 └── README.md            # This file
 ```

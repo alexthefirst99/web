@@ -94,7 +94,22 @@ def handle_contact():
     build.build_contact()
     return jsonify({"status": "success", "message": "Saved and Contact updated!"})
 
+@app.route('/api/build', methods=['POST'])
+def handle_build_all():
+    try:
+        build.build_all()
+        return jsonify({"status": "success", "message": "Full site rebuild complete!"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
 if __name__ == '__main__':
+    import webbrowser
+    from threading import Timer
+
+    def open_browser():
+        webbrowser.open_new("http://127.0.0.1:5000")
+
     print("Starting Wang Lab Website Builder...")
-    print("Open http://127.0.0.1:5000 in your browser to edit.")
+    print("Opening browser...")
+    Timer(1.5, open_browser).start()
     app.run(debug=True, port=5000)

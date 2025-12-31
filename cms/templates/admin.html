@@ -533,6 +533,9 @@
                             });
                         }
 
+                        // Trigger Full Build (python cms/build.py)
+                        await fetch('/api/build', { method: 'POST' });
+
                         alert("All changes published successfully!");
                     } catch (e) {
                         alert("Error saving: " + e);
