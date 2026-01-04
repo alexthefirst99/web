@@ -125,6 +125,20 @@
         </div>
     </footer>
     <script src="./js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var video = document.querySelector('.hero-video');
+            if (video) {
+                video.muted = true;
+                video.play().catch(function (error) {
+                    console.log("Autoplay prevented:", error);
+                    document.body.addEventListener('click', function () {
+                        video.play();
+                    }, { once: true });
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
