@@ -1154,10 +1154,16 @@ video {
         /* Show full video */
         object-position: top center;
         /* Align to top */
-        z-index: -1;
-        /* Behind content */
+        z-index: 0;
+        /* Bring up to visible layer */
         margin: 0;
         border-radius: 0;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        /* Ensure text sits on top */
     }
 
     .hero-right {
