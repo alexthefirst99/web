@@ -1121,33 +1121,49 @@ video {
     }
 
     .hero {
-        padding-top: 50px;
-        /* Adjusted padding */
+        padding-top: 320px;
+        /* Push content down to show fixed video */
         flex-direction: column;
         height: auto;
+        min-height: auto;
+        background: transparent;
+        /* Transparent to see fixed video */
     }
 
     .hero-left,
     .hero-right {
         width: 100%;
-        height: 50vh;
+        height: auto;
         /* Split height on mobile */
+        overflow: visible;
     }
 
     .hero-video {
         width: 100%;
-        height: 100%;
+        /* Full width */
+        height: auto;
+        /* Natural aspect ratio */
+        min-height: 250px;
+        /* Minimum height */
         left: 0;
-        position: relative;
-        top: auto;
+        position: fixed;
+        /* Fixed background on mobile */
+        top: 80px;
+        /* Below header */
+        object-fit: contain;
+        /* Show full video */
+        object-position: top center;
+        /* Align to top */
+        z-index: -1;
+        /* Behind content */
+        margin: 0;
         border-radius: 0;
-        box-shadow: none;
     }
 
     .hero-right {
         position: relative;
         height: auto;
-        min-height: 50vh;
+        padding-bottom: 2rem;
     }
 
     .hero-brand-logo {
