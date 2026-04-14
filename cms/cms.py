@@ -29,6 +29,11 @@ def generate_index_html(data):
     <nav class="navbar">
         <div class="nav-content">
             <a href="#" class="logo">Alex.</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#education">Education</a></li>
@@ -256,6 +261,13 @@ def get_admin_ui():
             ::-webkit-scrollbar-track { background: var(--panel); }
             ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
             ::-webkit-scrollbar-thumb:hover { background: #4a4a4e; }
+
+            /* Mobile Responsiveness */
+            @media (max-width: 768px) {
+                body { flex-direction: column; }
+                .sidebar { width: 100%; height: 50vh; flex: none; border-right: none; border-bottom: 1px solid var(--border); }
+                .preview { flex: 1; width: 100%; }
+            }
         </style>
     </head>
     <body>
