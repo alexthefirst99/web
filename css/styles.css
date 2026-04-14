@@ -35,12 +35,14 @@ html {
     background-color: var(--bg-primary); /* Base color in case canvas fails */
     color: var(--text-primary);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 body {
     overflow-x: hidden;
     position: relative;
     background-color: transparent;
+    width: 100%;
 }
 
 /* --- Interactive Canvas Background --- */
@@ -791,7 +793,9 @@ footer p {
     }
     
     .hero {
-        padding-top: 100px;
+        align-items: flex-start;
+        padding-top: 120px;
+        padding-bottom: 40px;
     }
 
     h1 {
@@ -800,6 +804,14 @@ footer p {
     
     .section-container {
         padding: 4rem 1.5rem;
+    }
+    
+    .projects-grid, .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content, .featured-showcase, .about-grid, .contact-content, .project-content, .skill-category, .experience-block {
+        padding: 1.5rem;
     }
     
     .hero-actions {
