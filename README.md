@@ -1,73 +1,48 @@
-# Wang Lab Website
+# Alex Tran Portfolio
 
-A modern, responsive static website for the Wang Lab at Houston Methodist / Weill Cornell Medical College. Built with static HTML/CSS/JS and managed via a lightweight custom Python CMS.
+A blazing-fast, static, and highly-interactive personal portfolio featuring 3D glassmorphic cards and a custom UMAP particle simulation background physics engine. Built without thick frontend frameworks to ensure maximum performance and total control over layout rendering.
 
-## 🚀 Quick Start
+## Directory Structure
 
-### 1. Get the Code
-Clone the repository to your local machine:
-
-```bash
-git clone https://github.com/GuangyuWangLab2021/web.git
-cd web
-```
-
-### 2. Prerequisites
-You need Python 3 installed.
-Install the required dependencies:
-
-```bash
-pip install flask jinja2
-```
-
-### 3. Admin CMS (Recommended)
-To manage content (Team, News, Publications, etc.) via a visual interface:
-
-```bash
-python3 cms/app.py
-```
-- The browser will **automatically open** to **http://127.0.0.1:5000**.
-- Edit content and click **"Publish Changes"**.
-- This automatically saves your changes and **rebuilds the entire website** (updates HTML files).
-
-### 4. Manual Build / Advanced
-If you prefer to edit the JSON data files manually in `cms/data/`, you must run the build script to update the HTML:
-
-```bash
-python3 cms/build.py
-```
-
-### 5. Deploying Updates
-After publishing changes via the CMS (or building manually), push the updated files to GitHub:
-
-```bash
-git add .
-git commit -m "Update website content"
-git push
-```
-
-## 📂 Project Structure
+The repository has been neatly organized for production deployment:
 
 ```
-.
-├── index.html           # Homepage
-├── team.html, etc.      # Generated Pages
-├── css/                 # Global Styles (style.css)
-├── js/                  # Global Scripts (main.js)
-├── assets/              # Images, icons, videos
-├── cms/                 # CMS System
-│   ├── app.py           # Admin Dashboard (Flask App)
-│   ├── build.py         # Static Site Generator Script
-│   ├── data/            # Content Data (JSON Source of Truth)
-│   └── templates/       # HTML Templates (Jinja2)
-└── README.md            # This file
-```│   ├── data/            # Content Data (JSON Source of Truth)
-│   └── templates/       # HTML Templates (Jinja2)
-└── README.md            # This file
+/
+├── index.html        # The final compiled static site (Do not edit directly)
+├── README.md         # This documentation
+├── assets/
+│   └── media/        # Images, profile pictures, and showcase videos
+├── css/
+│   └── styles.css    # Core styling, glassmorphism UI, and custom variables
+├── js/
+│   └── script.js     # UMAP Physics simulation and 3D hover tracking logic
+└── cms/
+    ├── cms.py        # Local Python CMS server/builder
+    └── content.json  # Your portfolio text data source
 ```
 
-## 📱 Features
-- **Responsive Design**: optimized for Mobile, Tablet, and Desktop.
-- **Mobile Navbar**: Collapsible hamburger menu on small screens.
-- **Static Generation**: High performance, security, and easy hosting (GitHub Pages compatible).
-- **Custom CMS**: Local admin dashboard for easy content updates without coding.
+## How to Edit Your Website
+
+This portfolio uses a completely local Python-based Custom CMS. Instead of manually editing the HTML, you can edit your content through a graphical web interface.
+
+1. **Start the Builder**
+   Open your terminal in this repository and run:
+   ```bash
+   cd cms
+   python3 cms.py
+   ```
+2. **Open the Dashboard**
+   Navigate to [http://localhost:5000](http://localhost:5000) in your web browser.
+3. **Save and Deploy**
+   Modify the JSON data fields in the interface and click the **Deploy to Website 🚀** button. The script will instantly regenerate the `index.html` file at the root of the project with your new data.
+
+## Deployment
+
+Because the final output is just pure HTML/CSS/JS (`index.html`, `css/styles.css`, `js/script.js`), it is fully decoupled from the Python background engine.
+
+You can instantly deploy this folder for free on:
+- **GitHub Pages**
+- **Vercel**
+- **Netlify**
+
+Just push this folder to your Git repository, and it will automatically go live.

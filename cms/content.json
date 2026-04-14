@@ -1,0 +1,146 @@
+{
+  "hero": {
+    "name": "Tu N (Alex) Tran",
+    "location": "Houston, TX",
+    "headline": "Graduate student in Engineering Data Science building intelligent tools for biological and multimodual data analysis.",
+    "button1_text": "See Loki in Action",
+    "button1_link": "#featured",
+    "button2_text": "All Projects",
+    "button2_link": "#projects",
+    "resume_text": "Download Resume",
+    "resume_link": "Resume/TuNTran_Resume_DataScience.pdf"
+  },
+  "featured": {
+    "title": "Loki – AI-Powered Nuclei Segmentation Platform",
+    "bullets": [
+      "Engineered frontend UI for AI inference on H&E images.",
+      "Enabled one-click model execution without requiring Python.",
+      "Built interactive region selection directly on tissue images.",
+      "Developed AI chatbox for real-time biological insights, identifying cell types and tissue structures.",
+      "Significantly improved accessibility for non-technical users in research settings."
+    ],
+    "tech": ["Python", "Dash", "React", "HPC AI"],
+    "video": "assets/media/video-output-93379EFF-196A-41BA-AFCC-0204CE584930-3.MP4"
+  },
+  "about": {
+    "image": "assets/media/Alex.png",
+    "paragraphs": [
+      "I am a Graduate student in Engineering Data Science with experience applying statistical modeling, machine learning, and data visualization to biological and engineering problems.",
+      "I am highly skilled in Python, R, SQL (in progress), and cloud-based workflows. My core expertise lies in building end-to-end pipelines, cleaning and structuring large datasets, and developing precise interactive dashboards.",
+      "Currently, I am seeking a Data Science internship to leverage my analytical skills and programming expertise for data-driven decision making."
+    ]
+  },
+  "education": [
+    {
+      "degree": "Master of Science in Engineering Data Science",
+      "school": "University of Houston, Cullen College of Engineering",
+      "date": "Expected Dec 2027",
+      "gpa": "3.42",
+      "location": "Houston, TX",
+      "extra": []
+    },
+    {
+      "degree": "Bachelor of Science in Mathematics",
+      "school": "University of Massachusetts Lowell",
+      "date": "Aug 2017 – Aug 2021",
+      "gpa": "3.135",
+      "location": "Lowell, MA",
+      "extra": ["Minor: Finance", "Dean’s List 2020–2021"]
+    }
+  ],
+  "projects": [
+    {
+      "tag": "Fullstack Platform (UH / HM)",
+      "title": "Mjolnir",
+      "description": "Designed and deployed a visualization website using Python (Dash, Plotly) for interactive exploration of multimodal datasets. Integrated gigapixel histology images with gene expression and pathway enrichment results. Co-authored a Research Square preprint.",
+      "tech": ["Python", "Dash", "Plotly"]
+    },
+    {
+      "tag": "Data Integration (UH / HM)",
+      "title": "Visual–Omics Curation",
+      "description": "Curated a multimodal dataset linking histology images with spatial gene expression across 32 organs. Built diagnostics to evaluate machine learning models, heavily contributing to a Nature Methods publication on foundation models.",
+      "tech": ["Curation", "Diagnostics", "Python"]
+    },
+    {
+      "tag": "Bioinformatics (UH / HM)",
+      "title": "Macrophage Analysis",
+      "description": "Applied Leiden clustering and UMAP to single-cell data for cell-type identification. Conducted marker gene analysis to assess treatments. Automated preprocessing pipelines in Python.",
+      "tech": ["UMAP", "Leiden", "Python"]
+    },
+    {
+      "tag": "RNA-seq Pipeline (UH / HM)",
+      "title": "COVID-19 Analysis",
+      "description": "Analyzed RNA-seq data with TopHat, Cuffdiff, and Python. Conducted differential expression analysis and visualized results with heatmaps and volcano plots. Built a custom Gene Ontology tool.",
+      "tech": ["TopHat", "Cuffdiff", "Python"]
+    }
+  ],
+  "experience": [
+    {
+      "role": "Research Assistant – Cardiovascular Regeneration Program",
+      "company": "Houston Methodist, Dr. Guangyu Wang Lab",
+      "date": "Dec 2022 – Present",
+      "bullets": [
+        "Built reproducible pipelines for large-scale single-cell and spatial data analysis using Python, R, and Snakemake.",
+        "Applied clustering, trajectory inference, and statistical testing to generate insights from complex datasets.",
+        "Created interactive dashboards (Dash/Plotly) to enable exploratory analysis by cross-functional teams.",
+        "Delivered analyses supporting a Nature Methods publication and maintained the lab’s public-facing research website."
+      ]
+    },
+    {
+      "role": "Marketing & Data Intern",
+      "company": "Viet Power Solutions JSC (Vietnam)",
+      "date": "Jan 2022 – Aug 2022",
+      "bullets": [
+        "Monitored digital engagement metrics with Google Analytics and optimized campaigns for +39.5% performance improvement.",
+        "Designed and launched targeted LinkedIn, Facebook, and Google Ads campaigns, raising user engagement by 50%.",
+        "Produced clear, data-driven reports to inform leadership and refine product strategy."
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "title": "A visual–omics foundation model to bridge histopathology with spatial transcriptomics",
+      "url": "https://doi.org/10.1038/s41592-025-02707-1",
+      "authors": "Chen W., Zhang P., <u>Tran T. N.</u>, et al. (2025). <em>Nature Methods</em>.",
+      "doi": "doi:10.1038/s41592-025-02707-1"
+    },
+    {
+      "title": "Thor: a platform for cell-level investigation of spatial transcriptomics and histology",
+      "url": "https://doi.org/10.1038/s41467-025-62593-1",
+      "authors": "Zhang P., Chen W., <u>Tran T. N.</u>, et al. (2025). <em>Nature Communications</em>, 16, 7178.",
+      "doi": "doi:10.1038/s41467-025-62593-1"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Programming",
+      "items": ["Python (Pandas, NumPy, SciPy, scikit-learn, Plotly, Dash)", "R (tidyverse, Seurat)", "HTML/CSS"]
+    },
+    {
+      "category": "Data Science",
+      "items": ["Data Wrangling", "Statistical Modeling & Hypothesis Testing", "Clustering & Dimensionality Reduction", "Pathway Enrichment"]
+    },
+    {
+      "category": "Machine Learning",
+      "items": ["scikit-learn", "Trajectory Inference", "Model Diagnostics", "Evaluation Metrics"]
+    },
+    {
+      "category": "Data Engineering",
+      "items": ["Snakemake & Git", "Linux & AWS (EC2/S3)", "Data Preprocessing & Automation"]
+    },
+    {
+      "category": "Visualization",
+      "items": ["Dash/Plotly", "Matplotlib, Seaborn", "Interactive Dashboards"]
+    },
+    {
+      "category": "In Progress",
+      "items": ["SQL", "A/B Testing", "Tableau / Looker"]
+    }
+  ],
+  "contact": {
+    "paragraph": "I am seeking a Data Science internship to leverage my analytical skills and programming expertise for data-driven decision making. Let's connect!",
+    "email": "ttran177@uh.edu",
+    "phone": "3465150455",
+    "linkedin": "https://linkedin.com/in/tuntran271299"
+  }
+}
