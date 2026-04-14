@@ -1,6 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /* =========================================
+       0. Video Lightbox
+       ========================================= */
+    const videoThumb = document.getElementById('video-thumb');
+    const videoModal = document.getElementById('video-modal');
+    const modalVideo = document.getElementById('modal-video');
+    const modalClose = document.getElementById('video-modal-close');
+
+    if (videoThumb && videoModal && modalVideo) {
+        videoThumb.addEventListener('click', () => {
+            videoModal.classList.add('open');
+            modalVideo.currentTime = 0;
+            modalVideo.play();
+        });
+
+        modalClose.addEventListener('click', () => {
+            videoModal.classList.remove('open');
+            modalVideo.pause();
+        });
+
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                videoModal.classList.remove('open');
+                modalVideo.pause();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && videoModal.classList.contains('open')) {
+                videoModal.classList.remove('open');
+                modalVideo.pause();
+            }
+        });
+    }
+
+    /* =========================================
        0. Mobile Menu Toggle
        ========================================= */
     const menuToggle = document.getElementById('mobile-menu');

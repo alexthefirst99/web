@@ -1,4 +1,5 @@
 {
+  "lab_url": "https://guangyuwanglab.github.io/web/index.html",
   "hero": {
     "name": "Tu N (Alex) Tran",
     "location": "Houston, TX",
@@ -11,15 +12,17 @@
     "resume_link": "Resume/TuNTran_Resume_DataScience.pdf"
   },
   "featured": {
-    "title": "Loki – AI-Powered Nuclei Segmentation Platform",
+    "title": "Interactive Web Platform for Loki \u2014 Whole-Slide Image Analysis",
+    "paper_url": "https://www.nature.com/articles/s41592-025-02707-1",
+    "paper_label": "Nature Methods (2025)",
+    "intro": "Engineering a full-stack interactive platform on top of Loki, a published AI framework (Nature Methods, 2025) for spatial transcriptomics and histopathology. The platform enables researchers to run deep learning inference on gigapixel whole-slide H&amp;E images directly from the browser \u2014 no local Python environment or CLI required.",
     "bullets": [
-      "Engineered frontend UI for AI inference on H&E images.",
-      "Enabled one-click model execution without requiring Python.",
-      "Built interactive region selection directly on tissue images.",
-      "Developed AI chatbox for real-time biological insights, identifying cell types and tissue structures.",
-      "Significantly improved accessibility for non-technical users in research settings."
+      "Built a Dash/React frontend that interfaces with Loki\u2019s deep learning inference pipeline for nuclei segmentation and cell-type annotation on whole-slide histopathology images.",
+      "Streamed and rendered gigapixel whole-slide images interactively in the browser with color-coded cell-type overlays.",
+      "Integrated an LLM-powered AI chatbot for on-demand pathological interpretation of segmented cell types and tissue microenvironments."
     ],
     "tech": ["Python", "Dash", "React", "HPC AI"],
+    "lab_url": "https://guangyuwanglab.github.io/web/index.html",
     "video": "assets/media/video-output-93379EFF-196A-41BA-AFCC-0204CE584930-3.MP4"
   },
   "about": {

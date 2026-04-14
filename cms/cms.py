@@ -23,7 +23,7 @@ def generate_index_html(data):
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="assets/media/favicon.svg?v=3">
-    <link rel="stylesheet" href="css/styles.css?v=4">
+    <link rel="stylesheet" href="css/styles.css?v=8">
 </head>
 <body>
     <canvas id="data-canvas"></canvas>
@@ -43,6 +43,7 @@ def generate_index_html(data):
                 <li><a href="#publications">Publications</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="{data.get('lab_url', 'https://guangyuwanglab.github.io/web/index.html')}" target="_blank" rel="noopener noreferrer" class="nav-lab-link">🔗 Lab Website</a></li>
             </ul>
         </div>
     </nav>
@@ -71,15 +72,18 @@ def generate_index_html(data):
                 <h2 class="section-title">{data['featured']['title']}</h2>
                 <div class="featured-showcase">
                     <div class="showcase-text">
-                        <ul class="research-list" style="margin-top: 0;">
+                        <a href="{data['featured'].get('paper_url', '#')}" target="_blank" rel="noopener noreferrer" class="pub-badge">📄 {data['featured'].get('paper_label', '')} — Co-author</a>
+                        <p>{data['featured'].get('intro', '')}</p>
+                        <ul class="research-list">
                             {bullets_html}
                         </ul>
-                        <div class="tech-stack" style="margin-top: 1rem;">
+                        <div class="tech-stack">
                             {tech_html}
                         </div>
                     </div>
-                    <div class="video-wrapper">
+                    <div class="video-wrapper" id="video-thumb" title="Click to expand" style="cursor: pointer;">
                         <div class="browser-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                        <div class="video-expand-hint">⛶ Click to expand</div>
                         <video autoplay loop muted playsinline>
                             <source src="{data['featured']['video']}" type="video/mp4">
                             Your browser does not support the video tag.

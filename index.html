@@ -9,10 +9,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="assets/media/favicon.svg?v=3">
-    <link rel="stylesheet" href="css/styles.css?v=4">
+    <link rel="stylesheet" href="css/styles.css?v=8">
 </head>
 <body>
     <canvas id="data-canvas"></canvas>
+
+    <!-- Video Lightbox Modal -->
+    <div id="video-modal" class="video-modal" role="dialog" aria-modal="true">
+        <button class="video-modal-close" id="video-modal-close" aria-label="Close video">&times;</button>
+        <div class="video-modal-content">
+            <video id="modal-video" controls playsinline>
+                <source src="assets/media/video-output-93379EFF-196A-41BA-AFCC-0204CE584930-3.MP4" type="video/mp4">
+            </video>
+        </div>
+    </div>
     <nav class="navbar">
         <div class="nav-content">
             <a href="#" class="logo">Alex.</a>
@@ -29,6 +39,7 @@
                 <li><a href="#publications">Publications</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="https://guangyuwanglab.github.io/web/index.html" target="_blank" rel="noopener noreferrer" class="nav-lab-link">🔗 Lab Website</a></li>
             </ul>
         </div>
     </nav>
@@ -39,7 +50,7 @@
                 <h4 style="color: var(--accent); font-family: monospace; margin-bottom: 1rem; font-size: 1.1rem; letter-spacing: 0.05em;">Houston, TX</h4>
                 <h2>Graduate student in Engineering Data Science building intelligent tools for biological and multimodual data analysis.</h2>
                 <div class="hero-actions" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="#featured" class="btn btn-primary">See Loki in Action</a>
+                    <a href="#featured" class="btn btn-primary">See My Loki Interface</a>
                     <a href="#projects" class="btn btn-outline">All Projects</a>
                     <a href="Resume/TuNTran_Resume_DataScience.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="border-color: var(--accent); color: var(--accent);">Download Resume</a>
                 </div>
@@ -48,25 +59,26 @@
 
         <section id="featured" class="fade-in">
             <div class="section-container" style="max-width: 1200px;">
-                <h2 class="section-title">Loki – AI-Powered Nuclei Segmentation Platform</h2>
+                <h2 class="section-title">Interactive Web Platform for Loki — Whole-Slide Image Analysis</h2>
                 <div class="featured-showcase">
                     <div class="showcase-text">
-                        <ul class="research-list" style="margin-top: 0;">
-                            <li>Engineered frontend UI for AI inference on H&E images.</li>
-                            <li>Enabled one-click model execution without requiring Python.</li>
-                            <li>Built interactive region selection directly on tissue images.</li>
-                            <li>Developed AI chatbox for real-time biological insights, identifying cell types and tissue structures.</li>
-                            <li>Significantly improved accessibility for non-technical users in research settings.</li>
+                        <a href="https://www.nature.com/articles/s41592-025-02707-1" target="_blank" rel="noopener noreferrer" class="pub-badge">📄 Nature Methods (2025) — Co-author</a>
+                        <p>Engineering a full-stack interactive platform on top of <strong>Loki</strong>, a published AI framework (Nature Methods, 2025) for spatial transcriptomics and histopathology. The platform enables researchers to run deep learning inference on gigapixel whole-slide H&amp;E images directly from the browser — no local Python environment or CLI required.</p>
+                        <ul class="research-list">
+                            <li>Built a Dash/React frontend that interfaces with Loki’s deep learning inference pipeline for nuclei segmentation and cell-type annotation on whole-slide histopathology images.</li>
+                            <li>Streamed and rendered gigapixel whole-slide images interactively in the browser with color-coded cell-type overlays.</li>
+                            <li>Integrated an LLM-powered AI chatbot for on-demand pathological interpretation of segmented cell types and tissue microenvironments.</li>
                         </ul>
-                        <div class="tech-stack" style="margin-top: 1rem;">
+                        <div class="tech-stack">
                             <span>Python</span>
                             <span>Dash</span>
                             <span>React</span>
                             <span>HPC AI</span>
                         </div>
                     </div>
-                    <div class="video-wrapper">
+                    <div class="video-wrapper" id="video-thumb" title="Click to expand" style="cursor: pointer;">
                         <div class="browser-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                        <div class="video-expand-hint">⛶ Click to expand</div>
                         <video autoplay loop muted playsinline>
                             <source src="assets/media/video-output-93379EFF-196A-41BA-AFCC-0204CE584930-3.MP4" type="video/mp4">
                             Your browser does not support the video tag.
