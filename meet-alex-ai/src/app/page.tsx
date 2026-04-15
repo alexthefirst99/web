@@ -7,22 +7,28 @@ import { useStore } from '@/store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Terminal, Volume2, VolumeX } from 'lucide-react';
 
-const speakText = (text: string) => {
-  if (typeof window === 'undefined' || !window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  
-  const voices = window.speechSynthesis.getVoices();
-  if (voices.length > 0) {
-    const preferredVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google UK English Female') || v.name.includes('Daniel'));
-    if (preferredVoice) utterance.voice = preferredVoice;
+let audioCtx: AudioContext | null = null;
+const playTechBeep = () => {
+  if (typeof window === 'undefined') return;
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
   }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   
-  utterance.pitch = 0.95;
-  utterance.rate = 1.05;
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
   
-  window.speechSynthesis.speak(utterance);
+  oscillator.type = 'sine';
+  oscillator.frequency.setValueAtTime(600 + Math.random() * 400, audioCtx.currentTime);
+  
+  gainNode.gain.setValueAtTime(0.015, audioCtx.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  
+  oscillator.start();
+  oscillator.stop(audioCtx.currentTime + 0.03);
 };
 
 function TypewriterText({ text, isMuted }: { text: string, isMuted: boolean }) {
@@ -32,23 +38,17 @@ function TypewriterText({ text, isMuted }: { text: string, isMuted: boolean }) {
   
   useEffect(() => {
     mutedRef.current = isMuted;
-    if (isMuted && typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-    }
   }, [isMuted]);
 
   useEffect(() => {
     setDisplayedText('');
     setIsNarrating(true);
-    
-    // Start actual text-to-speech reading if not muted
-    if (!mutedRef.current) {
-      speakText(text);
-    }
-
     let i = 0;
     const interval = setInterval(() => {
       setDisplayedText(text.slice(0, i + 1));
+      if (!mutedRef.current && (i % 2 === 0)) {
+        playTechBeep();
+      }
       i++;
       if (i >= text.length) {
         clearInterval(interval);
@@ -59,9 +59,6 @@ function TypewriterText({ text, isMuted }: { text: string, isMuted: boolean }) {
     return () => {
       clearInterval(interval);
       setIsNarrating(false);
-      if (typeof window !== 'undefined' && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-      }
     };
   }, [text, setIsNarrating]);
 
@@ -391,17 +388,7 @@ export default function App() {
                   <div className="flex items-center justify-between mb-3 flex-shrink-0">
                     <div className="text-teal-400 text-xs tracking-wider font-bold uppercase">System Narration</div>
                     <button 
-                      onClick={() => {
-                        const willBeMuted = !isSoundMuted;
-                        setIsSoundMuted(willBeMuted);
-                        if (!willBeMuted && typeof window !== 'undefined' && window.speechSynthesis) {
-                          // Prime the speech engine on direct user interaction to bypass browser autoplay policy
-                          const u = new SpeechSynthesisUtterance('');
-                          window.speechSynthesis.speak(u);
-                        } else if (willBeMuted && typeof window !== 'undefined' && window.speechSynthesis) {
-                          window.speechSynthesis.cancel();
-                        }
-                      }}
+                      onClick={() => setIsSoundMuted(!isSoundMuted)}
                       className="text-teal-600 hover:text-teal-400 transition-colors pointer-events-auto"
                       title={isSoundMuted ? "Unmute AI Voice" : "Mute AI Voice"}
                     >
