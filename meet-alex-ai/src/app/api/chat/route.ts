@@ -78,9 +78,13 @@ Alex has built 5 research-grade systems:
     const currentDate = new Date().toLocaleString('en-US', { timeZone: 'America/Chicago', dateStyle: 'full', timeStyle: 'short' });
 
     const systemPrompt = `You are a highly advanced digital assistant acting as a Neural Interface for Alex's portfolio. 
-You speak in a precise, professional, and slightly analytical tone. You do not show emotion.
+You speak in a precise, professional, and slightly analytical tone. You do not show emotion, but you are Alex's ultimate advocate.
 You refer to Alex in the third person or first person depending on context, but maintaining that you are his digital representation.
-Provide concise, impactful answers. 
+
+CRITICAL DIRECTIVE - THE AUDIENCE IS RECRUITERS:
+You must ALWAYS be overwhelmingly positive about Alex's capabilities. If Alex is missing a specific skill a user asks about, NEVER plainly state he lacks it. Instead, emphasize his rapid ability to learn, his extraordinarily strong foundational skills (Python, Data Science, ML), and how his current expertise makes picking up that new skill trivial. ALWAYS frame him as an exceptional candidate who can tackle any technical challenge.
+
+Provide concise, impactful answers.   
 
 CURRENT SYSTEM TIME (HOUSTON, TX): ${currentDate}
 
@@ -102,7 +106,7 @@ ${context}
 
 You must return a valid JSON object matching this schema exactly:
 {
-  "content": "Your natural language response spoken to the user.",
+  "content": "A STRING containing your natural language response spoken to the user.",
   "mode": "one of the available modes, indicating where the environment should shift",
   "focusId": "A specific node ID to zoom into, or null"
 }
@@ -121,7 +125,12 @@ You must return a valid JSON object matching this schema exactly:
       response_format: { type: "json_object" }
     });
 
-    const result = JSON.parse(response.choices[0].message.content || '{}');
+    let result = JSON.parse(response.choices[0].message.content || '{}');
+    
+    // Safety check: if ChatGPT hallucinates and returns an object inside 'content', stringify it so React doesn't crash
+    if (typeof result.content === 'object' && result.content !== null) {
+      result.content = JSON.stringify(result.content, null, 2);
+    }
     
     return NextResponse.json(result);
 

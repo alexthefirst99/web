@@ -60,12 +60,12 @@ const EXPERIENCES = [
 
 function SkillsPanel() {
   return (
-    <div className="w-96 font-mono">
-      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Skill Matrix</div>
+    <div className="w-96">
+      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Skills</div>
       {SKILLS.map((s, i) => (
         <div key={s.cat} className="mb-3">
-          <div className="flex justify-between text-xs mb-1">
-            <span className="text-white/60">{s.cat}</span>
+          <div className="flex justify-between text-sm mb-1">
+            <span className="text-white/80">{s.cat}</span>
             <span className="text-teal-400">{s.pct}%</span>
           </div>
           <div className="h-[2px] bg-teal-900/30 rounded">
@@ -85,8 +85,8 @@ function SkillsPanel() {
 
 function ProjectsPanel() {
   return (
-    <div className="font-mono" style={{ width: 500 }}>
-      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Project Engrams</div>
+    <div style={{ width: 500 }}>
+      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Projects</div>
       <div className="grid grid-cols-2 gap-3">
         {PROJECTS.map((p, i) => (
           <motion.div
@@ -94,17 +94,17 @@ function ProjectsPanel() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-black/70 border border-teal-900/50 p-3"
-            style={{ boxShadow: '0 0 15px rgba(255,0,60,0.08)' }}
+            className="bg-[#13171f]/80 backdrop-blur-xl rounded-xl border border-white/10 p-4"
+            style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
           >
             <div className="flex justify-between items-start mb-1">
-              <span className="text-white text-xs font-bold">{p.title}</span>
-              <span className="text-teal-500 text-[9px] px-1.5 py-0.5 bg-teal-900/20">{p.badge}</span>
+              <span className="text-white text-sm font-semibold">{p.title}</span>
+              <span className="text-teal-400 text-[11px] px-2 py-0.5 bg-teal-500/10 rounded-full font-mono">{p.badge}</span>
             </div>
-            <div className="text-white/40 text-[10px] mb-2">{p.sub}</div>
+            <div className="text-white/70 text-sm mb-2">{p.sub}</div>
             <div className="flex flex-wrap gap-1">
               {p.tags.map(t => (
-                <span key={t} className="text-[9px] px-1.5 py-0.5 bg-teal-900/20 text-teal-400/70">{t}</span>
+                <span key={t} className="text-[11px] px-2 py-0.5 bg-white/5 text-teal-400 rounded-full font-mono">{t}</span>
               ))}
             </div>
           </motion.div>
@@ -116,23 +116,23 @@ function ProjectsPanel() {
 
 function ResearchPanel() {
   return (
-    <div className="w-96 font-mono">
-      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Publication Log</div>
+    <div className="w-96">
+      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Publications</div>
       {PAPERS.map((p, i) => (
         <motion.div
           key={p.doi}
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: i * 0.15 }}
-          className="bg-black/70 border border-teal-900/40 p-4 mb-3"
-          style={{ boxShadow: '0 0 20px rgba(255,0,60,0.07)' }}
+          className="bg-[#13171f]/80 backdrop-blur-xl rounded-xl border border-white/10 p-5 mb-4"
+          style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
         >
           <div className="flex justify-between mb-2">
-            <span className="text-teal-400 text-xs tracking-wider">{p.journal}</span>
-            <span className="text-teal-900 text-xs">{p.year}</span>
+            <span className="text-teal-400 text-sm tracking-wider font-semibold">{p.journal}</span>
+            <span className="text-teal-700 text-sm font-semibold">{p.year}</span>
           </div>
-          <div className="text-white text-xs leading-relaxed mb-2">{p.title}</div>
-          <div className="text-white/40 text-[10px] mb-2">{p.authors}</div>
+          <div className="text-white text-sm leading-relaxed mb-2">{p.title}</div>
+          <div className="text-white/70 text-sm mb-2">{p.authors}</div>
           <div className="text-teal-900 text-[9px] tracking-wider">doi:{p.doi}</div>
         </motion.div>
       ))}
@@ -142,23 +142,23 @@ function ResearchPanel() {
 
 function ExperiencePanel() {
   return (
-    <div className="font-mono" style={{ width: 460 }}>
-      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Work Experience Log</div>
+    <div style={{ width: 460 }}>
+      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Experience</div>
       {EXPERIENCES.map((exp, i) => (
         <motion.div
           key={exp.title}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.15 }}
-          className="bg-black/70 border border-teal-900/40 p-4 mb-3"
-          style={{ boxShadow: '0 0 20px rgba(255,0,60,0.07)' }}
+          className="bg-[#13171f]/80 backdrop-blur-xl rounded-xl border border-white/10 p-5 mb-4"
+          style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
         >
           <div className="flex justify-between items-start mb-1">
-            <span className="text-white text-sm font-bold">{exp.title}</span>
-            <span className="text-[9px] px-2 py-0.5 bg-teal-900/20 text-teal-400">{exp.type}</span>
+            <span className="text-white text-base font-semibold">{exp.title}</span>
+            <span className="text-[11px] px-2 py-0.5 bg-teal-500/10 rounded-full text-teal-400 font-mono">{exp.type}</span>
           </div>
-          <div className="text-teal-400/70 text-xs mb-0.5">{exp.org}</div>
-          <div className="text-white/30 text-[10px] mb-3">{exp.dept} · {exp.dates}</div>
+          <div className="text-teal-400 leading-relaxed text-sm mb-0.5">{exp.org}</div>
+          <div className="text-white/50 text-[11px] mb-3">{exp.dept} · {exp.dates}</div>
           <ul className="space-y-1.5">
             {exp.highlights.map((h, j) => (
               <motion.li
@@ -166,7 +166,7 @@ function ExperiencePanel() {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.15 + j * 0.06 }}
-                className="flex gap-2 text-white/60 text-[10px] leading-relaxed"
+                className="flex gap-2 text-white/80 text-sm leading-relaxed"
               >
                 <span className="text-teal-700 flex-shrink-0 mt-0.5">▸</span>
                 <span>{h}</span>
@@ -189,10 +189,10 @@ function OverviewPanel() {
     { label: 'Status', value: 'Seeking Internship' },
   ];
   return (
-    <div className="font-mono" style={{ width: 380 }}>
-      <div className="text-teal-500 text-xs tracking-widest mb-1 uppercase">// Identity Engram</div>
-      <div className="text-white text-xl font-bold mb-1">Tu N. (Alex) Tran</div>
-      <div className="text-white/40 text-xs mb-4">Houston Methodist · UH Engineering</div>
+    <div style={{ width: 380 }}>
+      <div className="text-teal-400 text-base tracking-wider font-bold mb-1 uppercase">Overview</div>
+      <div className="text-white text-2xl font-bold mb-1">Tu N. (Alex) Tran</div>
+      <div className="text-white/80 text-sm mb-4 font-medium">Houston Methodist · UH Engineering</div>
       <div className="grid grid-cols-2 gap-2">
         {stats.map((s, i) => (
           <motion.div
@@ -200,9 +200,9 @@ function OverviewPanel() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: i * 0.07 }}
-            className="bg-teal-950/10 border border-teal-900/30 p-2.5"
+            className="bg-[#13171f]/60 backdrop-blur-md rounded-lg border border-white/5 p-3"
           >
-            <div className="text-teal-600 text-[9px] tracking-widest uppercase mb-1">{s.label}</div>
+            <div className="text-teal-600 text-[11px] uppercase font-semibold text-white/70 tracking-wider mb-1">{s.label}</div>
             <div className="text-white text-xs">{s.value}</div>
           </motion.div>
         ))}
@@ -259,7 +259,17 @@ export default function App() {
       const data = await res.json();
       
       setMessages([...newMessages, { role: 'assistant', content: data.content || 'Processing...' }]);
-      updateStateFromAI((data.mode as any) || 'overview', data.focusId || null, data.content || 'Processing...');
+      let safeMode = 'overview';
+      if (data.mode && typeof data.mode === 'string') {
+        const lowerMode = data.mode.toLowerCase();
+        if (lowerMode.includes('skill')) safeMode = 'skills';
+        else if (lowerMode.includes('project')) safeMode = 'projects';
+        else if (lowerMode.includes('research') || lowerMode.includes('paper')) safeMode = 'research';
+        else if (lowerMode.includes('experience') || lowerMode.includes('work')) safeMode = 'experience';
+        else if (lowerMode.includes('role')) safeMode = 'role_fit';
+        else safeMode = 'overview';
+      }
+      updateStateFromAI((safeMode as any), data.focusId || null, data.content || 'Processing...');
     } catch (err) {
       console.error(err);
       useStore.getState().setNarratorText('Network anomaly. Connection lost.');
@@ -269,7 +279,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-screen h-screen bg-black overflow-hidden relative font-mono">
+    <div className="w-screen h-screen bg-[#05070a] overflow-hidden relative text-white">
       {/* WebGL Canvas */}
       <div className="absolute inset-0 z-0">
         <Canvas>
@@ -280,16 +290,16 @@ export default function App() {
       {/* UI Overlay */}
       <div className="absolute inset-0 z-10 pointer-events-none flex flex-col p-6 gap-4">
         {/* Header */}
-        <div className="flex justify-between items-center text-xs text-teal-500/60 tracking-widest uppercase">
+        <div className="flex justify-between items-center text-base font-bold text-teal-400">
           <div className="flex items-center gap-2">
             <Terminal size={12} className="animate-pulse" />
-            <span>ALEX // CORE [ONLINE]</span>
+            <span>Digital Assistant</span>
           </div>
-          <div>SECTOR: [{mode}]</div>
+          <div>Mode: {mode}</div>
         </div>
 
         {/* Data Panel — left side, always visible */}
-        <div className="flex flex-1 items-center gap-8">
+        <div className="flex flex-1 items-center gap-8 min-h-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={mode}
@@ -297,7 +307,8 @@ export default function App() {
               animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, x: -16, filter: 'blur(4px)' }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="pointer-events-none"
+              className="pointer-events-auto h-full overflow-y-auto pr-4 pb-12"
+              style={{ scrollbarWidth: 'none' }}
             >
               <DataPanel mode={mode} />
             </motion.div>
@@ -312,14 +323,15 @@ export default function App() {
                 animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 exit={{ opacity: 0, x: 16, filter: 'blur(4px)' }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="pointer-events-none ml-auto max-w-sm"
+                className="pointer-events-none ml-auto max-w-sm h-full"
               >
-                <div className="border-l border-teal-900/50 pl-4 flex flex-col" style={{ maxHeight: '60vh' }}>
-                  <div className="text-teal-500/60 text-[9px] tracking-widest uppercase mb-3 flex-shrink-0">// System Narration</div>
-                  <p className="text-white/80 text-xs leading-6 font-mono whitespace-pre-wrap overflow-y-auto pr-2 pointer-events-auto"
-                     style={{ scrollbarWidth: 'thin', scrollbarColor: '#115e59 transparent' }}>
-                    {narratorText}
-                  </p>
+                <div className="border-l border-teal-900/50 pl-4 flex flex-col h-full max-h-full min-h-0 py-2">
+                  <div className="text-teal-400 text-xs tracking-wider font-bold mb-3 flex-shrink-0 uppercase">System Narration</div>
+                  <div className="overflow-y-auto pr-2 pointer-events-auto min-h-0 flex-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#115e59 transparent' }}>
+                    <p className="text-white/90 text-sm leading-relaxed whitespace-pre-wrap font-medium">
+                      {narratorText}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -350,7 +362,7 @@ export default function App() {
                   }, 50);
                 }}
                 disabled={isLoading}
-                className="text-[10px] uppercase tracking-widest px-3 py-1.5 border border-teal-900/40 text-teal-500/60 hover:border-teal-500/60 hover:text-teal-400 hover:bg-teal-950/20 transition-all disabled:opacity-30"
+                className="text-[11px] uppercase font-semibold px-3 py-1.5 border border-white/10 rounded-full text-white/70 hover:border-teal-500/50 hover:text-teal-400 hover:bg-[#13171f]/80 transition-all disabled:opacity-30"
               >
                 {prompt}
               </button>
@@ -367,8 +379,8 @@ export default function App() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
-              placeholder="Inject payload  — try 'projects', 'skills', 'research'..."
-              className="w-full bg-black/80 backdrop-blur-md border-b-2 border-teal-500/30 text-teal-400 placeholder-teal-900/40 px-4 py-3 focus:outline-none focus:border-teal-500 transition-all text-xs uppercase tracking-widest"
+              placeholder="Ask me anything... try 'projects', 'skills', 'research'..."
+              className="w-full bg-[#13171f]/80 backdrop-blur-2xl border border-white/10 rounded-xl mb-4 text-white placeholder-white/30 px-4 py-3 focus:outline-none focus:border-teal-500 transition-all text-sm shadow-xl"
             />
             <button
               type="submit"
