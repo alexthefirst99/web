@@ -119,17 +119,17 @@ const EXPERIENCES = [
 function SkillsPanel() {
   return (
     <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-96">
-      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Skills</div>
+      <div className="text-blue-400 text-base tracking-wider font-bold mb-4 uppercase">Skills</div>
       {SKILLS.map((s, i) => (
         <div key={s.cat} className="mb-3">
           <div className="flex justify-between text-sm mb-1">
             <span className="text-white/80">{s.cat}</span>
-            <span className="text-teal-400">{s.pct}%</span>
+            <span className="text-blue-400">{s.pct}%</span>
           </div>
-          <div className="h-[2px] bg-teal-900/30 rounded">
+          <div className="h-[2px] bg-white/10 rounded">
             <motion.div
               className="h-full rounded"
-              style={{ background: 'linear-gradient(90deg, #0f766e, #2dd4bf)', boxShadow: '0 0 6px #2dd4bf' }}
+              style={{ background: 'linear-gradient(90deg, #3b82f6, #c084fc)', boxShadow: '0 0 6px #c084fc' }}
               initial={{ width: 0 }}
               animate={{ width: `${s.pct}%` }}
               transition={{ duration: 0.8, delay: i * 0.08, ease: 'easeOut' }}
@@ -144,7 +144,7 @@ function SkillsPanel() {
 function ProjectsPanel() {
   return (
     <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[500px]">
-      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Projects</div>
+      <div className="text-pink-500 text-base tracking-wider font-bold mb-4 uppercase">Projects</div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {PROJECTS.map((p, i) => (
           <motion.div
@@ -157,12 +157,12 @@ function ProjectsPanel() {
           >
             <div className="flex justify-between items-start mb-1">
               <span className="text-white text-sm font-semibold">{p.title}</span>
-              <span className="text-teal-400 text-[11px] px-2 py-0.5 bg-teal-500/10 rounded-full font-mono">{p.badge}</span>
+              <span className="text-pink-400 text-[11px] px-2 py-0.5 bg-pink-500/10 rounded-full font-mono">{p.badge}</span>
             </div>
             <div className="text-white/70 text-sm mb-2">{p.sub}</div>
             <div className="flex flex-wrap gap-1">
               {p.tags.map(t => (
-                <span key={t} className="text-[11px] px-2 py-0.5 bg-white/5 text-teal-400 rounded-full font-mono">{t}</span>
+                <span key={t} className="text-[11px] px-2 py-0.5 bg-white/5 text-purple-400 rounded-full font-mono">{t}</span>
               ))}
             </div>
           </motion.div>
@@ -191,7 +191,14 @@ function ResearchPanel() {
           </div>
           <div className="text-white text-sm leading-relaxed mb-2">{p.title}</div>
           <div className="text-white/70 text-sm mb-2">{p.authors}</div>
-          <div className="text-teal-900 text-[9px] tracking-wider">doi:{p.doi}</div>
+          <a 
+            href={`https://doi.org/${p.doi}`} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-teal-700/60 hover:text-teal-400 text-[9px] tracking-wider transition-colors inline-block cursor-pointer font-mono"
+          >
+            doi:{p.doi}
+          </a>
         </motion.div>
       ))}
     </div>
@@ -201,7 +208,7 @@ function ResearchPanel() {
 function ExperiencePanel() {
   return (
     <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[460px]">
-      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Experience</div>
+      <div className="text-blue-400 text-base tracking-wider font-bold mb-4 uppercase">Experience</div>
       {EXPERIENCES.map((exp, i) => (
         <motion.div
           key={exp.title}
@@ -213,9 +220,9 @@ function ExperiencePanel() {
         >
           <div className="flex justify-between items-start mb-1">
             <span className="text-white text-base font-semibold">{exp.title}</span>
-            <span className="text-[11px] px-2 py-0.5 bg-teal-500/10 rounded-full text-teal-400 font-mono">{exp.type}</span>
+            <span className="text-[11px] px-2 py-0.5 bg-blue-500/10 rounded-full text-blue-400 font-mono">{exp.type}</span>
           </div>
-          <div className="text-teal-400 leading-relaxed text-sm mb-0.5">{exp.org}</div>
+          <div className="text-blue-400 leading-relaxed text-sm mb-0.5">{exp.org}</div>
           <div className="text-white/50 text-[11px] mb-3">{exp.dept} · {exp.dates}</div>
           <ul className="space-y-1.5">
             {exp.highlights.map((h, j) => (
@@ -226,7 +233,7 @@ function ExperiencePanel() {
                 transition={{ delay: i * 0.15 + j * 0.06 }}
                 className="flex gap-2 text-white/80 text-sm leading-relaxed"
               >
-                <span className="text-teal-700 flex-shrink-0 mt-0.5">▸</span>
+                <span className="text-blue-700/50 flex-shrink-0 mt-0.5">▸</span>
                 <span>{h}</span>
               </motion.li>
             ))}
@@ -248,9 +255,9 @@ function OverviewPanel() {
   ];
   return (
     <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[380px]">
-      <div className="text-teal-400 text-base tracking-wider font-bold mb-1 uppercase">Overview</div>
+      <div className="text-purple-400 text-base tracking-wider font-bold mb-1 uppercase">Overview</div>
       <div className="text-white text-2xl font-bold mb-1">Tu N. (Alex) Tran</div>
-      <div className="text-white/80 text-sm mb-4 font-medium">Houston Methodist · UH Engineering</div>
+      <div className="text-white/70 text-sm mb-4 font-medium">Houston Methodist · UH Engineering</div>
       <div className="grid grid-cols-2 gap-2">
         {stats.map((s, i) => (
           <motion.div
@@ -260,7 +267,7 @@ function OverviewPanel() {
             transition={{ delay: i * 0.07 }}
             className="bg-[#13171f]/60 backdrop-blur-md rounded-lg border border-white/5 p-3"
           >
-            <div className="text-teal-600 text-[11px] uppercase font-semibold text-white/70 tracking-wider mb-1">{s.label}</div>
+            <div className="text-teal-600 text-[11px] uppercase font-semibold tracking-wider mb-1">{s.label}</div>
             <div className="text-white text-xs">{s.value}</div>
           </motion.div>
         ))}
@@ -349,12 +356,12 @@ export default function App() {
       {/* UI Overlay */}
       <div className="absolute inset-0 z-10 pointer-events-none flex flex-col p-6 gap-4">
         {/* Header */}
-        <div className="flex justify-between items-center text-base font-bold text-teal-400">
+        <div className="flex justify-between items-center text-base font-bold text-purple-400">
           <div className="flex items-center gap-2">
-            <Terminal size={12} className="animate-pulse" />
+            <Terminal size={12} className="animate-pulse text-pink-500" />
             <span>Digital Assistant</span>
           </div>
-          <div>Mode: {mode}</div>
+          <div>Mode: <span className="text-teal-400">{mode}</span></div>
         </div>
 
         {/* Data Panel — left side, always visible */}
@@ -384,18 +391,18 @@ export default function App() {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="pointer-events-none md:ml-auto w-full md:max-w-sm h-1/2 md:h-full flex-1 min-h-0"
               >
-                <div className="border-l border-teal-900/50 pl-4 md:pl-4 flex flex-col h-full max-h-full min-h-0 py-2 bg-[#05070a]/60 md:bg-transparent backdrop-blur-md md:backdrop-blur-none rounded-xl md:rounded-none px-3 md:px-0">
+                <div className="border-l border-white/10 pl-4 md:pl-4 flex flex-col h-full max-h-full min-h-0 py-2 bg-[#05070a]/60 md:bg-transparent backdrop-blur-md md:backdrop-blur-none rounded-xl md:rounded-none px-3 md:px-0">
                   <div className="flex items-center justify-between mb-3 flex-shrink-0 mt-2 md:mt-0">
-                    <div className="text-teal-400 text-xs tracking-wider font-bold uppercase">System Narration</div>
+                    <div className="text-purple-400 text-xs tracking-wider font-bold uppercase">System Narration</div>
                     <button 
                       onClick={() => setIsSoundMuted(!isSoundMuted)}
-                      className="text-teal-600 hover:text-teal-400 transition-colors pointer-events-auto"
+                      className="text-teal-700 hover:text-teal-400 transition-colors pointer-events-auto"
                       title={isSoundMuted ? "Unmute AI Voice" : "Mute AI Voice"}
                     >
                       {isSoundMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
                     </button>
                   </div>
-                  <div className="overflow-y-auto pr-2 pointer-events-auto min-h-0 flex-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#115e59 transparent' }}>
+                  <div className="overflow-y-auto pr-2 pointer-events-auto min-h-0 flex-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#c084fc transparent' }}>
                     <p className="text-white/90 text-sm leading-relaxed whitespace-pre-wrap font-medium">
                       <TypewriterText text={narratorText} isMuted={isSoundMuted} />
                     </p>
@@ -430,14 +437,14 @@ export default function App() {
                   }, 50);
                 }}
                 disabled={isLoading}
-                className="text-[11px] uppercase font-semibold px-3 py-1.5 border border-white/10 rounded-full text-white/70 hover:border-teal-500/50 hover:text-teal-400 hover:bg-[#13171f]/80 transition-all disabled:opacity-30"
+                className="text-[11px] uppercase font-semibold px-3 py-1.5 border border-white/10 rounded-full text-white/70 hover:border-blue-500/50 hover:text-blue-400 hover:bg-[#13171f]/80 transition-all disabled:opacity-30"
               >
                 {prompt}
               </button>
             ))}
           </div>
           {isLoading && (
-            <p className="text-teal-500/40 text-xs tracking-widest text-center animate-pulse">
+            <p className="text-purple-500/60 text-xs tracking-widest text-center animate-pulse">
               PROCESSING QUERY...
             </p>
           )}
@@ -448,12 +455,12 @@ export default function App() {
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
               placeholder="Ask me anything... try 'projects', 'skills', 'research'..."
-              className="w-full bg-[#13171f]/80 backdrop-blur-2xl border border-white/10 rounded-xl mb-4 text-white placeholder-white/30 px-4 py-3 focus:outline-none focus:border-teal-500 transition-all text-sm shadow-xl"
+              className="w-full bg-[#13171f]/80 backdrop-blur-2xl border border-white/10 rounded-xl mb-4 text-white placeholder-white/30 px-4 py-3 focus:outline-none focus:border-pink-500/60 focus:ring-1 focus:ring-pink-500/30 transition-all text-sm shadow-xl"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-teal-700 hover:text-teal-400 disabled:opacity-0 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-pink-700/60 hover:text-pink-500 disabled:opacity-0 transition-colors"
             >
               <Send size={14} />
             </button>

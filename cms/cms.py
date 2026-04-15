@@ -212,7 +212,7 @@ def generate_index_html(data):
     </main>
 
     <!-- Floating AI Widget -->
-    <a href="https://meet-alex-ai.vercel.app/" target="_blank" class="floating-ai-btn">
+    <a href="ai.html" target="_blank" class="floating-ai-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
             <path d="M12 8a6 6 0 0 0-6 6v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4a6 6 0 0 0-6-6z"></path>

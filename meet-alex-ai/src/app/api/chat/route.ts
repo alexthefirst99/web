@@ -112,10 +112,14 @@ You must return a valid JSON object matching this schema exactly:
 }
 `;
 
-    // Add system message to the beginning
+    // Add system message, then history, then heavily structured final message to prevent instruction drift
     const openAiMessages = [
       { role: 'system', content: systemPrompt },
-      ...messages.map((m: any) => ({ role: m.role, content: m.content }))
+      ...messages.slice(0, messages.length - 1).map((m: any) => ({ role: m.role, content: m.content })),
+      { 
+        role: 'user', 
+        content: query + `\n\n[SYSTEM REMINDER: You MUST output a JSON object. Based strictly on my current query above, correctly assign the "mode". For example, if I ask about your work history, use "experience". If I ask about code/apps, use "projects". Choices: "overview", "skills", "experience", "projects", "research", "role_fit"]` 
+      }
     ];
 
     const response = await openai.chat.completions.create({

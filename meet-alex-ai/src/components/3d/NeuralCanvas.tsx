@@ -1,69 +1,88 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useStore } from '@/store/useStore';
 import { ParticleField } from './ParticleField';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 
-// ─── AI Construct Engram (Cyberpunk Alt-style Core) ──────────────────────────
+// ─── AI Construct Engram (Organic Cell Cluster) ────────────────────────────────
 function AiEngram({ isNarrating }: { isNarrating: boolean }) {
-  const outerRef = useRef<THREE.Mesh>(null);
-  const midRef = useRef<THREE.Mesh>(null);
-  const innerRef = useRef<THREE.Mesh>(null);
-  const coreRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+  const cellRefs = useRef<(THREE.Mesh | null)[]>([]);
+
+  // Generate random data for the cells so they don't regenerate every frame
+  const cells = useMemo(() => {
+    const arr = [];
+    const palette = ['#f43f5e', '#ec4899', '#a855f7', '#7e22ce', '#3b82f6', '#2dd4bf'];
+    
+    for (let i = 0; i < 80; i++) {
+      // Gaussian-like distribution to make it dense in the center, sparse on edges
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+      const radius = Math.pow(Math.random(), 1.5) * 2.0; 
+      
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+      
+      arr.push({
+        basePos: [x, y, z] as [number, number, number],
+        // Cells closer to center are generally larger, edges are tiny
+        size: Math.max(0.04, (2.2 - radius) * 0.12 * Math.random() + 0.02),
+        color: palette[Math.floor(Math.random() * palette.length)],
+        // Unique random properties for cellular floating simulation
+        speed: 0.8 + Math.random() * 2.0,
+        offset: Math.random() * 100,
+        floatRadius: 0.1 + Math.random() * 0.15
+      });
+    }
+    return arr;
+  }, []);
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
-    const pulse = isNarrating ? 1.05 + Math.sin(t * 8) * 0.05 : 1.0;
+    const pulse = isNarrating ? 1.05 + Math.sin(t * 15) * 0.05 : 1.0;
 
-    if (outerRef.current) {
-      outerRef.current.rotation.y = t * 0.1;
-      outerRef.current.rotation.x = t * 0.05;
-      outerRef.current.scale.setScalar(pulse);
+    if (groupRef.current) {
+      // The entire cluster slowly drifts and rotates
+      groupRef.current.rotation.y = t * 0.1;
+      groupRef.current.rotation.z = Math.sin(t * 0.05) * 0.1;
+      groupRef.current.scale.setScalar(pulse);
     }
-    if (midRef.current) {
-      midRef.current.rotation.y = -t * 0.15;
-      midRef.current.rotation.z = t * 0.1;
-      midRef.current.scale.setScalar(pulse * 0.95);
-    }
-    if (innerRef.current) {
-      innerRef.current.rotation.y = t * 0.3;
-      innerRef.current.rotation.x = -t * 0.2;
-      innerRef.current.scale.setScalar(pulse * 0.8);
-    }
-    if (coreRef.current) {
-      coreRef.current.rotation.y = t * 1.5;
-      coreRef.current.scale.setScalar(isNarrating ? 1.05 : 0.9);
-    }
+
+    // Each cell organically squirming/floating away from its structural baseline
+    cellRefs.current.forEach((cell, i) => {
+      if (!cell) return;
+      const data = cells[i];
+      cell.position.x = data.basePos[0] + Math.sin(t * data.speed + data.offset) * data.floatRadius;
+      cell.position.y = data.basePos[1] + Math.cos(t * data.speed * 0.8 + data.offset) * data.floatRadius;
+      cell.position.z = data.basePos[2] + Math.sin(t * data.speed * 1.2 + data.offset) * data.floatRadius;
+    });
   });
 
   return (
-    <group position={[0, 0, 0]}>
-      {/* Outer Data Sphere */}
-      <mesh ref={outerRef}>
-        <icosahedronGeometry args={[2.5, 2]} />
-        <meshBasicMaterial color="#0f766e" wireframe transparent opacity={0.15} />
+    <group ref={groupRef} position={[0, 0, 0]}>
+      {/* Singular hidden anchor point so the cluster feels dense in the exact center */}
+      <mesh>
+        <sphereGeometry args={[0.5, 32, 32]} />
+        <meshBasicMaterial color="#f43f5e" />
       </mesh>
 
-      {/* Mid Matrix Lattice */}
-      <mesh ref={midRef}>
-        <octahedronGeometry args={[2.0, 1]} />
-        <meshBasicMaterial color="#14b8a6" wireframe transparent opacity={0.3} />
-      </mesh>
-
-      {/* Inner Energy Cage */}
-      <mesh ref={innerRef}>
-        <icosahedronGeometry args={[1.5, 0]} />
-        <meshBasicMaterial color="#2dd4bf" wireframe transparent opacity={0.6} />
-      </mesh>
-
-      {/* Solid Ghost Core */}
-      <mesh ref={coreRef}>
-        <octahedronGeometry args={[0.8, 0]} />
-        <meshStandardMaterial color="#ffffff" emissive="#2dd4bf" emissiveIntensity={isNarrating ? 2.5 : 2} />
-      </mesh>
+      {/* Orbiting cellular dots */}
+      {cells.map((c, i) => (
+        <mesh 
+          key={i} 
+          ref={(el) => {
+            cellRefs.current[i] = el;
+          }} 
+          position={c.basePos}
+        >
+          <sphereGeometry args={[c.size, 16, 16]} />
+          <meshBasicMaterial color={c.color} />
+        </mesh>
+      ))}
     </group>
   );
 }
@@ -75,10 +94,10 @@ export function NeuralCanvas() {
   return (
     <>
       <color attach="background" args={['#05070a']} />
-      <ambientLight intensity={0.15} color="#14b8a6" />
-      <pointLight position={[0, 3, 5]} intensity={3} color="#2dd4bf" />
-      <pointLight position={[-4, -2, 3]} intensity={1} color="#0f766e" />
-      <pointLight position={[4, 1, 2]} intensity={0.8} color="#134e4a" />
+      <ambientLight intensity={0.15} color="#a855f7" />
+      <pointLight position={[0, 3, 5]} intensity={3} color="#ec4899" />
+      <pointLight position={[-4, -2, 3]} intensity={1} color="#7e22ce" />
+      <pointLight position={[4, 1, 2]} intensity={0.8} color="#be185d" />
 
       <AiEngram isNarrating={isNarrating} />
       <ParticleField count={3000} />
