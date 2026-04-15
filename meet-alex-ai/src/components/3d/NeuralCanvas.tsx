@@ -18,10 +18,10 @@ interface DataType {
 }
 
 const NODES_DATA: DataType[] = [
-  { id: 'alex-portfolio', label: 'Interactive AI Portfolio', mode: 'projects', position: [-2, 1, -2], color: '#ff003c' },
-  { id: 'gigapixel-viewer', label: 'Gigapixel Med Viewer', mode: 'projects', position: [2, 0, -2], color: '#ff003c' },
-  { id: 'frontend', label: 'Frontend & UI Core', mode: 'skills', position: [-2, -2, -2], color: '#ff003c' },
-  { id: 'ai-sys', label: 'AI Architecture', mode: 'skills', position: [2, 2, -3], color: '#ff003c' },
+  { id: 'alex-portfolio', label: 'Interactive AI Portfolio', mode: 'projects', position: [-2, 1, -2], color: '#2dd4bf' },
+  { id: 'gigapixel-viewer', label: 'Gigapixel Med Viewer', mode: 'projects', position: [2, 0, -2], color: '#2dd4bf' },
+  { id: 'frontend', label: 'Frontend & UI Core', mode: 'skills', position: [-2, -2, -2], color: '#2dd4bf' },
+  { id: 'ai-sys', label: 'AI Architecture', mode: 'skills', position: [2, 2, -3], color: '#2dd4bf' },
   // Adding more dummy clusters to crowd it
   { id: 'dummy-1', label: '', mode: 'skills', position: [4, -3, -4], color: '#550000' },
   { id: 'dummy-2', label: '', mode: 'projects', position: [-4, 3, -5], color: '#550000' },
@@ -74,13 +74,13 @@ function AiEngram({ text, isNarrating }: { text: string, isNarrating: boolean })
       {/* Outer Cage */}
       <mesh ref={outerRef}>
         <icosahedronGeometry args={[2.5, 1]} />
-        <meshBasicMaterial color="#ff0000" wireframe transparent opacity={0.15} />
+        <meshBasicMaterial color="#14b8a6" wireframe transparent opacity={0.15} />
       </mesh>
       
       {/* Inner Core */}
       <mesh ref={meshRef}>
         <octahedronGeometry args={[1.5, 0]} />
-        <meshStandardMaterial color="#ff003c" emissive="#ff0000" emissiveIntensity={isNarrating ? 3 : 1} wireframe />
+        <meshStandardMaterial color="#2dd4bf" emissive="#14b8a6" emissiveIntensity={isNarrating ? 3 : 1} wireframe />
       </mesh>
 
       {/* No text inside Engram — narrator text shown in HTML overlay, viz shown below */}
@@ -100,9 +100,9 @@ export function NeuralCanvas() {
   return (
     <>
       <color attach="background" args={['#020000']} />
-      <ambientLight intensity={0.2} color="#ff0000" />
-      <pointLight position={[10, 10, 10]} intensity={2} color={'#ff003c'} />
-      <pointLight position={[-10, -10, -10]} intensity={1} color={'#8b0000'} />
+      <ambientLight intensity={0.2} color="#14b8a6" />
+      <pointLight position={[10, 10, 10]} intensity={2} color={'#2dd4bf'} />
+      <pointLight position={[-10, -10, -10]} intensity={1} color={'#0f766e'} />
       
       <CameraRig cameraTarget={cameraTarget} isNarrating={isNarrating} />
       
@@ -131,7 +131,7 @@ export function NeuralCanvas() {
               {(isRelevant || isActive) && (
                 <Line
                   points={[[0, 4, -4], node.position]} // From Engram to Node
-                  color={isActive ? '#ff003c' : '#ff4444'}
+                  color={isActive ? '#2dd4bf' : '#5eead4'}
                   lineWidth={isActive ? 3 : 1}
                   transparent
                   opacity={isActive ? 1.0 : 0.5}
@@ -148,7 +148,7 @@ export function NeuralCanvas() {
               {isActive && (
                 <mesh position={node.position} rotation={[Math.PI / 2, 0, Math.PI]}>
                   <ringGeometry args={[1.8, 1.85, 32, 1, 0, Math.PI * 0.8]} />
-                  <meshBasicMaterial color="#ff0000" side={THREE.DoubleSide} transparent opacity={0.5} />
+                  <meshBasicMaterial color="#14b8a6" side={THREE.DoubleSide} transparent opacity={0.5} />
                 </mesh>
               )}
 
@@ -163,10 +163,10 @@ export function NeuralCanvas() {
         })}
       </group>
       
-      {/* Central Blackwall glow */}
+      {/* Central Matrix glow */}
       <mesh position={[0, 0, -2]}>
          <sphereGeometry args={[8, 32, 32]} />
-         <meshBasicMaterial color="#ff0000" transparent opacity={0.02} fog={false} wireframe />
+         <meshBasicMaterial color="#14b8a6" transparent opacity={0.02} fog={false} wireframe />
       </mesh>
 
       <EffectComposer>

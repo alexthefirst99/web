@@ -34,7 +34,7 @@ export function ParticleField({ count = 5000 }) {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.015} color="#ff003c" transparent opacity={0.3} blending={THREE.AdditiveBlending} depthWrite={false} sizeAttenuation={true} />
+      <pointsMaterial size={0.015} color="#2dd4bf" transparent opacity={0.3} blending={THREE.AdditiveBlending} depthWrite={false} sizeAttenuation={true} />
     </points>
   );
 }

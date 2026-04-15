@@ -61,17 +61,17 @@ const EXPERIENCES = [
 function SkillsPanel() {
   return (
     <div className="w-96 font-mono">
-      <div className="text-red-500 text-xs tracking-widest mb-4 uppercase">// Skill Matrix</div>
+      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Skill Matrix</div>
       {SKILLS.map((s, i) => (
         <div key={s.cat} className="mb-3">
           <div className="flex justify-between text-xs mb-1">
             <span className="text-white/60">{s.cat}</span>
-            <span className="text-red-400">{s.pct}%</span>
+            <span className="text-teal-400">{s.pct}%</span>
           </div>
-          <div className="h-[2px] bg-red-900/30 rounded">
+          <div className="h-[2px] bg-teal-900/30 rounded">
             <motion.div
               className="h-full rounded"
-              style={{ background: 'linear-gradient(90deg, #8b0000, #ff003c)', boxShadow: '0 0 6px #ff003c' }}
+              style={{ background: 'linear-gradient(90deg, #0f766e, #2dd4bf)', boxShadow: '0 0 6px #2dd4bf' }}
               initial={{ width: 0 }}
               animate={{ width: `${s.pct}%` }}
               transition={{ duration: 0.8, delay: i * 0.08, ease: 'easeOut' }}
@@ -86,7 +86,7 @@ function SkillsPanel() {
 function ProjectsPanel() {
   return (
     <div className="font-mono" style={{ width: 500 }}>
-      <div className="text-red-500 text-xs tracking-widest mb-4 uppercase">// Project Engrams</div>
+      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Project Engrams</div>
       <div className="grid grid-cols-2 gap-3">
         {PROJECTS.map((p, i) => (
           <motion.div
@@ -94,17 +94,17 @@ function ProjectsPanel() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-black/70 border border-red-900/50 p-3"
+            className="bg-black/70 border border-teal-900/50 p-3"
             style={{ boxShadow: '0 0 15px rgba(255,0,60,0.08)' }}
           >
             <div className="flex justify-between items-start mb-1">
               <span className="text-white text-xs font-bold">{p.title}</span>
-              <span className="text-red-500 text-[9px] px-1.5 py-0.5 bg-red-900/20">{p.badge}</span>
+              <span className="text-teal-500 text-[9px] px-1.5 py-0.5 bg-teal-900/20">{p.badge}</span>
             </div>
             <div className="text-white/40 text-[10px] mb-2">{p.sub}</div>
             <div className="flex flex-wrap gap-1">
               {p.tags.map(t => (
-                <span key={t} className="text-[9px] px-1.5 py-0.5 bg-red-900/20 text-red-400/70">{t}</span>
+                <span key={t} className="text-[9px] px-1.5 py-0.5 bg-teal-900/20 text-teal-400/70">{t}</span>
               ))}
             </div>
           </motion.div>
@@ -117,23 +117,23 @@ function ProjectsPanel() {
 function ResearchPanel() {
   return (
     <div className="w-96 font-mono">
-      <div className="text-red-500 text-xs tracking-widest mb-4 uppercase">// Publication Log</div>
+      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Publication Log</div>
       {PAPERS.map((p, i) => (
         <motion.div
           key={p.doi}
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: i * 0.15 }}
-          className="bg-black/70 border border-red-900/40 p-4 mb-3"
+          className="bg-black/70 border border-teal-900/40 p-4 mb-3"
           style={{ boxShadow: '0 0 20px rgba(255,0,60,0.07)' }}
         >
           <div className="flex justify-between mb-2">
-            <span className="text-red-400 text-xs tracking-wider">{p.journal}</span>
-            <span className="text-red-900 text-xs">{p.year}</span>
+            <span className="text-teal-400 text-xs tracking-wider">{p.journal}</span>
+            <span className="text-teal-900 text-xs">{p.year}</span>
           </div>
           <div className="text-white text-xs leading-relaxed mb-2">{p.title}</div>
           <div className="text-white/40 text-[10px] mb-2">{p.authors}</div>
-          <div className="text-red-900 text-[9px] tracking-wider">doi:{p.doi}</div>
+          <div className="text-teal-900 text-[9px] tracking-wider">doi:{p.doi}</div>
         </motion.div>
       ))}
     </div>
@@ -143,21 +143,21 @@ function ResearchPanel() {
 function ExperiencePanel() {
   return (
     <div className="font-mono" style={{ width: 460 }}>
-      <div className="text-red-500 text-xs tracking-widest mb-4 uppercase">// Work Experience Log</div>
+      <div className="text-teal-500 text-xs tracking-widest mb-4 uppercase">// Work Experience Log</div>
       {EXPERIENCES.map((exp, i) => (
         <motion.div
           key={exp.title}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.15 }}
-          className="bg-black/70 border border-red-900/40 p-4 mb-3"
+          className="bg-black/70 border border-teal-900/40 p-4 mb-3"
           style={{ boxShadow: '0 0 20px rgba(255,0,60,0.07)' }}
         >
           <div className="flex justify-between items-start mb-1">
             <span className="text-white text-sm font-bold">{exp.title}</span>
-            <span className="text-[9px] px-2 py-0.5 bg-red-900/20 text-red-400">{exp.type}</span>
+            <span className="text-[9px] px-2 py-0.5 bg-teal-900/20 text-teal-400">{exp.type}</span>
           </div>
-          <div className="text-red-400/70 text-xs mb-0.5">{exp.org}</div>
+          <div className="text-teal-400/70 text-xs mb-0.5">{exp.org}</div>
           <div className="text-white/30 text-[10px] mb-3">{exp.dept} · {exp.dates}</div>
           <ul className="space-y-1.5">
             {exp.highlights.map((h, j) => (
@@ -168,7 +168,7 @@ function ExperiencePanel() {
                 transition={{ delay: i * 0.15 + j * 0.06 }}
                 className="flex gap-2 text-white/60 text-[10px] leading-relaxed"
               >
-                <span className="text-red-700 flex-shrink-0 mt-0.5">▸</span>
+                <span className="text-teal-700 flex-shrink-0 mt-0.5">▸</span>
                 <span>{h}</span>
               </motion.li>
             ))}
@@ -190,7 +190,7 @@ function OverviewPanel() {
   ];
   return (
     <div className="font-mono" style={{ width: 380 }}>
-      <div className="text-red-500 text-xs tracking-widest mb-1 uppercase">// Identity Engram</div>
+      <div className="text-teal-500 text-xs tracking-widest mb-1 uppercase">// Identity Engram</div>
       <div className="text-white text-xl font-bold mb-1">Tu N. (Alex) Tran</div>
       <div className="text-white/40 text-xs mb-4">Houston Methodist · UH Engineering</div>
       <div className="grid grid-cols-2 gap-2">
@@ -200,9 +200,9 @@ function OverviewPanel() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: i * 0.07 }}
-            className="bg-red-950/10 border border-red-900/30 p-2.5"
+            className="bg-teal-950/10 border border-teal-900/30 p-2.5"
           >
-            <div className="text-red-600 text-[9px] tracking-widest uppercase mb-1">{s.label}</div>
+            <div className="text-teal-600 text-[9px] tracking-widest uppercase mb-1">{s.label}</div>
             <div className="text-white text-xs">{s.value}</div>
           </motion.div>
         ))}
@@ -280,7 +280,7 @@ export default function App() {
       {/* UI Overlay */}
       <div className="absolute inset-0 z-10 pointer-events-none flex flex-col p-6 gap-4">
         {/* Header */}
-        <div className="flex justify-between items-center text-xs text-red-500/60 tracking-widest uppercase">
+        <div className="flex justify-between items-center text-xs text-teal-500/60 tracking-widest uppercase">
           <div className="flex items-center gap-2">
             <Terminal size={12} className="animate-pulse" />
             <span>ALEX // CORE [ONLINE]</span>
@@ -314,10 +314,10 @@ export default function App() {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="pointer-events-none ml-auto max-w-sm"
               >
-                <div className="border-l border-red-900/50 pl-4 flex flex-col" style={{ maxHeight: '60vh' }}>
-                  <div className="text-red-500/60 text-[9px] tracking-widest uppercase mb-3 flex-shrink-0">// System Narration</div>
+                <div className="border-l border-teal-900/50 pl-4 flex flex-col" style={{ maxHeight: '60vh' }}>
+                  <div className="text-teal-500/60 text-[9px] tracking-widest uppercase mb-3 flex-shrink-0">// System Narration</div>
                   <p className="text-white/80 text-xs leading-6 font-mono whitespace-pre-wrap overflow-y-auto pr-2 pointer-events-auto"
-                     style={{ scrollbarWidth: 'thin', scrollbarColor: '#7f1d1d transparent' }}>
+                     style={{ scrollbarWidth: 'thin', scrollbarColor: '#115e59 transparent' }}>
                     {narratorText}
                   </p>
                 </div>
@@ -350,15 +350,15 @@ export default function App() {
                   }, 50);
                 }}
                 disabled={isLoading}
-                className="text-[10px] uppercase tracking-widest px-3 py-1.5 border border-red-900/40 text-red-500/60 hover:border-red-500/60 hover:text-red-400 hover:bg-red-950/20 transition-all disabled:opacity-30"
+                className="text-[10px] uppercase tracking-widest px-3 py-1.5 border border-teal-900/40 text-teal-500/60 hover:border-teal-500/60 hover:text-teal-400 hover:bg-teal-950/20 transition-all disabled:opacity-30"
               >
                 {prompt}
               </button>
             ))}
           </div>
           {isLoading && (
-            <p className="text-red-500/40 text-xs tracking-widest text-center animate-pulse">
-              BREACHING BLACKWALL...
+            <p className="text-teal-500/40 text-xs tracking-widest text-center animate-pulse">
+              PROCESSING QUERY...
             </p>
           )}
           <form id="chat-form" onSubmit={handleSubmit} className="relative">
@@ -368,12 +368,12 @@ export default function App() {
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
               placeholder="Inject payload  — try 'projects', 'skills', 'research'..."
-              className="w-full bg-black/80 backdrop-blur-md border-b-2 border-red-500/30 text-red-400 placeholder-red-900/40 px-4 py-3 focus:outline-none focus:border-red-500 transition-all text-xs uppercase tracking-widest"
+              className="w-full bg-black/80 backdrop-blur-md border-b-2 border-teal-500/30 text-teal-400 placeholder-teal-900/40 px-4 py-3 focus:outline-none focus:border-teal-500 transition-all text-xs uppercase tracking-widest"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-red-700 hover:text-red-400 disabled:opacity-0 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-teal-700 hover:text-teal-400 disabled:opacity-0 transition-colors"
             >
               <Send size={14} />
             </button>
