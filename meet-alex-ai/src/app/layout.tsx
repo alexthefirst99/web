@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Alex // Neural Interface",
+  title: "Tu N (Alex) Tran | Neural Interface",
   description: "Interactive AI Portfolio",
 };
 

@@ -21,7 +21,7 @@ interface AppState {
 export const useStore = create<AppState>((set) => ({
   mode: 'overview',
   activeNodeId: null,
-  cameraTarget: [0, 0, 5], // Default overview camera position
+  cameraTarget: [0, 0, 0], // Already matches overview mode — prevents camera jolt on load
   narratorText: "NEURAL INTERFACE ONLINE.\n\nYou have entered the construct of Alex Tran.\n\nNavigate freely. Ask me anything — projects, skills, research, or role fit.\n\nI will guide you through the data engrams.",
   isNarrating: false,
 

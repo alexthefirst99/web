@@ -1,11 +1,72 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { NeuralCanvas } from '@/components/3d/NeuralCanvas';
 import { useStore } from '@/store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Terminal } from 'lucide-react';
+import { Send, Terminal, Volume2, VolumeX } from 'lucide-react';
+
+const speakText = (text: string) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length > 0) {
+    const preferredVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google UK English Female') || v.name.includes('Daniel'));
+    if (preferredVoice) utterance.voice = preferredVoice;
+  }
+  
+  utterance.pitch = 0.95;
+  utterance.rate = 1.05;
+  
+  window.speechSynthesis.speak(utterance);
+};
+
+function TypewriterText({ text, isMuted }: { text: string, isMuted: boolean }) {
+  const [displayedText, setDisplayedText] = useState('');
+  const { setIsNarrating } = useStore();
+  const mutedRef = useRef(isMuted);
+  
+  useEffect(() => {
+    mutedRef.current = isMuted;
+    if (isMuted && typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  }, [isMuted]);
+
+  useEffect(() => {
+    setDisplayedText('');
+    setIsNarrating(true);
+    
+    // Start actual text-to-speech reading if not muted
+    if (!mutedRef.current) {
+      speakText(text);
+    }
+
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayedText(text.slice(0, i + 1));
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        setIsNarrating(false);
+      }
+    }, 12);
+    
+    return () => {
+      clearInterval(interval);
+      setIsNarrating(false);
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [text, setIsNarrating]);
+
+  return <>{displayedText}</>;
+}
 
 // ─── Skill bars ──────────────────────────────────────────────────────────────
 const SKILLS = [
@@ -60,7 +121,7 @@ const EXPERIENCES = [
 
 function SkillsPanel() {
   return (
-    <div className="w-96">
+    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-96">
       <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Skills</div>
       {SKILLS.map((s, i) => (
         <div key={s.cat} className="mb-3">
@@ -85,9 +146,9 @@ function SkillsPanel() {
 
 function ProjectsPanel() {
   return (
-    <div style={{ width: 500 }}>
+    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[500px]">
       <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Projects</div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {PROJECTS.map((p, i) => (
           <motion.div
             key={p.title}
@@ -116,7 +177,7 @@ function ProjectsPanel() {
 
 function ResearchPanel() {
   return (
-    <div className="w-96">
+    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-96">
       <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Publications</div>
       {PAPERS.map((p, i) => (
         <motion.div
@@ -142,7 +203,7 @@ function ResearchPanel() {
 
 function ExperiencePanel() {
   return (
-    <div style={{ width: 460 }}>
+    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[460px]">
       <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Experience</div>
       {EXPERIENCES.map((exp, i) => (
         <motion.div
@@ -189,7 +250,7 @@ function OverviewPanel() {
     { label: 'Status', value: 'Seeking Internship' },
   ];
   return (
-    <div style={{ width: 380 }}>
+    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[380px]">
       <div className="text-teal-400 text-base tracking-wider font-bold mb-1 uppercase">Overview</div>
       <div className="text-white text-2xl font-bold mb-1">Tu N. (Alex) Tran</div>
       <div className="text-white/80 text-sm mb-4 font-medium">Houston Methodist · UH Engineering</div>
@@ -230,6 +291,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
+  const [isSoundMuted, setIsSoundMuted] = useState(true);
 
   useEffect(() => {
     if (mode === 'overview') setCameraTarget([0, 0, 0]);
@@ -299,7 +361,7 @@ export default function App() {
         </div>
 
         {/* Data Panel — left side, always visible */}
-        <div className="flex flex-1 items-center gap-8 min-h-0">
+        <div className="flex flex-col md:flex-row flex-1 md:items-center gap-4 md:gap-8 min-h-0 w-full overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={mode}
@@ -307,7 +369,7 @@ export default function App() {
               animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, x: -16, filter: 'blur(4px)' }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="pointer-events-auto h-full overflow-y-auto pr-4 pb-12"
+              className="pointer-events-auto h-1/2 md:h-full flex-1 overflow-y-auto pr-4 md:pb-12"
               style={{ scrollbarWidth: 'none' }}
             >
               <DataPanel mode={mode} />
@@ -323,13 +385,32 @@ export default function App() {
                 animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 exit={{ opacity: 0, x: 16, filter: 'blur(4px)' }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="pointer-events-none ml-auto max-w-sm h-full"
+                className="pointer-events-none md:ml-auto w-full md:max-w-sm h-1/2 md:h-full flex-1 min-h-0"
               >
                 <div className="border-l border-teal-900/50 pl-4 flex flex-col h-full max-h-full min-h-0 py-2">
-                  <div className="text-teal-400 text-xs tracking-wider font-bold mb-3 flex-shrink-0 uppercase">System Narration</div>
+                  <div className="flex items-center justify-between mb-3 flex-shrink-0">
+                    <div className="text-teal-400 text-xs tracking-wider font-bold uppercase">System Narration</div>
+                    <button 
+                      onClick={() => {
+                        const willBeMuted = !isSoundMuted;
+                        setIsSoundMuted(willBeMuted);
+                        if (!willBeMuted && typeof window !== 'undefined' && window.speechSynthesis) {
+                          // Prime the speech engine on direct user interaction to bypass browser autoplay policy
+                          const u = new SpeechSynthesisUtterance('');
+                          window.speechSynthesis.speak(u);
+                        } else if (willBeMuted && typeof window !== 'undefined' && window.speechSynthesis) {
+                          window.speechSynthesis.cancel();
+                        }
+                      }}
+                      className="text-teal-600 hover:text-teal-400 transition-colors pointer-events-auto"
+                      title={isSoundMuted ? "Unmute AI Voice" : "Mute AI Voice"}
+                    >
+                      {isSoundMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                    </button>
+                  </div>
                   <div className="overflow-y-auto pr-2 pointer-events-auto min-h-0 flex-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#115e59 transparent' }}>
                     <p className="text-white/90 text-sm leading-relaxed whitespace-pre-wrap font-medium">
-                      {narratorText}
+                      <TypewriterText text={narratorText} isMuted={isSoundMuted} />
                     </p>
                   </div>
                 </div>
