@@ -22,7 +22,7 @@ export const useStore = create<AppState>((set) => ({
   mode: 'overview',
   activeNodeId: null,
   cameraTarget: [0, 0, 0], // Already matches overview mode — prevents camera jolt on load
-  narratorText: "NEURAL INTERFACE ONLINE.\n\nYou have entered the construct of Alex Tran.\n\nNavigate freely. Ask me anything — projects, skills, research, or role fit.\n\nI will guide you through the data engrams.",
+  narratorText: "NEURAL INTERFACE ONLINE.\n\nWelcome to the interactive portfolio of Alex Tran.\n\nNavigate freely or ask me anything directly — projects, skills, research, or my fit for your team.\n\nI will guide you through the data.",
   isNarrating: false,
 
   setMode: (mode) => set({ mode }),
