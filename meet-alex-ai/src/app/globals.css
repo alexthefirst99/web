@@ -5,6 +5,11 @@
   --foreground: #f0f6fc;
 }
 
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'SF Mono', 'Courier New', monospace;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
