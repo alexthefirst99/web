@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "name": "Programming",
+      "skills": ["Python (Pandas, NumPy, SciPy, scikit-learn, Plotly, Dash)", "R (tidyverse, Seurat)", "HTML/CSS"]
+    },
+    {
+      "name": "Data Science",
+      "skills": ["Data wrangling", "Statistical modeling", "Clustering", "Dimensionality reduction", "Hypothesis testing", "Pathway enrichment"]
+    },
+    {
+      "name": "Machine Learning",
+      "skills": ["scikit-learn", "Trajectory inference", "Model diagnostics", "Evaluation metrics"]
+    },
+    {
+      "name": "Data Engineering",
+      "skills": ["Snakemake", "Git", "Linux", "AWS (EC2/S3)", "Data preprocessing and automation"]
+    },
+    {
+      "name": "Visualization",
+      "skills": ["Dash/Plotly", "Matplotlib", "Seaborn", "Interactive dashboards and reports"]
+    },
+    {
+      "name": "In Progress",
+      "skills": ["SQL", "A/B testing", "Tableau/Looker"]
+    }
+  ]
+}

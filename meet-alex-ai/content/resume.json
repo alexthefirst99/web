@@ -1,0 +1,60 @@
+{
+  "name": "Tu N (Alex) Tran",
+  "date_of_birth": "December 27, 1999",
+  "location": "Houston, TX",
+  "email": "ttran177@uh.edu",
+  "linkedin": "linkedin.com/in/tuntran271299",
+  "phone": "(346) 515-0455",
+  "summary": "Graduate student in Engineering Data Science with experience applying statistical modeling, machine learning, and data visualization to biological and engineering problems. Skilled in Python, R, SQL (in progress), and cloud-based workflows. Experienced in building end-to-end pipelines, cleaning and structuring large datasets, and developing interactive dashboards.",
+  "target_role": "Data Science Internship",
+  "education": [
+    {
+      "school": "University of Houston, Cullen College of Engineering",
+      "location": "Houston, TX",
+      "degree": "Master of Science in Engineering Data Science",
+      "expected": "Dec 2027",
+      "gpa": "3.42"
+    },
+    {
+      "school": "University of Massachusetts Lowell",
+      "location": "Lowell, MA",
+      "degree": "Bachelor of Science in Mathematics, Minor in Finance",
+      "dates": "Aug 2017 – Aug 2021",
+      "gpa": "3.135",
+      "honors": "Dean's List 2020–2021"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Research Assistant – Cardiovascular Regeneration Program",
+      "org": "Houston Methodist, Dr. Guangyu Wang Lab",
+      "dates": "Dec 2022 – Present",
+      "highlights": [
+        "Built reproducible pipelines for large-scale single-cell and spatial data analysis using Python, R, and Snakemake.",
+        "Applied clustering, trajectory inference, and statistical testing to generate insights from complex datasets.",
+        "Created interactive dashboards (Dash/Plotly) to enable exploratory analysis by cross-functional teams.",
+        "Delivered analyses supporting a Nature Methods publication and maintained the lab's public-facing research website."
+      ]
+    },
+    {
+      "title": "Marketing & Data Intern",
+      "org": "Viet Power Solutions JSC, Vietnam",
+      "dates": "Jan 2022 – Aug 2022",
+      "highlights": [
+        "Monitored digital engagement metrics with Google Analytics and optimized campaigns for +39.5% performance improvement.",
+        "Designed and launched targeted LinkedIn, Facebook, and Google Ads campaigns, raising user engagement by 50%.",
+        "Produced clear, data-driven reports to inform leadership and refine product strategy."
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "citation": "Chen W., Zhang P., Tran T. N., et al. (2025). A visual–omics foundation model to bridge histopathology with spatial transcriptomics. Nature Methods.",
+      "doi": "10.1038/s41592-025-02707-1"
+    },
+    {
+      "citation": "Zhang P., Chen W., Tran T. N., et al. (2025). Thor: a platform for cell-level investigation of spatial transcriptomics and histology. Nature Communications, 16, 7178.",
+      "doi": "10.1038/s41467-025-62593-1"
+    }
+  ]
+}

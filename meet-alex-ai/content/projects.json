@@ -1,0 +1,55 @@
+{
+  "projects": [
+    {
+      "id": "loki-interface",
+      "title": "Loki Interface — Whole-Slide Image Analysis Platform",
+      "org": "UH / Houston Methodist",
+      "date": "2024–2025",
+      "featured": true,
+      "description": "Engineered a full-stack interactive platform on top of Loki, a published AI framework (Nature Methods, 2025) for spatial transcriptomics and histopathology. The platform enables researchers to run deep learning inference on gigapixel whole-slide H&E images directly from the browser — no local Python environment or CLI required.",
+      "highlights": [
+        "Built a Dash/React frontend that interfaces with Loki's deep learning inference pipeline for nuclei segmentation and cell-type annotation on gigapixel whole-slide histopathology images.",
+        "Streamed and rendered gigapixel whole-slide images interactively in the browser with color-coded cell-type overlays.",
+        "Integrated an LLM-powered AI chatbot for on-demand pathological interpretation of segmented cell types and tissue microenvironments."
+      ],
+      "tags": ["Dash", "React", "Deep Learning", "Histopathology", "LLM", "Gigapixel Imaging", "AI"],
+      "badge": "Nature Methods"
+    },
+    {
+      "id": "mjolnir",
+      "title": "Mjolnir — Gene Expression Visualization Platform",
+      "org": "UH / Houston Methodist",
+      "date": "Summer 2025",
+      "description": "Designed and deployed a data visualization platform using Python (Dash, Plotly) for interactive exploration of multimodal datasets. Integrated gigapixel histology images with gene expression and pathway enrichment results. Co-authored a Research Square preprint describing the platform's role in spatial data analysis.",
+      "tags": ["Python", "Dash", "Plotly", "Bioinformatics", "Spatial Data"],
+      "badge": "Preprint"
+    },
+    {
+      "id": "visual-omics",
+      "title": "Visual–Omics Model Integration & Data Curation",
+      "org": "UH / Houston Methodist",
+      "date": "Summer 2025",
+      "description": "Curated and processed a multimodal dataset linking histology images with spatial gene expression across 32 organs. Built Python scripts and diagnostics to evaluate ML model predictions and validate biological relevance. Contributed to a Nature Methods publication on foundation models.",
+      "tags": ["Python", "Machine Learning", "Data Curation", "Nature Methods"],
+      "badge": "Nature Methods"
+    },
+    {
+      "id": "macrophage-analysis",
+      "title": "Macrophage Single-Cell Analysis",
+      "org": "UH / Houston Methodist",
+      "date": "Spring 2023",
+      "description": "Applied clustering (Leiden) and dimensionality reduction (UMAP) to single-cell data for cell-type identification. Conducted marker gene analysis to assess treatment impacts on immune cell subtypes. Automated preprocessing pipelines in Python.",
+      "tags": ["Python", "UMAP", "Leiden Clustering", "Single-Cell", "Bioinformatics"],
+      "badge": "Research"
+    },
+    {
+      "id": "covid-rnaseq",
+      "title": "COVID-19 RNA-seq Analysis",
+      "org": "UH / Houston Methodist",
+      "date": "Spring 2023",
+      "description": "Cleaned and analyzed RNA-seq data with TopHat, Cuffdiff, and custom Python scripts. Conducted differential expression analysis and visualized results with heatmaps, volcano plots, and bar charts. Built a Gene Ontology tool in Python.",
+      "tags": ["RNA-seq", "Python", "TopHat", "Cuffdiff", "Bioinformatics"],
+      "badge": "Research"
+    }
+  ]
+}

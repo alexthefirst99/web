@@ -13,16 +13,6 @@
 </head>
 <body>
     <canvas id="data-canvas"></canvas>
-
-    <!-- Video Lightbox Modal -->
-    <div id="video-modal" class="video-modal" role="dialog" aria-modal="true">
-        <button class="video-modal-close" id="video-modal-close" aria-label="Close video">&times;</button>
-        <div class="video-modal-content">
-            <video id="modal-video" controls playsinline>
-                <source src="assets/media/video-output-93379EFF-196A-41BA-AFCC-0204CE584930-3.MP4" type="video/mp4">
-            </video>
-        </div>
-    </div>
     <nav class="navbar">
         <div class="nav-content">
             <a href="#" class="logo">Alex.</a>
@@ -50,7 +40,7 @@
                 <h4 style="color: var(--accent); font-family: monospace; margin-bottom: 1rem; font-size: 1.1rem; letter-spacing: 0.05em;">Houston, TX</h4>
                 <h2>Graduate student in Engineering Data Science building intelligent tools for biological and multimodual data analysis.</h2>
                 <div class="hero-actions" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="#featured" class="btn btn-primary">See My Loki Interface</a>
+                    <a href="#featured" class="btn btn-primary">See Loki in Action</a>
                     <a href="#projects" class="btn btn-outline">All Projects</a>
                     <a href="Resume/TuNTran_Resume_DataScience.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="border-color: var(--accent); color: var(--accent);">Download Resume</a>
                 </div>
@@ -63,7 +53,7 @@
                 <div class="featured-showcase">
                     <div class="showcase-text">
                         <a href="https://www.nature.com/articles/s41592-025-02707-1" target="_blank" rel="noopener noreferrer" class="pub-badge">📄 Nature Methods (2025) — Co-author</a>
-                        <p>Engineering a full-stack interactive platform on top of <strong>Loki</strong>, a published AI framework (Nature Methods, 2025) for spatial transcriptomics and histopathology. The platform enables researchers to run deep learning inference on gigapixel whole-slide H&amp;E images directly from the browser — no local Python environment or CLI required.</p>
+                        <p>Engineering a full-stack interactive platform on top of Loki, a published AI framework (Nature Methods, 2025) for spatial transcriptomics and histopathology. The platform enables researchers to run deep learning inference on gigapixel whole-slide H&amp;E images directly from the browser — no local Python environment or CLI required.</p>
                         <ul class="research-list">
                             <li>Built a Dash/React frontend that interfaces with Loki’s deep learning inference pipeline for nuclei segmentation and cell-type annotation on whole-slide histopathology images.</li>
                             <li>Streamed and rendered gigapixel whole-slide images interactively in the browser with color-coded cell-type overlays.</li>
@@ -301,6 +291,16 @@
             </div>
         </section>
     </main>
+
+    <!-- Floating AI Widget -->
+    <a href="https://meet-alex-ai.vercel.app/" target="_blank" class="floating-ai-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+            <path d="M12 8a6 6 0 0 0-6 6v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4a6 6 0 0 0-6-6z"></path>
+            <path d="M8 12h8"></path>
+        </svg>
+        <span>Chat with AI</span>
+    </a>
 
     <footer>
         <div class="footer-content">

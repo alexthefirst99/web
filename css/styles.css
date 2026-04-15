@@ -842,6 +842,59 @@ footer p {
     margin: 0;
 }
 
+/* --- Floating AI Button --- */
+.floating-ai-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #ff003c;
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.4rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(255, 0, 60, 0.4);
+    z-index: 9000;
+    transition: all var(--transition-short);
+    text-decoration: none;
+    animation: pulse-red 3s infinite;
+}
+
+.floating-ai-btn:hover {
+    transform: translateY(-5px);
+    background: #e60036;
+    box-shadow: 0 8px 25px rgba(255, 0, 60, 0.6);
+    color: #ffffff;
+    animation: none;
+}
+
+.floating-ai-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.6); }
+    70% { box-shadow: 0 0 0 12px rgba(255, 0, 60, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }
+}
+
+@media (max-width: 768px) {
+    .floating-ai-btn {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        padding: 0.8rem;
+    }
+    .floating-ai-btn span {
+        display: none; /* Hide text on mobile, just show icon */
+    }
+}
+
 /* --- Animations --- */
 .fade-in {
     opacity: 0;
