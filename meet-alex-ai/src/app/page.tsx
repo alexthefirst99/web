@@ -345,7 +345,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-screen h-screen bg-[#05070a] overflow-hidden relative text-white">
+    <div className="w-full h-[100dvh] bg-[#05070a] overflow-hidden relative text-white">
       {/* WebGL Canvas */}
       <div className="absolute inset-0 z-0">
         <Canvas>
@@ -354,7 +354,7 @@ export default function App() {
       </div>
 
       {/* UI Overlay */}
-      <div className="absolute inset-0 z-10 pointer-events-none flex flex-col p-6 gap-4">
+      <div className="absolute inset-0 z-10 pointer-events-none flex flex-col p-4 md:p-6 gap-4">
         {/* Header */}
         <div className="flex justify-between items-center text-base font-bold text-purple-400">
           <div className="flex items-center gap-2">
