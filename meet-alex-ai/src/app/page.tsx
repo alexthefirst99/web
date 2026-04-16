@@ -449,7 +449,7 @@ export default function App() {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="pointer-events-none md:ml-auto w-full md:max-w-sm h-1/2 md:h-full flex-1 min-h-0"
               >
-                <div className="border-l border-white/10 pl-4 md:pl-4 flex flex-col h-full max-h-full min-h-0 py-2 bg-[#05070a]/60 md:bg-transparent backdrop-blur-md md:backdrop-blur-none rounded-xl md:rounded-none px-3 md:px-0">
+                <div className="border-l border-white/10 pl-4 md:pl-4 flex flex-col h-full max-h-full min-h-0 py-2 bg-[#05070a]/75 md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none rounded-xl md:rounded-none px-3 md:px-0">
                   <div className="flex items-center justify-between mb-3 flex-shrink-0 mt-2 md:mt-0">
                     <div className="text-purple-400 text-xs tracking-wider font-bold uppercase">System Narration</div>
                     <button 

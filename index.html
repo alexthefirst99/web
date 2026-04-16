@@ -302,27 +302,11 @@
         <span>Chat with AI</span>
     </a>
 
-    <!-- Page Transition Overlay -->
-    <div id="page-transition" style="
-        position: fixed; inset: 0; z-index: 9999;
-        background: #0a0f14;
-        opacity: 0; pointer-events: none;
-        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex; align-items: center; justify-content: center;
-        flex-direction: column; gap: 16px;
-    ">
-        <div style="
-            width: 40px; height: 40px; border-radius: 50%;
-            border: 2px solid rgba(45, 212, 191, 0.15);
-            border-top-color: #2dd4bf;
-            animation: spin 0.9s linear infinite;
-            box-shadow: 0 0 16px rgba(45, 212, 191, 0.3);
-        "></div>
-        <div style="color: #2dd4bf; font-family: monospace; font-size: 0.7rem; letter-spacing: 0.2em; opacity: 0.6;">LOADING...</div>
+    <!-- Page Transition Overlay (Balloon Cluster) -->
+    <div id="page-transition" style="position: fixed; inset: 0; z-index: 9999; background: #05070a; opacity: 0; pointer-events: none; transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+        <canvas id="balloon-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
+        <div style="position: absolute; bottom: 36%; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.25); font-family: monospace; font-size: 0.65rem; letter-spacing: 0.28em; white-space: nowrap;">LOADING...</div>
     </div>
-    <style>
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
 
     <footer>
         <div class="footer-content">
@@ -331,14 +315,103 @@
     </footer>
     <script src="js/script.js"></script>
     <script>
+        // ── Bouncing Cluster Animation ─────────────────────────────────────
+        var bCanvas = document.getElementById('balloon-canvas');
+        var bCtx = bCanvas.getContext('2d');
+        var bRAF = null, bStart = null, bLocked = false;
+        var bPalette = ['#f43f5e','#ec4899','#a855f7','#7c3aed','#3b82f6','#2dd4bf'];
+
+        // Tight overlapping cluster — whole thing jumps together
+        var bCells = [
+            {bx:0,   by:0,   r:28, col:'#f43f5e', sp:0.50, off:0.0, fr:3, glow:false},
+            {bx:-27, by:-9,  r:18, col:'#7c3aed', sp:0.70, off:1.2, fr:3, glow:false},
+            {bx:25,  by:-21, r:13, col:'#2dd4bf', sp:0.90, off:2.1, fr:3, glow:true },
+            {bx:-17, by:27,  r:15, col:'#3b82f6', sp:0.60, off:3.5, fr:3, glow:false},
+            {bx:30,  by:12,  r:11, col:'#ec4899', sp:1.10, off:0.8, fr:3, glow:false},
+            {bx:6,   by:31,  r:13, col:'#a855f7', sp:0.80, off:4.2, fr:3, glow:false},
+            {bx:-36, by:6,   r:15, col:'#3b82f6', sp:0.65, off:1.8, fr:3, glow:false},
+            {bx:-7,  by:-35, r:10, col:'#f43f5e', sp:1.00, off:2.6, fr:3, glow:false},
+            {bx:13,  by:-37, r:12, col:'#a855f7', sp:0.75, off:5.1, fr:3, glow:false},
+            {bx:42,  by:21,  r:8,  col:'#ec4899', sp:1.20, off:3.0, fr:2, glow:false},
+            {bx:-29, by:37,  r:11, col:'#f43f5e', sp:0.85, off:0.5, fr:2, glow:false},
+            {bx:33,  by:-39, r:8,  col:'#2dd4bf', sp:1.30, off:1.4, fr:2, glow:true },
+            {bx:-48, by:-17, r:7,  col:'#ec4899', sp:0.95, off:3.8, fr:2, glow:false},
+            {bx:48,  by:-7,  r:6,  col:'#7c3aed', sp:1.10, off:2.4, fr:2, glow:false},
+            {bx:-57, by:24,  r:5,  col:'#f43f5e', sp:1.40, off:4.6, fr:2, glow:false},
+            {bx:57,  by:13,  r:4,  col:'#3b82f6', sp:1.50, off:0.2, fr:1, glow:false},
+            {bx:-12, by:57,  r:6,  col:'#a855f7', sp:1.20, off:2.9, fr:2, glow:false},
+            {bx:21,  by:54,  r:5,  col:'#ec4899', sp:1.60, off:5.5, fr:1, glow:false},
+            {bx:-60, by:-7,  r:4,  col:'#2dd4bf', sp:1.10, off:1.1, fr:2, glow:true },
+            {bx:51,  by:-42, r:6,  col:'#7c3aed', sp:0.90, off:4.0, fr:2, glow:false},
+            {bx:-31, by:-54, r:4,  col:'#3b82f6', sp:1.30, off:2.2, fr:1, glow:false},
+        ];
+
+        var bStars = [];
+        for (var i = 0; i < 160; i++) {
+            bStars.push({x:Math.random(),y:Math.random(),r:Math.random()<0.2?1.5:0.7,col:bPalette[Math.floor(Math.random()*bPalette.length)],op:0.1+Math.random()*0.22,tw:Math.random()*10});
+        }
+
+        function resizeBCanvas() { bCanvas.width = window.innerWidth; bCanvas.height = window.innerHeight; }
+        resizeBCanvas();
+        window.addEventListener('resize', resizeBCanvas);
+
+        function drawBalloons(ts) {
+            if (!bStart) bStart = ts;
+            var t = (ts - bStart) / 1000;
+            var w = bCanvas.width, h = bCanvas.height, cx = w / 2, cy = h / 2;
+            bCtx.clearRect(0, 0, w, h);
+            bCtx.fillStyle = '#05070a';
+            bCtx.fillRect(0, 0, w, h);
+            // Stars
+            bStars.forEach(function(s) {
+                bCtx.beginPath(); bCtx.arc(s.x*w, s.y*h, s.r, 0, Math.PI*2);
+                bCtx.globalAlpha = s.op * (0.5 + 0.5*Math.sin(t*1.5 + s.tw));
+                bCtx.fillStyle = s.col; bCtx.fill();
+            });
+            bCtx.globalAlpha = 1;
+
+            // Whole-cluster jump — one bounce drives everything
+            var bounce = bLocked ? 1.0 : Math.abs(Math.sin(t * 1.1)); // 0=ground, 1=peak
+            var jumpY  = bounce * 45;
+            var sqX    = 1.0 + (1 - bounce) * 0.06;  // cluster widens at ground
+            var sqY    = 1.0 - (1 - bounce) * 0.06;  // cluster flattens at ground
+
+            bCtx.save();
+            bCtx.translate(cx, cy - jumpY);
+            bCtx.scale(sqX, sqY);
+
+            bCells.forEach(function(c) {
+                var fx = Math.sin(t * c.sp + c.off) * c.fr; // subtle wobble per cell
+                var fy = Math.cos(t * c.sp * 0.8 + c.off) * c.fr;
+                var x = c.bx + fx, y = c.by + fy;
+                if (c.glow) {
+                    var g = bCtx.createRadialGradient(x, y, 0, x, y, c.r * 2.8);
+                    g.addColorStop(0, c.col + '99'); g.addColorStop(1, 'transparent');
+                    bCtx.beginPath(); bCtx.arc(x, y, c.r * 2.8, 0, Math.PI*2);
+                    bCtx.fillStyle = g; bCtx.fill();
+                }
+                bCtx.beginPath(); bCtx.arc(x, y, c.r, 0, Math.PI*2);
+                bCtx.fillStyle = c.col; bCtx.fill();
+            });
+
+            bCtx.restore();
+            bRAF = requestAnimationFrame(drawBalloons);
+        }
+
+        function startBalloons() { bStart = null; bRAF = requestAnimationFrame(drawBalloons); }
+        function stopBalloons()  { if (bRAF) { cancelAnimationFrame(bRAF); bRAF = null; } }
+
+
+
+        // ── Navigation handlers ───────────────────────────────────────────
         document.getElementById('ai-nav-btn').addEventListener('click', function(e) {
             e.preventDefault();
+            bLocked = true;
             var overlay = document.getElementById('page-transition');
             overlay.style.pointerEvents = 'all';
             overlay.style.opacity = '1';
-            setTimeout(function() {
-                window.location.href = 'ai.html';
-            }, 550);
+            startBalloons();
+            setTimeout(function() { window.location.href = 'ai.html'; }, 600);
         });
 
         // Reset overlay when browser restores page from back-forward cache
@@ -346,7 +419,8 @@
             var overlay = document.getElementById('page-transition');
             overlay.style.opacity = '0';
             overlay.style.pointerEvents = 'none';
+            bLocked = false;
+            stopBalloons();
         });
     </script>
 </body>
-</html>
