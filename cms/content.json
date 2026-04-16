@@ -3,7 +3,7 @@
   "hero": {
     "name": "Tu N (Alex) Tran",
     "location": "Houston, TX",
-    "headline": "Graduate student in Engineering Data Science building intelligent tools for biological and multimodal data analysis.",
+    "headline": "Graduate student in Engineering Data Science and AI building intelligent tools for biological and multimodal data analysis.",
     "button1_text": "See Loki in Action",
     "button1_link": "#featured",
     "button2_text": "All Projects",
@@ -29,7 +29,7 @@
   "about": {
     "image": "assets/media/Alex.png",
     "paragraphs": [
-      "I am a Graduate student in Engineering Data Science with experience applying statistical modeling, machine learning, and data visualization to biological and engineering problems.",
+      "I am a Graduate student in Engineering Data Science and AI with experience applying statistical modeling, machine learning, and data visualization to biological and engineering problems.",
       "I am highly skilled in Python, R, SQL (in progress), and cloud-based workflows. My core expertise lies in building end-to-end pipelines, cleaning and structuring large datasets, and developing precise interactive dashboards.",
       "Currently, I am seeking a Data Science internship to leverage my analytical skills and programming expertise for data-driven decision making."
     ]
@@ -56,8 +56,8 @@
     {
       "tag": "Data Visualization (HM)",
       "title": "Mjolnir",
-      "description": "Designed and deployed a visualization website using Python (Dash, Plotly) for interactive exploration of multimodal datasets. Integrated gigapixel histology images with gene expression and pathway enrichment results.",
-      "tech": ["Python", "Dash", "Plotly"]
+      "description": "Built an interactive data visualization platform using Python (Dash, Plotly) for exploration of multimodal datasets. Integrated gigapixel histology images with gene expression and pathway analysis to enable intuitive exploration by non-technical users.",
+      "tech": ["Python", "Dash", "Plotly", "Nature Communications"]
     },
     {
       "tag": "Data Integration (HM)",

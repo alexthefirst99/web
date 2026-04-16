@@ -43,7 +43,7 @@ Alex has built 4 research-grade systems:
 
 ⭐ Loki Interactive Inference Platform (FEATURED) — Full-stack browser platform for deep learning inference on gigapixel whole-slide H&E images. Nuclei segmentation, cell-type annotation, and an integrated LLM chatbot for pathological interpretation. Built on top of Loki (Nature Methods, 2025).
 
-• Mjolnir — Gene expression visualization platform (Dash/Plotly), integrated with gigapixel histology and pathway enrichment.
+• Mjolnir — Data visualization platform (Dash/Plotly) for multimodal datasets. Integrated gigapixel histology with gene expression and pathway analysis. Published in Nature Communications.
 
 • Visual–Omics Integration — Multimodal dataset curation across 32 organs. Contributed to Nature Methods publication.
 

@@ -77,7 +77,7 @@ const SKILLS = [
 
 const PROJECTS = [
   { title: 'Loki Interactive Inference Platform', sub: 'Full-Stack Deep Learning · Houston Methodist', tags: ['Dash', 'React', 'Deep Learning', 'LLM', 'Histopathology'], badge: 'Nature Methods ⭐' },
-  { title: 'Mjolnir', sub: 'Gene Expression Viz Platform', tags: ['Dash', 'Plotly', 'Bioinformatics'], badge: 'Preprint' },
+  { title: 'Mjolnir', sub: 'Gene Expression Viz Platform', tags: ['Dash', 'Plotly', 'Bioinformatics'], badge: 'Nature Communications' },
   { title: 'Visual–Omics', sub: 'Histology × Spatial Transcriptomics · 32 Organs', tags: ['ML', 'Data Curation', 'Python'], badge: 'Nature Methods' },
   { title: 'Macrophage Analysis', sub: 'Single-Cell Immune Clustering', tags: ['UMAP', 'Leiden', 'scRNA'], badge: 'Research' },
 ];

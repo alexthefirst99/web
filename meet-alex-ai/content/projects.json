@@ -21,14 +21,14 @@
       "title": "Visualization Website for Gene Expression (Mjolnir)",
       "org": "Houston Methodist",
       "date": "Summer 2025",
-      "description": "Designed and deployed a data visualization platform using Python (Dash, Plotly) for interactive exploration of multimodal datasets. Integrated gigapixel histology images with gene expression and pathway enrichment results, improving accessibility for non-technical users.",
+      "description": "Built an interactive data visualization platform using Python (Dash, Plotly) for exploration of multimodal datasets. Integrated gigapixel histology images with gene expression and pathway analysis to enable intuitive exploration by non-technical users.",
       "highlights": [
-        "Designed and deployed a data visualization platform using Python (Dash, Plotly) for interactive exploration of multimodal datasets.",
-        "Integrated gigapixel histology images with gene expression and pathway enrichment results, improving accessibility for non-technical users.",
-        "Co-authored Research Square preprint describing the platform’s role in spatial data analysis."
+        "Built an interactive data visualization platform using Python (Dash, Plotly) for exploration of multimodal datasets.",
+        "Integrated gigapixel histology images with gene expression and pathway analysis to enable intuitive exploration by non-technical users.",
+        "Contributed to a Nature Communications publication on multimodal spatial data analysis."
       ],
       "tags": ["Python", "Dash", "Plotly", "Bioinformatics", "Spatial Data"],
-      "badge": "Preprint"
+      "badge": "Nature Communications"
     },
     {
       "id": "visual-omics",
