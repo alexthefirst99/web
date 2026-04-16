@@ -76,11 +76,10 @@ const SKILLS = [
 ];
 
 const PROJECTS = [
-  { title: 'Loki Interface', sub: 'Gigapixel WSI + LLM Pathology Platform', tags: ['Dash', 'React', 'Deep Learning', 'LLM'], badge: 'Nature Methods ⭐' },
+  { title: 'Loki Interactive Inference Platform', sub: 'Full-Stack Deep Learning · Houston Methodist', tags: ['Dash', 'React', 'Deep Learning', 'LLM', 'Histopathology'], badge: 'Nature Methods ⭐' },
   { title: 'Mjolnir', sub: 'Gene Expression Viz Platform', tags: ['Dash', 'Plotly', 'Bioinformatics'], badge: 'Preprint' },
-  { title: 'Visual–Omics', sub: 'Histology × Spatial Transcriptomics', tags: ['ML', '32 Organs'], badge: 'Nature Methods' },
+  { title: 'Visual–Omics', sub: 'Histology × Spatial Transcriptomics · 32 Organs', tags: ['ML', 'Data Curation', 'Python'], badge: 'Nature Methods' },
   { title: 'Macrophage Analysis', sub: 'Single-Cell Immune Clustering', tags: ['UMAP', 'Leiden', 'scRNA'], badge: 'Research' },
-  { title: 'COVID-19 RNA-seq', sub: 'Differential Expression Pipeline', tags: ['TopHat', 'Python'], badge: 'Research' },
 ];
 
 const PAPERS = [
@@ -96,10 +95,11 @@ const EXPERIENCES = [
     dates: 'Dec 2022 – Present',
     type: 'Research',
     highlights: [
-      'Built reproducible pipelines for large-scale single-cell & spatial data analysis (Python, R, Snakemake)',
-      'Applied clustering, trajectory inference & statistical testing to complex datasets',
-      'Created interactive dashboards (Dash/Plotly) for cross-functional teams',
-      'Delivered analyses supporting Nature Methods & Nature Communications publications',
+      'Built data pipelines for large-scale single-cell and spatial omics datasets to support ML model development and evaluation',
+      'Applied unsupervised learning and statistical analysis to identify patterns in high-dimensional biological data',
+      'Assessed model predictions and validated outputs against biological signals for reliability and interpretability',
+      'Developed interactive dashboards for visualization of model results by research teams',
+      'Contributed to Nature Methods and Nature Communications publications',
     ],
   },
   {
@@ -109,9 +109,9 @@ const EXPERIENCES = [
     dates: 'Jan 2022 – Aug 2022',
     type: 'Industry',
     highlights: [
-      'Monitored engagement metrics with Google Analytics — +39.5% campaign performance',
-      'Launched LinkedIn, Facebook & Google Ads campaigns — +50% user engagement',
-      'Produced data-driven reports to inform leadership & refine product strategy',
+      'Monitored digital engagement metrics with Google Analytics — +39.5% campaign performance improvement',
+      'Designed and launched targeted LinkedIn, Facebook & Google Ads campaigns — +50% user engagement',
+      'Produced clear, data-driven reports to inform leadership and refine product strategy',
     ],
   },
 ];
@@ -246,10 +246,10 @@ function ExperiencePanel() {
 
 const EDUCATION: { degree: string; school: string; dates: string; gpa: string; location: string; minors?: string[] }[] = [
   {
-    degree: 'Master of Science in Engineering Data Science',
+    degree: 'Master of Science in Engineering Data Science and AI',
     school: 'University of Houston, Cullen College of Engineering',
-    dates: 'Expected Dec 2027',
-    gpa: '3.42',
+    dates: 'Expected January 2027',
+    gpa: '3.5',
     location: 'Houston, TX',
   },
   {
@@ -301,9 +301,9 @@ function EducationPanel() {
 
 function OverviewPanel() {
   const stats = [
-    { label: 'Degree', value: 'MS Eng. Data Science' },
+    { label: 'Degree', value: 'MS Eng. Data Science & AI' },
     { label: 'School', value: 'Univ. of Houston' },
-    { label: 'GPA', value: '3.42 / 4.0' },
+    { label: 'GPA', value: '3.5 / 4.0' },
     { label: 'Publications', value: '2 (Nature tier)' },
     { label: 'Current Role', value: 'Research Assistant' },
     { label: 'Status', value: 'Seeking Internship' },

@@ -73,14 +73,19 @@ export async function searchContent(query: string): Promise<string> {
   // We would also embed the chunks here or load from pre-embedded JSON.
   // We'll simulate loading from store or building on the fly.
   if (vectorStore.length === 0) {
-    for (const chunk of chunks) {
-      const chunkEmbed = await openai.embeddings.create({
-        input: chunk.content,
-        model: 'text-embedding-3-small',
-      });
-      chunk.embedding = chunkEmbed.data[0].embedding;
-      vectorStore.push(chunk);
-    }
+    const embeddingsResults = await Promise.all(
+      chunks.map(chunk => 
+        openai.embeddings.create({
+          input: chunk.content,
+          model: 'text-embedding-3-small',
+        })
+      )
+    );
+    
+    embeddingsResults.forEach((res, i) => {
+      chunks[i].embedding = res.data[0].embedding;
+      vectorStore.push(chunks[i]);
+    });
   }
 
   // Rank

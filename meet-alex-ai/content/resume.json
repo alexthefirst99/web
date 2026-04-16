@@ -11,9 +11,9 @@
     {
       "school": "University of Houston, Cullen College of Engineering",
       "location": "Houston, TX",
-      "degree": "Master of Science in Engineering Data Science",
-      "expected": "Dec 2027",
-      "gpa": "3.42"
+      "degree": "Master of Science in Engineering Data Science and AI",
+      "expected": "January 2027",
+      "gpa": "3.5"
     },
     {
       "school": "University of Massachusetts Lowell",
@@ -30,10 +30,11 @@
       "org": "Houston Methodist, Dr. Guangyu Wang Lab",
       "dates": "Dec 2022 – Present",
       "highlights": [
-        "Built reproducible pipelines for large-scale single-cell and spatial data analysis using Python, R, and Snakemake.",
-        "Applied clustering, trajectory inference, and statistical testing to generate insights from complex datasets.",
-        "Created interactive dashboards (Dash/Plotly) to enable exploratory analysis by cross-functional teams.",
-        "Delivered analyses supporting a Nature Methods publication and maintained the lab's public-facing research website."
+        "Built data pipelines for large-scale single-cell and spatial omics datasets to support machine learning model development and evaluation",
+        "Applied unsupervised learning and statistical analysis to identify patterns in high-dimensional biological data",
+        "Assessed model predictions and validated outputs against biological signals to ensure reliability and interpretability",
+        "Developed interactive dashboards for visualization and interpretation of model results by research teams",
+        "Contributed to a Nature Methods publication on AI-driven multimodal analysis"
       ]
     },
     {

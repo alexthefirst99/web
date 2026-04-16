@@ -1,10 +1,10 @@
 # Alex Tran — Bio
 
-Tu N. (Alex) Tran is a Graduate student in Engineering Data Science at the University of Houston, Cullen College of Engineering, building intelligent tools for biological and multimodal data analysis.
+Tu N. (Alex) Tran is a Graduate student in Engineering Data Science and AI at the University of Houston, Cullen College of Engineering, building intelligent tools for biological and multimodal data analysis.
 
 Alex is based in Houston, TX and is currently a Research Assistant at Houston Methodist's Cardiovascular Regeneration Program under Dr. Guangyu Wang, where his work has contributed to publications in Nature Methods and Nature Communications.
 
-He is actively seeking a Data Science internship to apply his analytical skills and programming expertise for data-driven decision making.
+He is actively seeking a Data Science internship to leverage his analytical skills and programming expertise for data-driven decision making.
 
 ## Personal Statement
 
