@@ -259,6 +259,13 @@ def generate_index_html(data):
                 window.location.href = 'ai.html';
             }}, 550);
         }});
+
+        // Reset overlay when browser restores page from back-forward cache
+        window.addEventListener('pageshow', function() {{
+            var overlay = document.getElementById('page-transition');
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }});
     </script>
 </body>
 </html>
