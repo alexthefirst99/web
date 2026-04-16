@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type AppMode = 'overview' | 'skills' | 'projects' | 'research' | 'experience' | 'qa' | 'role_fit';
+export type AppMode = 'overview' | 'skills' | 'projects' | 'research' | 'experience' | 'qa' | 'education' | 'role_fit';
 
 interface AppState {
   mode: AppMode;

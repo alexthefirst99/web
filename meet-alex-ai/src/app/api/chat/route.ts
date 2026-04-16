@@ -59,7 +59,7 @@ Alex has built 5 research-grade systems:
         mode = 'overview';
         content = `[Mock up] Initializing identity engram...\n\nI am Alex — Tu N. Tran. Graduate student in Engineering Data Science at the University of Houston (GPA: 3.42, expected Dec 2027).\n\nI specialize in building end-to-end data pipelines, machine learning systems, and interactive visualizations applied to biomedical research.\n\nCurrently a Research Assistant at Houston Methodist, where my work has contributed to publications in Nature Methods and Nature Communications.\n\nPreviously: BS in Mathematics with a Minor in Finance from UMass Lowell. Dean's List 2020–2021.`;
       } else if (qLower.includes('education') || qLower.includes('degree') || qLower.includes('university') || qLower.includes('school')) {
-        mode = 'overview';
+        mode = 'education';
         content = `[Mock up] Education engrams loaded...\n\n• MS in Engineering Data Science — University of Houston, Cullen College of Engineering (Expected Dec 2027) — GPA: 3.42\n\n• BS in Mathematics, Minor in Finance — University of Massachusetts Lowell (Aug 2017 – Aug 2021) — GPA: 3.135, Dean's List 2020–2021`;
       } else if (qLower.includes('role') || qLower.includes('fit') || qLower.includes('hire') || qLower.includes('good')) {
         mode = 'role_fit';
@@ -102,6 +102,7 @@ Available zones in this subnet:
 - "experience" (work history, roles, professional experience)
 - "projects" (focuses on portfolio apps and code)
 - "research" (academic background, publications)
+- "education" (academic degrees and schools)
 - "role_fit" (why Alex is good for the role)
 
 Available focus IDs:
@@ -126,7 +127,7 @@ You must return a valid JSON object matching this schema exactly:
       ...messages.slice(0, messages.length - 1).map((m: any) => ({ role: m.role, content: m.content })),
       { 
         role: 'user', 
-        content: query + `\n\n[SYSTEM REMINDER: You MUST output a JSON object. Based strictly on my current query above, correctly assign the "mode". For example, if I ask about your work history, use "experience". If I ask about code/apps, use "projects". Choices: "overview", "skills", "experience", "projects", "research", "role_fit"]` 
+        content: query + `\n\n[SYSTEM REMINDER: You MUST output a JSON object. Based strictly on my current query above, correctly assign the "mode". For example, if I ask about your work history, use "experience". If I ask about code/apps, use "projects". Choices: "overview", "skills", "experience", "projects", "research", "education", "role_fit"]` 
       }
     ];
 

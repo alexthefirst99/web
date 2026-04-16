@@ -244,6 +244,61 @@ function ExperiencePanel() {
   );
 }
 
+const EDUCATION: { degree: string; school: string; dates: string; gpa: string; location: string; minors?: string[] }[] = [
+  {
+    degree: 'Master of Science in Engineering Data Science',
+    school: 'University of Houston, Cullen College of Engineering',
+    dates: 'Expected Dec 2027',
+    gpa: '3.42',
+    location: 'Houston, TX',
+  },
+  {
+    degree: 'Bachelor of Science in Mathematics',
+    school: 'University of Massachusetts Lowell',
+    dates: 'Aug 2017 – Aug 2021',
+    gpa: '3.135',
+    location: 'Lowell, MA',
+    minors: ['Minor: Finance', "Dean's List 2020–2021"]
+  }
+];
+
+function EducationPanel() {
+  return (
+    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[460px]">
+      <div className="text-blue-400 text-base tracking-wider font-bold mb-4 uppercase">Education</div>
+      {EDUCATION.map((edu, i) => (
+        <motion.div
+          key={edu.degree}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.15 }}
+          className="bg-[#13171f]/80 backdrop-blur-xl rounded-xl border border-white/10 p-5 mb-4"
+          style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
+        >
+          <div className="text-white text-base font-semibold mb-1 leading-tight">{edu.degree}</div>
+          <div className="text-blue-400 text-sm mb-1">{edu.school}</div>
+          <div className="flex justify-between items-center text-white/50 text-[11px] mb-3">
+            <span>{edu.location}</span>
+            <span>{edu.dates}</span>
+          </div>
+          <ul className="space-y-1.5 border-t border-white/5 pt-3 mt-1">
+            <li className="flex gap-2 text-white/80 text-sm">
+              <span className="text-blue-700/50 flex-shrink-0 mt-0.5">▸</span>
+              <span><strong>GPA:</strong> {edu.gpa}</span>
+            </li>
+            {edu.minors?.map((m, j) => (
+              <li key={j} className="flex gap-2 text-white/80 text-sm">
+                <span className="text-blue-700/50 flex-shrink-0 mt-0.5">▸</span>
+                <span>{m}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 function OverviewPanel() {
   const stats = [
     { label: 'Degree', value: 'MS Eng. Data Science' },
@@ -282,6 +337,7 @@ function DataPanel({ mode }: { mode: string }) {
     projects: <ProjectsPanel />,
     research: <ResearchPanel />,
     experience: <ExperiencePanel />,
+    education: <EducationPanel />,
     overview: <OverviewPanel />,
     role_fit: <OverviewPanel />,
   };
@@ -303,6 +359,7 @@ export default function App() {
     else if (mode === 'skills') setCameraTarget([-2, -1, 0]);
     else if (mode === 'research') setCameraTarget([0, 2, 0]);
     else if (mode === 'experience') setCameraTarget([-2, 2, 0]);
+    else if (mode === 'education') setCameraTarget([0, -2, 0]);
   }, [mode, setCameraTarget]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -332,6 +389,7 @@ export default function App() {
         else if (lowerMode.includes('project')) safeMode = 'projects';
         else if (lowerMode.includes('research') || lowerMode.includes('paper')) safeMode = 'research';
         else if (lowerMode.includes('experience') || lowerMode.includes('work')) safeMode = 'experience';
+        else if (lowerMode.includes('education') || lowerMode.includes('degree') || lowerMode.includes('school')) safeMode = 'education';
         else if (lowerMode.includes('role')) safeMode = 'role_fit';
         else safeMode = 'overview';
       }
@@ -423,8 +481,8 @@ export default function App() {
               'What are his skills?',
               'Research & publications',
               'Work experience',
-              'Who is Alex?',
-              'Is he a good hire?',
+              'Education background',
+              'Who is Alex?'
             ].map((prompt) => (
               <button
                 key={prompt}
