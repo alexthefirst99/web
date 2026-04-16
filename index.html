@@ -406,8 +406,42 @@
 
 
 
+    <div class="video-lightbox" id="video-lightbox">
+        <div class="lightbox-content">
+            <button class="close-lightbox" id="close-lightbox">&times;</button>
+            <video id="lightbox-video" controls>
+                <source src="assets/media/video-output-93379EFF-196A-41BA-AFCC-0204CE584930-3.MP4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        // --- Lightbox logic ---
+        const videoThumb = document.getElementById('video-thumb');
+        const videoLightbox = document.getElementById('video-lightbox');
+        const closeLightbox = document.getElementById('close-lightbox');
+        const lightboxVideo = document.getElementById('lightbox-video');
+
+        if (videoThumb && videoLightbox) {
+            videoThumb.addEventListener('click', () => {
+                videoLightbox.classList.add('active');
+                lightboxVideo.play();
+            });
+
+            const hideLightbox = () => {
+                videoLightbox.classList.remove('active');
+                lightboxVideo.pause();
+            });
+
+            closeLightbox && closeLightbox.addEventListener('click', hideLightbox);
+            videoLightbox.addEventListener('click', (e) => {
+                if (e.target === videoLightbox) hideLightbox();
+            });
+        }
+
         // ── Navigation handlers ───────────────────────────────────────────
-        document.getElementById('ai-nav-btn').addEventListener('click', function(e) {
+        document.getElementById('ai-nav-btn')?.addEventListener('click', function(e) {
             e.preventDefault();
             bLocked = true;
             var overlay = document.getElementById('page-transition');
@@ -420,8 +454,10 @@
         // Reset overlay when browser restores page from back-forward cache
         window.addEventListener('pageshow', function() {
             var overlay = document.getElementById('page-transition');
-            overlay.style.opacity = '0';
-            overlay.style.pointerEvents = 'none';
+            if (overlay) {
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+            }
             bLocked = false;
             stopBalloons();
         });
