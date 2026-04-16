@@ -224,20 +224,20 @@ def generate_index_html(data):
     <!-- Page Transition Overlay -->
     <div id="page-transition" style="
         position: fixed; inset: 0; z-index: 9999;
-        background: radial-gradient(ellipse at center, #2d1b4e 0%, #05070a 100%);
+        background: #0a0f14;
         opacity: 0; pointer-events: none;
         transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 16px;
     ">
         <div style="
-            width: 48px; height: 48px; border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: #a855f7;
-            border-right-color: #f43f5e;
-            animation: spin 0.8s linear infinite;
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 2px solid rgba(45, 212, 191, 0.15);
+            border-top-color: #2dd4bf;
+            animation: spin 0.9s linear infinite;
+            box-shadow: 0 0 16px rgba(45, 212, 191, 0.3);
         "></div>
-        <div style="color: #a855f7; font-family: monospace; font-size: 0.75rem; letter-spacing: 0.15em; opacity: 0.7;">NEURAL INTERFACE LOADING...</div>
+        <div style="color: #2dd4bf; font-family: monospace; font-size: 0.7rem; letter-spacing: 0.2em; opacity: 0.6;">LOADING...</div>
     </div>
     <style>
         @keyframes spin {{ to {{ transform: rotate(360deg); }} }}

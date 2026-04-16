@@ -26,7 +26,7 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: radial-gradient(ellipse at center, #2d1b4e 0%, #05070a 100%);
+            background: #0a0f14;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -40,20 +40,20 @@
             opacity: 0;
         }
         .spinner {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: #a855f7;
-            border-right-color: #f43f5e;
-            animation: spin 0.8s linear infinite;
+            border: 2px solid rgba(45, 212, 191, 0.15);
+            border-top-color: #2dd4bf;
+            animation: spin 0.9s linear infinite;
+            box-shadow: 0 0 16px rgba(45, 212, 191, 0.3);
         }
         .loading-text {
-            color: #a855f7;
+            color: #2dd4bf;
             font-family: monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            opacity: 0.7;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            opacity: 0.6;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
@@ -62,7 +62,7 @@
     <!-- Entry transition overlay — fades out once page loads -->
     <div id="entry-overlay">
         <div class="spinner"></div>
-        <div class="loading-text">NEURAL INTERFACE LOADING...</div>
+        <div class="loading-text">LOADING...</div>
     </div>
 
     <!-- Fullscreen Iframe hiding the Vercel URL -->
