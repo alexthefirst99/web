@@ -293,7 +293,7 @@
     </main>
 
     <!-- Floating AI Widget -->
-    <a href="ai.html" class="floating-ai-btn">
+    <a href="ai.html" id="ai-nav-btn" class="floating-ai-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
             <path d="M12 8a6 6 0 0 0-6 6v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4a6 6 0 0 0-6-6z"></path>
@@ -302,11 +302,44 @@
         <span>Chat with AI</span>
     </a>
 
+    <!-- Page Transition Overlay -->
+    <div id="page-transition" style="
+        position: fixed; inset: 0; z-index: 9999;
+        background: radial-gradient(ellipse at center, #2d1b4e 0%, #05070a 100%);
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex; align-items: center; justify-content: center;
+        flex-direction: column; gap: 16px;
+    ">
+        <div style="
+            width: 48px; height: 48px; border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #a855f7;
+            border-right-color: #f43f5e;
+            animation: spin 0.8s linear infinite;
+        "></div>
+        <div style="color: #a855f7; font-family: monospace; font-size: 0.75rem; letter-spacing: 0.15em; opacity: 0.7;">NEURAL INTERFACE LOADING...</div>
+    </div>
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+
     <footer>
         <div class="footer-content">
-            <p>&copy; Tu N (Alex) Tran. Designed & Built manually with raw code.</p>
+            <p>&copy; Tu N (Alex) Tran. Designed &amp; Built manually with raw code.</p>
         </div>
     </footer>
     <script src="js/script.js"></script>
+    <script>
+        document.getElementById('ai-nav-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            var overlay = document.getElementById('page-transition');
+            overlay.style.pointerEvents = 'all';
+            overlay.style.opacity = '1';
+            setTimeout(function() {
+                window.location.href = 'ai.html';
+            }, 550);
+        });
+    </script>
 </body>
 </html>
