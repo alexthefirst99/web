@@ -22,7 +22,7 @@
       "Implemented interactive visualization of whole-slide images with scalable rendering and color-coded biological overlays.",
       "Added an LLM-assisted interpretation feature to help users query segmented cell populations and tissue microenvironments in natural language."
     ],
-    "tech": ["Python", "Dash", "React", "AI"],
+    "tech": ["Python", "Dash", "React", "AI", "Nature Methods ⭐"],
     "lab_url": "https://guangyuwanglab.github.io/web/index.html",
     "video": "assets/media/video-output-93379EFF-196A-41BA-AFCC-0204CE584930-3.MP4"
   },
@@ -53,6 +53,12 @@
     }
   ],
   "projects": [
+    {
+      "tag": "Fullstack Platform (HM)",
+      "title": "Loki Interactive Inference Platform",
+      "description": "Developed a full-stack web platform for spatial transcriptomics and histopathology. Built a Dash/React interface for deep learning inference on gigapixel H&E images directly from the browser.",
+      "tech": ["Dash", "React", "AI", "Nature Methods ⭐"]
+    },
     {
       "tag": "Data Visualization (HM)",
       "title": "Mjolnir",
