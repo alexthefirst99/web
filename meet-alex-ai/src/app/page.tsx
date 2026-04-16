@@ -403,16 +403,16 @@ export default function App() {
   };
 
   return (
-    <div className="w-full min-h-[100dvh] bg-[#05070a] overflow-y-auto md:overflow-hidden md:h-[100dvh] relative text-white">
+    <div className="w-full h-[100dvh] bg-[#05070a] overflow-hidden relative text-white">
       {/* WebGL Canvas */}
-      <div className="fixed inset-0 z-0">
+      <div className="absolute inset-0 z-0">
         <Canvas>
           <NeuralCanvas />
         </Canvas>
       </div>
 
-      {/* UI Overlay — scrollable on mobile, absolute on desktop */}
-      <div className="relative z-10 pointer-events-none flex flex-col min-h-[100dvh] md:absolute md:inset-0 p-4 md:p-6 gap-3">
+      {/* UI Overlay — grid on mobile keeps input pinned, flex-col on desktop */}
+      <div className="absolute inset-0 z-10 pointer-events-none grid grid-rows-[auto_1fr_auto] md:flex md:flex-col p-4 md:p-6 gap-3">
         {/* Header */}
         <div className="flex justify-between items-center text-base font-bold text-purple-400">
           <div className="flex items-center gap-2">
@@ -422,8 +422,8 @@ export default function App() {
           <div>Mode: <span className="text-teal-400">{mode}</span></div>
         </div>
 
-        {/* Data + Narrator panels */}
-        <div className="flex flex-col md:flex-row md:flex-1 md:items-center md:min-h-0 md:overflow-hidden gap-3 md:gap-8 w-full">
+        {/* Data + Narrator panels — row 2 fills remaining space */}
+        <div className="flex flex-col md:flex-row md:flex-1 md:items-center gap-3 md:gap-8 min-h-0 w-full overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={mode}
@@ -431,7 +431,7 @@ export default function App() {
               animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, x: -16, filter: 'blur(4px)' }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="pointer-events-auto md:h-full md:flex-1 overflow-y-auto pr-4 md:pb-12"
+              className="pointer-events-auto h-1/2 md:h-full flex-1 overflow-y-auto pr-4 md:pb-12"
               style={{ scrollbarWidth: 'none' }}
             >
               <DataPanel mode={mode} />
@@ -447,7 +447,7 @@ export default function App() {
                 animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 exit={{ opacity: 0, x: 16, filter: 'blur(4px)' }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="pointer-events-none md:ml-auto w-full md:max-w-sm md:h-full md:flex-1 md:min-h-0"
+                className="pointer-events-none md:ml-auto w-full md:max-w-sm h-1/2 md:h-full flex-1 min-h-0"
               >
                 <div className="border border-white/10 flex flex-col h-full max-h-full min-h-0 py-2 bg-[#05070a]/92 md:bg-transparent backdrop-blur-[48px] md:backdrop-blur-none rounded-xl md:rounded-none px-3 md:px-0 md:border-0 md:border-l md:border-white/10 md:pl-4">
                   <div className="flex items-center justify-between mb-3 flex-shrink-0 mt-2 md:mt-0">
@@ -471,8 +471,8 @@ export default function App() {
           </AnimatePresence>
         </div>
 
-        {/* Bottom bar — naturally at bottom after scrollable content */}
-        <div className="pointer-events-auto space-y-2 max-w-xl mx-auto w-full pb-2">
+        {/* Bottom bar — row 3, always visible */}
+        <div className="pointer-events-auto space-y-2 max-w-xl mx-auto w-full">
 
           {/* Quick prompt chips */}
           <div className="flex flex-wrap gap-2 justify-center mb-1">
