@@ -352,6 +352,7 @@ export default function App() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
   const [isSoundMuted, setIsSoundMuted] = useState(true);
+  const [hasAskedWho, setHasAskedWho] = useState(false);
 
   useEffect(() => {
     if (mode === 'overview') setCameraTarget([0, 0, 0]);
@@ -370,6 +371,7 @@ export default function App() {
     const userMessage = { role: 'user', content: query };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
+    if (query.toLowerCase().includes('who is alex')) setHasAskedWho(true);
     
     setIsLoading(true);
     setHasInteracted(true);
@@ -477,12 +479,12 @@ export default function App() {
           {/* Quick prompt chips */}
           <div className="flex flex-wrap gap-2 justify-center mb-1">
             {[
-              'Show his projects',
+              'Who is Alex?',
+              ...(hasAskedWho ? ['Show his projects'] : []),
               'What are his skills?',
               'Research & publications',
               'Work experience',
-              'Education background',
-              'Who is Alex?'
+              'Education background'
             ].map((prompt) => (
               <button
                 key={prompt}
