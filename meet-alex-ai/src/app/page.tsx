@@ -137,7 +137,7 @@ const EXPERIENCES = [
 ];
 
 const EDUCATION = [
-  { degree: 'M.S. Engineering Data Science and AI', school: 'University of Houston · Cullen College of Engineering', meta: 'Houston, TX · Expected December 2026', gpa: '3.63' },
+  { degree: 'M.S. Engineering Data Science and AI', school: 'University of Houston · Cullen College of Engineering', meta: 'Houston, TX · Jan 2025 — Expected Dec 2026', gpa: '3.63' },
   { degree: 'B.S. Mathematics, Minor in Finance', school: 'University of Massachusetts Lowell', meta: "Lowell, MA · Aug 2017 — Aug 2021 · Dean's List 2020–2021", gpa: '3.135' },
 ];
 

@@ -30,8 +30,8 @@
                'Applied unsupervised learning and statistics to find patterns in high-dimensional biological data.',
                'Validated model predictions against biological signals for reliability and interpretability.',
                'Built interactive dashboards for research teams; contributed to Nature Methods and Nature Communications papers.'] },
-    { at: 2026.95, lane: 3, chip: 'M.S. Data Science & AI · UH — exp. Dec 2026', bg: 'linear-gradient(90deg,#7FA3A8,#C4D8D9)', fg: '#1a0a10',
-      date: 'Expected Dec 2026', org: 'University of Houston · Cullen College of Engineering', role: 'M.S. Engineering Data Science and AI',
+    { start: 2025.0, end: 2026.95, lane: 3, chip: 'M.S. Data Science & AI · UH', bg: 'linear-gradient(90deg,#7FA3A8,#C4D8D9)', fg: '#1a0a10',
+      date: 'Jan 2025 — Dec 2026 (expected)', org: 'University of Houston · Cullen College of Engineering', role: 'M.S. Engineering Data Science and AI',
       points: ['GPA 3.63', 'Houston, TX'] }
   ];
 
@@ -108,21 +108,42 @@
     for (var yr = Y0; yr <= 2027; yr++) html += '<span class="yr" style="left:' + pct(yr) + '">' + yr + '</span>';
     track.insertAdjacentHTML('afterbegin', html);
 
+    /* Every mark is true to its dates: roles with a start and end are bars of
+       exactly that length; entries with only a date (`at`) are a milestone dot. */
     var chips = EXPS.map(function (e, i) {
       var b = document.createElement('button');
       b.type = 'button';
-      b.className = 'tl-chip';
-      b.textContent = e.chip;
+      b.className = 'tl-chip' + (e.at ? ' tl-ms' : '');
       b.style.top = (66 + e.lane * 56) + 'px';
       b.style.left = e.at ? pct(e.at) : pct(e.start);
-      b.style.minWidth = e.at ? '0px' : ((e.end - e.start) / (Y1 - Y0) * 100).toFixed(2) + '%';
-      if (e.at) b.style.transform = 'translateX(-100%)';
+      if (!e.at) b.style.width = ((e.end - e.start) / (Y1 - Y0) * 100).toFixed(2) + '%';
       b.style.background = e.bg;
       b.style.color = e.fg;
+      var lab = document.createElement('span');
+      lab.className = 'tl-label';
+      lab.textContent = e.chip;
+      b.appendChild(lab);
       b.addEventListener('click', function () { select(i); });
       track.appendChild(b);
       return b;
     });
+
+    /* A label that doesn't fit inside its bar sits just to the right of it,
+       so short roles keep their true length instead of stretching. */
+    function fitLabels() {
+      chips.forEach(function (b, i) {
+        if (EXPS[i].at) return;
+        b.classList.remove('is-out', 'is-out-left');
+        var lab = b.firstChild;
+        if (lab.offsetWidth <= b.clientWidth) return;
+        // outside to the right, or to the left if that would run off the timeline
+        var roomRight = track.clientWidth - (b.offsetLeft + b.offsetWidth) - 12;
+        b.classList.add(lab.offsetWidth > roomRight ? 'is-out-left' : 'is-out');
+      });
+    }
+    fitLabels();
+    window.addEventListener('resize', fitLabels);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLabels);
 
     var cur = 2;
     var dateEl = $('#tl-date'), orgEl = $('#tl-org'), roleEl = $('#tl-role'), ptsEl = $('#tl-points');

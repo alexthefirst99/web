@@ -254,9 +254,15 @@ a.row-pill .v { white-space: nowrap; }
 .tl-track .yr { position: absolute; top: 0; transform: translateX(-50%); font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .tl-play { position: absolute; top: 22px; bottom: 0; width: 0; border-left: 1.5px dashed rgba(255, 255, 255, .85); transition: left .7s var(--ease); pointer-events: none; }
 .tl-play::before { content: ""; position: absolute; top: -2px; left: -7px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 10px solid #fff; }
-.tl-chip { position: absolute; height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .14); font-size: 14px; white-space: nowrap; text-align: left; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: .72; transition: box-shadow .3s, opacity .3s, border-color .3s; }
+.tl-chip { position: absolute; height: 44px; padding: 0; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .14); font-size: 14px; white-space: nowrap; text-align: left; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: .72; transition: box-shadow .3s, opacity .3s, border-color .3s; }
 .tl-chip:hover { opacity: .9; }
 .tl-chip[aria-pressed="true"] { border-color: rgba(255, 255, 255, .95); box-shadow: 0 0 0 5px rgba(255, 255, 255, .14), 0 14px 34px rgba(0, 0, 0, .45); opacity: 1; }
+.tl-label { display: inline-block; padding: 0 18px; line-height: 42px; }
+.tl-chip.is-out .tl-label { position: absolute; left: calc(100% + 12px); top: 0; padding: 0; color: #fff; }
+.tl-chip.is-out-left .tl-label { position: absolute; right: calc(100% + 12px); top: 0; padding: 0; color: #fff; }
+/* milestone: a dot exactly on its date, label to its left */
+.tl-chip.tl-ms { width: 18px; height: 18px; translate: -50% 13px; }
+.tl-ms .tl-label { position: absolute; right: calc(100% + 14px); top: 50%; translate: 0 -50%; padding: 0; line-height: 1.2; color: #fff; }
 .tl-detail { position: relative; margin: 8px clamp(12px, 2vw, 20px) clamp(12px, 2vw, 20px); border-radius: 30px; padding: clamp(20px, 3vw, 32px); background: rgba(16, 17, 26, .55); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, .1); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px 48px; }
 .tl-meta { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
 .tl-date { padding: 9px 16px; border-radius: 999px; background: #fff; color: var(--ink); font-size: 14px; }
