@@ -1,0 +1,7 @@
+# macOS Finder metadata
+.DS_Store
+
+# Local-only files (not part of the site)
+*.zip
+_backup/
+assets/media/old.MP4

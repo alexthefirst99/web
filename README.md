@@ -22,9 +22,7 @@ experience linked from the site (`ai.html` embeds it). It uses the same design l
 ├── js/
 │   └── site.js           # Interactions + timeline/project/skill data + project figures
 ├── Resume/               # Résumé PDF + DOCX
-├── meet-alex-ai/         # Next.js AI chat app (deployed separately on Vercel)
-├── _backup/              # Pre-redesign copy of the old site (not published by GitHub Pages)
-└── cms-legacy/           # RETIRED Python CMS — see warning below
+└── meet-alex-ai/         # Next.js app for AlexB, the AI chat (deployed on Vercel)
 ```
 
 ## How to Edit Your Website
@@ -48,47 +46,24 @@ python3 -m http.server 8000
 
 Then open <http://localhost:8000>.
 
-### Backups and legacy files
+### Restoring the old design
 
-The pre-redesign site (Nov 2026) is preserved two ways:
-
-- git branch `backup/pre-redesign-2026-11-15` (the last commit before the redesign)
-- `_backup/pre-redesign-2026-11-15/` (old `index.html`, `ai.html`, `css/`, `js/`, and the
-  AI app's `src/` + `content/`)
-
-`css/portfolio.css`, `css/story.css`, `css/lux.css`, `js/portfolio.js`, `css/styles.css`
-and `js/script.js` belong to older designs. Nothing references them any more; they're
-kept only so an old look can be restored. Safe to delete.
-
-## ⚠️ The retired CMS (`cms-legacy/`)
-
-The site used to be **generated** by `cms-legacy/cms.py` from `content.json`. That
-generator still contains the **old, pre-redesign** markup, so running it against the
-repo root would wipe out the current design.
-
-It has been defused: by default it now writes to `cms-legacy/index.legacy.html` — a
-harmless preview — and leaves the live `index.html` alone. Publishing the old design
-over the live site requires an explicit flag, and takes a timestamped backup first:
+The pre-redesign site (old design, old CSS/JS, the retired `cms-legacy/` generator and the
+original AI chat with its 3D scene) is commit `0bd8357` in the git history. To look at it:
 
 ```bash
-cd cms-legacy
-python3 cms.py            # safe: writes index.legacy.html only
-python3 cms.py --force    # DESTRUCTIVE: overwrites the live index.html
+git checkout 0bd8357 -- <path>   # e.g. css/portfolio.css
 ```
-
-If you want a CMS again, `generate_index_html()` needs to be rewritten to emit the
-redesign's markup, and `content.json` expanded to cover its sections.
 
 ## Deployment
 
-The site is pure static HTML/CSS/JS with no build step, so the repo root can be
-deployed as-is on:
+One push to `main` deploys both parts:
 
-- **GitHub Pages**
-- **Vercel**
-- **Netlify**
+- **GitHub Pages** builds the portfolio from the repo root →
+  <https://alexthefirst99.github.io/web/>
+- **Vercel** (connected to this repo) builds `meet-alex-ai/` →
+  <https://meet-alex-ai.vercel.app/>. It needs an `OPENAI_API_KEY` environment variable
+  set in the Vercel project; without one it answers with built-in mock replies.
 
-Just push and it goes live.
-
-Note: `meet-alex-ai/` is a separate Next.js deployment and needs an `OPENAI_API_KEY`
-environment variable set on its host.
+`.gitignore` keeps local-only files out of the repo (macOS `.DS_Store`, zips, `_backup/`,
+`assets/media/old.MP4`).
