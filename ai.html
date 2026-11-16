@@ -1,98 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu N (Alex) Tran | AI Neural Interface</title>
-    <link rel="icon" type="image/svg+xml" href="assets/media/favicon.svg?v=5">
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #0a0609; }
-        iframe { width: 100vw; height: 100vh; border: none; display: block; margin: 0; padding: 0; }
-        #entry-overlay {
-            position: fixed; inset: 0; z-index: 9999;
-            opacity: 1; pointer-events: none;
-            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        #entry-overlay.hidden { opacity: 0; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meet AlexB — Tu N (Alex) Tran</title>
+<meta name="description" content="Ask an AI about Alex Tran's research, projects, skills and experience.">
+<meta name="theme-color" content="#0b0608">
+<link rel="icon" type="image/svg+xml" href="assets/media/favicon.svg?v=6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --g2: #C9A46A; --g3: #a3243b; --g4: #7a1230; --pink: #c2385a; --acc: #E2C08D; --pad: clamp(14px, 3vw, 32px); }
+  html, body { margin: 0; height: 100%; width: 100%; overflow: hidden; background: #0b0608; color: #fff; font-family: 'Outfit', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  iframe { position: fixed; inset: 0; width: 100vw; height: 100dvh; border: 0; display: block; }
+
+  /* Loader */
+  #loader { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; overflow: hidden; background: #0b0608; transition: opacity .7s cubic-bezier(.4,0,.2,1), visibility 0s .7s; }
+  #loader.done { opacity: 0; visibility: hidden; }
+  .blob { position: absolute; aspect-ratio: 1; border-radius: 50%; filter: blur(60px); mix-blend-mode: screen; animation: drift 9s ease-in-out infinite alternate; }
+  .blob.a { width: 60vmax; left: -20vmax; top: -15vmax; background: radial-gradient(circle, var(--g4), transparent 62%); opacity: .7; }
+  .blob.b { width: 50vmax; right: -18vmax; bottom: -15vmax; background: radial-gradient(circle, var(--pink), transparent 62%); opacity: .45; animation-delay: -3s; }
+  .blob.c { width: 40vmax; left: 30%; top: 40%; background: radial-gradient(circle, var(--g2), transparent 62%); opacity: .22; animation-delay: -6s; }
+  @keyframes drift { to { transform: translate3d(5vmax, 3vmax, 0) scale(1.08); } }
+  .grain { position: absolute; inset: 0; opacity: .07; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  .card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 40px 48px; border-radius: 48px;
+    background: rgba(18, 8, 12, .5); -webkit-backdrop-filter: blur(30px) saturate(170%); backdrop-filter: blur(30px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: 0 60px 120px rgba(0,0,0,.6), inset 0 2px 1px rgba(255,255,255,.35), inset 0 -2px 1px rgba(255,255,255,.2); }
+  .mark { font-family: 'Doto', monospace; font-weight: 800; font-size: clamp(72px, 14vw, 120px); line-height: .85; text-shadow: 0 0 40px rgba(255,255,255,.35); }
+  .badge { display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.12); font-size: 15px; }
+  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 12px var(--acc); animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+  .bar { width: 180px; height: 2px; border-radius: 2px; background: rgba(255,255,255,.12); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 40%; background: var(--acc); box-shadow: 0 0 12px var(--acc); animation: slide 1.4s cubic-bezier(.6,0,.4,1) infinite; }
+  @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+  .slow { font-size: 13px; color: rgba(255,255,255,.6); opacity: 0; transition: opacity .5s; text-align: center; }
+  .slow.on { opacity: 1; }
+  .slow a { color: var(--acc); }
+  @media (prefers-reduced-motion: reduce) { .blob, .pulse, .bar i { animation: none; } }
+</style>
 </head>
 <body>
-    <div id="entry-overlay">
-        <canvas id="balloon-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
-        <div style="position: absolute; bottom: 36%; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.25); font-family: monospace; font-size: 0.65rem; letter-spacing: 0.28em; white-space: nowrap;">LOADING...</div>
+  <div id="loader" role="status" aria-live="polite">
+    <div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>
+    <div class="grain"></div>
+    <div class="card">
+      <div class="mark" aria-hidden="true">AT</div>
+      <div class="badge"><span class="pulse"></span>Waking up AlexB…</div>
+      <div class="bar" aria-hidden="true"><i></i></div>
+      <div class="slow" id="slow">Taking a while? <a href="https://meet-alex-ai.vercel.app/" target="_blank" rel="noopener">Open it directly</a> · <a href="index.html">Back to portfolio</a></div>
     </div>
+  </div>
 
-    <iframe src="https://meet-alex-ai.vercel.app/" allow="autoplay; encrypted-media; speaker" title="Neural Interface"></iframe>
+  <iframe id="app" src="about:blank" allow="autoplay; encrypted-media; speaker" title="Meet AlexB"></iframe>
 
-    <script>
-        var bCanvas = document.getElementById('balloon-canvas');
-        var bCtx = bCanvas.getContext('2d');
-        var bRAF = null, bStart = null;
-        var bPalette = ['#b08d57','#c8a06a','#8a6c3f','#5c1526','#cdb389','#ece3d2'];
-        var bCells = [
-            {bx:0,   by:0,   r:28, col:'#b08d57', sp:0.50, off:0.0, fr:3, glow:false},
-            {bx:-27, by:-9,  r:18, col:'#5c1526', sp:0.70, off:1.2, fr:3, glow:false},
-            {bx:25,  by:-21, r:13, col:'#ece3d2', sp:0.90, off:2.1, fr:3, glow:true },
-            {bx:-17, by:27,  r:15, col:'#cdb389', sp:0.60, off:3.5, fr:3, glow:false},
-            {bx:30,  by:12,  r:11, col:'#c8a06a', sp:1.10, off:0.8, fr:3, glow:false},
-            {bx:6,   by:31,  r:13, col:'#8a6c3f', sp:0.80, off:4.2, fr:3, glow:false},
-            {bx:-36, by:6,   r:15, col:'#cdb389', sp:0.65, off:1.8, fr:3, glow:false},
-            {bx:-7,  by:-35, r:10, col:'#b08d57', sp:1.00, off:2.6, fr:3, glow:false},
-            {bx:13,  by:-37, r:12, col:'#8a6c3f', sp:0.75, off:5.1, fr:3, glow:false},
-            {bx:42,  by:21,  r:8,  col:'#c8a06a', sp:1.20, off:3.0, fr:2, glow:false},
-            {bx:-29, by:37,  r:11, col:'#b08d57', sp:0.85, off:0.5, fr:2, glow:false},
-            {bx:33,  by:-39, r:8,  col:'#ece3d2', sp:1.30, off:1.4, fr:2, glow:true },
-            {bx:-48, by:-17, r:7,  col:'#c8a06a', sp:0.95, off:3.8, fr:2, glow:false},
-            {bx:48,  by:-7,  r:6,  col:'#5c1526', sp:1.10, off:2.4, fr:2, glow:false},
-            {bx:-57, by:24,  r:5,  col:'#b08d57', sp:1.40, off:4.6, fr:2, glow:false},
-            {bx:57,  by:13,  r:4,  col:'#cdb389', sp:1.50, off:0.2, fr:1, glow:false},
-            {bx:-12, by:57,  r:6,  col:'#8a6c3f', sp:1.20, off:2.9, fr:2, glow:false},
-            {bx:21,  by:54,  r:5,  col:'#c8a06a', sp:1.60, off:5.5, fr:1, glow:false},
-            {bx:-60, by:-7,  r:4,  col:'#ece3d2', sp:1.10, off:1.1, fr:2, glow:true },
-            {bx:51,  by:-42, r:6,  col:'#5c1526', sp:0.90, off:4.0, fr:2, glow:false},
-            {bx:-31, by:-54, r:4,  col:'#cdb389', sp:1.30, off:2.2, fr:1, glow:false},
-        ];
-        var bStars = [];
-        for (var i = 0; i < 160; i++) {
-            bStars.push({x:Math.random(),y:Math.random(),r:Math.random()<0.2?1.5:0.7,col:bPalette[Math.floor(Math.random()*bPalette.length)],op:0.1+Math.random()*0.22,tw:Math.random()*10});
-        }
-        function resizeBCanvas() { bCanvas.width=window.innerWidth; bCanvas.height=window.innerHeight; }
-        resizeBCanvas(); window.addEventListener('resize', resizeBCanvas);
-        function drawBalloons(ts) {
-            if (!bStart) bStart=ts; var t=(ts-bStart)/1000;
-            var w=bCanvas.width, h=bCanvas.height, cx=w/2, cy=h/2;
-            bCtx.clearRect(0,0,w,h); bCtx.fillStyle='#0a0609'; bCtx.fillRect(0,0,w,h);
-            bStars.forEach(function(s) {
-                bCtx.beginPath(); bCtx.arc(s.x*w,s.y*h,s.r,0,Math.PI*2);
-                bCtx.globalAlpha=s.op*(0.5+0.5*Math.sin(t*1.5+s.tw)); bCtx.fillStyle=s.col; bCtx.fill();
-            });
-            bCtx.globalAlpha=1;
-            var bounce=Math.abs(Math.sin(t*1.1));
-            var clusterY = -45 + bounce * 90; // starts at top (-45), falls to bottom (+45)
-            var sqX=1.0+(1-bounce)*0.06, sqY=1.0-(1-bounce)*0.06;
-            bCtx.save();
-            bCtx.translate(cx, cy+clusterY);
-            bCtx.scale(sqX, sqY);
-            bCells.forEach(function(c) {
-                var fx=Math.sin(t*c.sp+c.off)*c.fr, fy=Math.cos(t*c.sp*0.8+c.off)*c.fr;
-                var x=c.bx+fx, y=c.by+fy;
-                if (c.glow) {
-                    var g=bCtx.createRadialGradient(x,y,0,x,y,c.r*2.8);
-                    g.addColorStop(0,c.col+'99'); g.addColorStop(1,'transparent');
-                    bCtx.beginPath(); bCtx.arc(x,y,c.r*2.8,0,Math.PI*2); bCtx.fillStyle=g; bCtx.fill();
-                }
-                bCtx.beginPath(); bCtx.arc(x,y,c.r,0,Math.PI*2); bCtx.fillStyle=c.col; bCtx.fill();
-            });
-            bCtx.restore();
-            bRAF=requestAnimationFrame(drawBalloons);
-        }
-        bStart=null; bRAF=requestAnimationFrame(drawBalloons);
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('entry-overlay').classList.add('hidden');
-                setTimeout(function() { if(bRAF){ cancelAnimationFrame(bRAF); bRAF=null; } }, 800);
-            }, 400);
-        });
-    </script>
+  <script>
+    (function () {
+      var loader = document.getElementById('loader');
+      // Tell the app where its "Portfolio" button should go (this site's index page).
+      var portfolio = new URL('index.html', location.href).href;
+      document.getElementById('app').src = 'https://meet-alex-ai.vercel.app/?from=' + encodeURIComponent(portfolio);
+      var done = false;
+      function hide() {
+        if (done) return; done = true;
+        setTimeout(function () { loader.classList.add('done'); }, 300);
+      }
+      document.getElementById('app').addEventListener('load', function () {
+        if (this.src !== 'about:blank') hide();
+      });
+      setTimeout(function () { document.getElementById('slow').classList.add('on'); }, 8000);
+      setTimeout(hide, 20000); // never trap the visitor behind the loader
+    })();
+  </script>
 </body>
 </html>
