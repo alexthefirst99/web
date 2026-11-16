@@ -7,6 +7,16 @@ import { useStore } from '@/store/useStore';
 import { ParticleField } from './ParticleField';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 
+// Small seeded PRNG (mulberry32) — same cluster every render/visit.
+function seeded(seed: number) {
+  return () => {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 // ─── AI Construct Engram (Organic Cell Cluster) ────────────────────────────────
 function AiEngram({ isNarrating }: { isNarrating: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -14,14 +24,15 @@ function AiEngram({ isNarrating }: { isNarrating: boolean }) {
 
   // Generate random data for the cells so they don't regenerate every frame
   const cells = useMemo(() => {
+    const rand = seeded(1999); // deterministic, so render stays pure
     const arr = [];
-    const palette = ['#b08d57', '#c8a06a', '#cdb389', '#8a6c3f', '#c8a06a', '#b08d57'];
+    const palette = ['#E2C08D', '#C9A46A', '#F1DDB8', '#c2385a', '#a3243b', '#E2C08D'];
     
     for (let i = 0; i < 80; i++) {
       // Gaussian-like distribution to make it dense in the center, sparse on edges
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      const radius = Math.pow(Math.random(), 1.5) * 2.0; 
+      const theta = rand() * Math.PI * 2;
+      const phi = Math.acos(rand() * 2 - 1);
+      const radius = Math.pow(rand(), 1.5) * 2.0; 
       
       const x = radius * Math.sin(phi) * Math.cos(theta);
       const y = radius * Math.sin(phi) * Math.sin(theta);
@@ -30,12 +41,12 @@ function AiEngram({ isNarrating }: { isNarrating: boolean }) {
       arr.push({
         basePos: [x, y, z] as [number, number, number],
         // Cells closer to center are generally larger, edges are tiny
-        size: Math.max(0.04, (2.2 - radius) * 0.12 * Math.random() + 0.02),
-        color: palette[Math.floor(Math.random() * palette.length)],
+        size: Math.max(0.04, (2.2 - radius) * 0.12 * rand() + 0.02),
+        color: palette[Math.floor(rand() * palette.length)],
         // Unique random properties for cellular floating simulation
-        speed: 0.8 + Math.random() * 2.0,
-        offset: Math.random() * 100,
-        floatRadius: 0.1 + Math.random() * 0.15
+        speed: 0.8 + rand() * 2.0,
+        offset: rand() * 100,
+        floatRadius: 0.1 + rand() * 0.15
       });
     }
     return arr;
@@ -67,7 +78,7 @@ function AiEngram({ isNarrating }: { isNarrating: boolean }) {
       {/* Singular hidden anchor point so the cluster feels dense in the exact center */}
       <mesh>
         <sphereGeometry args={[0.5, 32, 32]} />
-        <meshBasicMaterial color="#b08d57" />
+        <meshBasicMaterial color="#c2385a" />
       </mesh>
 
       {/* Orbiting cellular dots */}
@@ -88,19 +99,19 @@ function AiEngram({ isNarrating }: { isNarrating: boolean }) {
 }
 
 // ─── Main Canvas Export ───────────────────────────────────────────────────────
-export function NeuralCanvas() {
+export function NeuralCanvas({ background = '#0b0608', particles = true }: { background?: string; particles?: boolean }) {
   const { isNarrating } = useStore();
 
   return (
     <>
-      <color attach="background" args={['#0a0609']} />
-      <ambientLight intensity={0.15} color="#cdb389" />
-      <pointLight position={[0, 3, 5]} intensity={3} color="#c8a06a" />
-      <pointLight position={[-4, -2, 3]} intensity={1} color="#8a6c3f" />
-      <pointLight position={[4, 1, 2]} intensity={0.8} color="#6e1828" />
+      <color attach="background" args={[background]} />
+      <ambientLight intensity={0.15} color="#E2C08D" />
+      <pointLight position={[0, 3, 5]} intensity={3} color="#E2C08D" />
+      <pointLight position={[-4, -2, 3]} intensity={1} color="#a3243b" />
+      <pointLight position={[4, 1, 2]} intensity={0.8} color="#7a1230" />
 
       <AiEngram isNarrating={isNarrating} />
-      <ParticleField count={3000} />
+      {particles && <ParticleField count={3000} />}
 
       <EffectComposer>
         <Bloom luminanceThreshold={0.32} luminanceSmoothing={0.9} intensity={0.85} />

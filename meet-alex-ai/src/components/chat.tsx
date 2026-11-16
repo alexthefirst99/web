@@ -11,7 +11,7 @@ interface Message {
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Hi! I'm Alex's AI portfolio assistant. I can answer questions about his background, skills, and projects. What would you like to know?" }
+    { role: 'assistant', content: "Hi! I'm AlexB, Alex's AI portfolio assistant. I can answer questions about his background, skills, and projects. What would you like to know?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +66,7 @@ export default function Chat() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
             </span>
-            Meet Alex AI
+            Meet AlexB
           </h2>
           <p className="text-xs text-gray-500 mt-1">Ask questions grounded in my actual background</p>
         </div>

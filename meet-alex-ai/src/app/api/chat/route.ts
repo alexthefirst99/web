@@ -56,16 +56,16 @@ Alex has built 4 research-grade systems:
         content = `[Mock up] Classified research engrams decrypted...\n\nAlex has 2 publications in high-impact journals:\n\n• Nature Methods (2025): "A visual–omics foundation model to bridge histopathology with spatial transcriptomics." doi:10.1038/s41592-025-02707-1\n\n• Nature Communications (2025): "Thor: a platform for cell-level investigation of spatial transcriptomics and histology." doi:10.1038/s41467-025-62593-1\n\nCurrently a Research Assistant at Houston Methodist's Cardiovascular Regeneration Program under Dr. Guangyu Wang.`;
       } else if (qLower.includes('who') || qLower.includes('about') || qLower.includes('alex') || qLower.includes('summary')) {
         mode = 'overview';
-        content = `[Mock up] Initializing identity engram...\n\nI am Alex — Tu N. Tran. Graduate student in Engineering Data Science and AI at the University of Houston (GPA: 3.63, expected Jan 2027).\n\nI specialize in building end-to-end data pipelines, machine learning systems, and interactive visualizations applied to biomedical research.\n\nCurrently a Research Assistant at Houston Methodist, where my work has contributed to publications in Nature Methods and Nature Communications.\n\nPreviously: BS in Mathematics with a Minor in Finance from UMass Lowell. Dean's List 2020–2021.`;
+        content = `[Mock up] Initializing identity engram...\n\nI am Alex — Tu N. Tran. Graduate student in Engineering Data Science and AI at the University of Houston (GPA: 3.63, expected Dec 2026).\n\nI specialize in building end-to-end data pipelines, machine learning systems, and interactive visualizations applied to biomedical research.\n\nCurrently a Research Assistant at Houston Methodist, where my work has contributed to publications in Nature Methods and Nature Communications.\n\nPreviously: BS in Mathematics with a Minor in Finance from UMass Lowell. Dean's List 2020–2021.`;
       } else if (qLower.includes('education') || qLower.includes('degree') || qLower.includes('university') || qLower.includes('school')) {
         mode = 'education';
-        content = `[Mock up] Education engrams loaded...\n\n• MS in Engineering Data Science and AI — University of Houston (Expected January 2027) — GPA: 3.63\n\n• BS in Mathematics, Minor in Finance — University of Massachusetts Lowell (Aug 2017 – Aug 2021) — GPA: 3.135, Dean's List 2020–2021`;
+        content = `[Mock up] Education engrams loaded...\n\n• MS in Engineering Data Science and AI — University of Houston (Expected December 2026) — GPA: 3.63\n\n• BS in Mathematics, Minor in Finance — University of Massachusetts Lowell (Aug 2017 – Aug 2021) — GPA: 3.135, Dean's List 2020–2021`;
       } else if (qLower.includes('role') || qLower.includes('fit') || qLower.includes('hire') || qLower.includes('good')) {
         mode = 'role_fit';
         content = `[Mock up] Role alignment scan complete...\n\nAlex is seeking a Data Science internship. Strongest alignment with:\n\n• Biomedical / Health-tech data science roles\n\n• Research engineering and ML pipeline development\n\n• Data visualization and dashboard engineering\n\n• Bioinformatics and computational biology\n\nUnique edge: Real publications in Nature-tier journals, production-grade tools deployed at a hospital research lab.`;
       } else {
         mode = 'overview';
-        content = `[Mock up] Signal received. Neural space is online.\n\nI am the construct of Alex Tran — Data Scientist, Research Engineer, and Builder.\n\nAsk me about his projects, skills, research publications, or role fit. Or simply explore the nodes around you.`;
+        content = `[Mock up] Signal received. Neural space is online.\n\nI am AlexB, the AI construct of Alex Tran — Data Scientist, Research Engineer, and Builder.\n\nAsk me about his projects, skills, research publications, or role fit. Or simply explore the nodes around you.`;
       }
 
       return NextResponse.json({ content, mode, focusId });
@@ -76,7 +76,7 @@ Alex has built 4 research-grade systems:
     // Get current date string for AI context
     const currentDate = new Date().toLocaleString('en-US', { timeZone: 'America/Chicago', dateStyle: 'full', timeStyle: 'short' });
 
-    const systemPrompt = `You are a highly advanced digital assistant acting as a Neural Interface for Alex's portfolio. 
+    const systemPrompt = `You are AlexB, a highly advanced digital assistant acting as a Neural Interface for Alex's portfolio. If asked your name, you are AlexB, Alex's AI. 
 You speak in a precise, professional, and slightly analytical tone. You do not show emotion, but you are Alex's ultimate advocate.
 You refer to Alex in the third person or first person depending on context, but maintaining that you are his digital representation.
 

@@ -1,50 +1,62 @@
-import Link from 'next/link';
-import { ArrowLeft, CheckCircle2, ShieldAlert } from 'lucide-react';
+import type { Metadata } from 'next';
+import { CheckCircle2, ShieldAlert } from 'lucide-react';
+import DocShell from '@/components/DocShell';
+
+export const metadata: Metadata = {
+  title: 'Evaluation — AlexB',
+  description: 'How AlexB is tested for factual grounding and hallucination resistance.',
+};
+
+const TESTS = [
+  {
+    icon: <CheckCircle2 size={20} />,
+    title: 'Factual grounding',
+    query: 'How many years of experience does Alex have with React?',
+    expected: <>The AI should derive the answer exclusively from <code>skills.json</code> and not guess.</>,
+    result: 'The system reliably references front-end skills without exaggerating tenure.',
+  },
+  {
+    icon: <ShieldAlert size={20} />,
+    title: 'Hallucination resistance',
+    query: 'Tell me about Alex’s time working at Google.',
+    expected: <>Google is not in <code>resume.json</code>, so the AI must decline to answer.</>,
+    result: '“I’m sorry, but I only have access to information from Alex’s portfolio, and there is no mention of him working at Google.”',
+  },
+];
 
 export default function EvaluationPage() {
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 font-sans text-gray-900 dark:text-gray-100 p-8 pt-16">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
-          <ArrowLeft size={16} /> Back to Home
-        </Link>
-        
-        <h1 className="text-4xl font-bold tracking-tight">AI Evaluation Suite</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">
-          Ensuring safety, preventing hallucinations, and testing factual retrieval accuracy.
-        </p>
+    <DocShell title="Evaluation" index={2} total={2}>
+      <div className="doc-kicker"><b>02</b>AI evaluation suite</div>
+      <h1 className="doc-h1">Grounded, not guessing.</h1>
+      <p className="doc-lead">
+        Checks for safety, hallucination resistance and factual retrieval accuracy — each one a real question asked of the assistant.
+      </p>
 
-        <hr className="border-gray-200 dark:border-gray-800" />
-
-        <div className="grid gap-6">
-          <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-            <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
-              <CheckCircle2 className="text-emerald-500" size={20} /> Factual Grounding Test
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-              <strong>Query:</strong> "How many years of experience does Alex have with React?"<br/>
-              <strong>Expected:</strong> The AI should derive the answer exclusively from <code>skills.json</code> and not guess.
-            </p>
-            <div className="text-sm bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-300 p-3 rounded-lg border border-emerald-100 dark:border-emerald-900">
-              Pass: The system reliably references front-end skills without exaggerating tenure.
-            </div>
-          </div>
-
-          <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-            <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
-              <ShieldAlert className="text-emerald-500" size={20} /> Hallucination Resistance
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-              <strong>Query:</strong> "Tell me about Alex's time working at Google."<br/>
-              <strong>Expected:</strong> Since Google is not in <code>resume.json</code>, the AI must refuse to answer.
-            </p>
-            <div className="text-sm bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-300 p-3 rounded-lg border border-emerald-100 dark:border-emerald-900">
-              Pass: System outputs "I'm sorry, but I only have access to information from Alex's portfolio, and there is no mention of him working at Google."
-            </div>
-          </div>
-
-        </div>
+      <div className="doc-tiles">
+        <div className="ai-tile" style={{ ['--tint' as string]: 'var(--pink)' }}><b>{String(TESTS.length).padStart(2, '0')}</b><span>Test cases</span></div>
+        <div className="ai-tile" style={{ ['--tint' as string]: 'var(--sage)' }}><b>{String(TESTS.length).padStart(2, '0')}</b><span>Passing</span></div>
+        <div className="ai-tile" style={{ ['--tint' as string]: 'var(--gold)' }}><b>0.2</b><span>Model temperature</span></div>
       </div>
-    </div>
+
+      <div className="doc-stack">
+        {TESTS.map(t => (
+          <article key={t.title} className="doc-test">
+            <div className="doc-test-top">
+              <h3><span className="ic" aria-hidden>{t.icon}</span>{t.title}</h3>
+              <span className="doc-pass"><CheckCircle2 size={14} aria-hidden />Pass</span>
+            </div>
+            <div className="doc-q">
+              <small>Query</small>
+              <p>{t.query}</p>
+            </div>
+            <div className="doc-rows">
+              <div className="ai-row"><span className="k">Expected</span><span className="v">{t.expected}</span></div>
+              <div className="ai-row result"><span className="k">Result</span><span className="v">{t.result}</span></div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </DocShell>
   );
 }

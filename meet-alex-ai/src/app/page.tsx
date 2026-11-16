@@ -1,41 +1,44 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { NeuralCanvas } from '@/components/3d/NeuralCanvas';
-import { useStore } from '@/store/useStore';
+import Link from 'next/link';
+import { useStore, type AppMode } from '@/store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Terminal, Volume2, VolumeX } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Volume2, VolumeX } from 'lucide-react';
+import HoverFx from '@/components/HoverFx';
+import AboutSections from '@/components/AboutSections';
 
+// ─── Sound ───────────────────────────────────────────────────────────────────
 let audioCtx: AudioContext | null = null;
 const playTechBeep = () => {
   if (typeof window === 'undefined') return;
   if (!audioCtx) {
-    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    audioCtx = new Ctx();
   }
   if (audioCtx.state === 'suspended') audioCtx.resume();
-  
+
   const oscillator = audioCtx.createOscillator();
   const gainNode = audioCtx.createGain();
-  
+
   oscillator.type = 'sine';
   oscillator.frequency.setValueAtTime(600 + Math.random() * 400, audioCtx.currentTime);
-  
+
   gainNode.gain.setValueAtTime(0.015, audioCtx.currentTime);
   gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
-  
+
   oscillator.connect(gainNode);
   gainNode.connect(audioCtx.destination);
-  
+
   oscillator.start();
   oscillator.stop(audioCtx.currentTime + 0.03);
 };
 
-function TypewriterText({ text, isMuted }: { text: string, isMuted: boolean }) {
+function TypewriterText({ text, isMuted }: { text: string; isMuted: boolean }) {
   const [displayedText, setDisplayedText] = useState('');
-  const { setIsNarrating } = useStore();
+  const { isNarrating, setIsNarrating } = useStore();
   const mutedRef = useRef(isMuted);
-  
+
   useEffect(() => {
     mutedRef.current = isMuted;
   }, [isMuted]);
@@ -46,7 +49,7 @@ function TypewriterText({ text, isMuted }: { text: string, isMuted: boolean }) {
     let i = 0;
     const interval = setInterval(() => {
       setDisplayedText(text.slice(0, i + 1));
-      if (!mutedRef.current && (i % 2 === 0)) {
+      if (!mutedRef.current && i % 2 === 0) {
         playTechBeep();
       }
       i++;
@@ -55,17 +58,36 @@ function TypewriterText({ text, isMuted }: { text: string, isMuted: boolean }) {
         setIsNarrating(false);
       }
     }, 12);
-    
+
     return () => {
       clearInterval(interval);
       setIsNarrating(false);
     };
   }, [text, setIsNarrating]);
 
-  return <>{displayedText}</>;
+  return (
+    <>
+      {displayedText}
+      {isNarrating && (
+        <span className="caret inline-block w-2 h-[18px] ml-0.5 align-[-3px] bg-[#16161a]" />
+      )}
+    </>
+  );
 }
 
-// ─── Skill bars ──────────────────────────────────────────────────────────────
+// ─── Data ────────────────────────────────────────────────────────────────────
+const MODE_LABELS: Record<string, string> = {
+  overview: 'Overview',
+  projects: 'Projects',
+  skills: 'Skills',
+  research: 'Publications',
+  experience: 'Experience',
+  education: 'Education',
+  role_fit: 'Role fit',
+  qa: 'Overview',
+};
+const MODE_ORDER = ['overview', 'projects', 'skills', 'research', 'experience', 'education', 'role_fit'];
+
 const SKILLS = [
   { cat: 'Python / Data Science', pct: 92 },
   { cat: 'Data Visualization', pct: 88 },
@@ -76,10 +98,10 @@ const SKILLS = [
 ];
 
 const PROJECTS = [
-  { title: 'Loki Interactive Inference Platform', sub: 'Full-Stack Deep Learning · Houston Methodist', tags: ['Dash', 'React', 'Deep Learning', 'LLM', 'Histopathology'], badge: 'Nature Methods ⭐' },
-  { title: 'Mjolnir', sub: 'Gene Expression Viz Platform', tags: ['Dash', 'Plotly', 'Bioinformatics'], badge: 'Nature Communications' },
-  { title: 'Visual–Omics', sub: 'Histology × Spatial Transcriptomics · 32 Organs', tags: ['ML', 'Data Curation', 'Python'], badge: 'Nature Methods' },
-  { title: 'Macrophage Analysis', sub: 'Single-Cell Immune Clustering', tags: ['UMAP', 'Leiden', 'scRNA'], badge: 'Research' },
+  { title: 'Loki Inference Platform', sub: 'Full-stack deep learning · Houston Methodist', tags: ['Dash', 'React', 'LLM'], badge: 'Nature Methods', letter: 'L', grad: 'linear-gradient(135deg,#F1DDB8,#C9A46A)' },
+  { title: 'Mjolnir', sub: 'Gene expression visualization platform', tags: ['Dash', 'Plotly'], badge: 'Nature Comms', letter: 'M', grad: 'linear-gradient(135deg,#D3E2CC,#8FAE8A)' },
+  { title: 'Visual–Omics', sub: 'Histology × spatial transcriptomics · 32 organs', tags: ['ML', 'Python'], badge: 'Nature Methods', letter: 'V', grad: 'linear-gradient(135deg,#C4D8D9,#7FA3A8)' },
+  { title: 'Macrophage Analysis', sub: 'Single-cell immune clustering', tags: ['UMAP', 'Leiden'], badge: 'Research', letter: 'A', grad: 'linear-gradient(135deg,#F3EBDD,#CDBFA8)' },
 ];
 
 const PAPERS = [
@@ -90,10 +112,9 @@ const PAPERS = [
 const EXPERIENCES = [
   {
     title: 'Research Assistant',
-    org: 'Houston Methodist — Dr. Guangyu Wang Lab',
-    dept: 'Cardiovascular Regeneration Program',
-    dates: 'Dec 2022 – Present',
-    type: 'Research',
+    org: 'Houston Methodist · Dr. Guangyu Wang Lab',
+    dates: 'Dec 2022 — Present',
+    chipBg: 'linear-gradient(90deg,#C9A46A,#F1DDB8)',
     highlights: [
       'Built data pipelines for large-scale single-cell and spatial omics datasets to support ML model development and evaluation',
       'Applied unsupervised learning and statistical analysis to identify patterns in high-dimensional biological data',
@@ -104,35 +125,95 @@ const EXPERIENCES = [
   },
   {
     title: 'Marketing & Data Intern',
-    org: 'Viet Power Solutions JSC',
-    dept: 'Vietnam',
-    dates: 'Jan 2022 – Aug 2022',
-    type: 'Industry',
+    org: 'Viet Power Solutions JSC · Vietnam',
+    dates: 'Jan — Aug 2022',
+    chipBg: 'linear-gradient(90deg,#A9C4A2,#D3E2CC)',
     highlights: [
-      'Monitored digital engagement metrics with Google Analytics — +39.5% campaign performance improvement',
-      'Designed and launched targeted LinkedIn, Facebook & Google Ads campaigns — +50% user engagement',
+      'Monitored digital engagement metrics with Google Analytics: +39.5% campaign performance',
+      'Designed and launched targeted LinkedIn, Facebook & Google Ads campaigns: +50% user engagement',
       'Produced clear, data-driven reports to inform leadership and refine product strategy',
     ],
   },
 ];
 
+const EDUCATION = [
+  { degree: 'M.S. Engineering Data Science and AI', school: 'University of Houston · Cullen College of Engineering', meta: 'Houston, TX · Expected December 2026', gpa: '3.63' },
+  { degree: 'B.S. Mathematics, Minor in Finance', school: 'University of Massachusetts Lowell', meta: "Lowell, MA · Aug 2017 — Aug 2021 · Dean's List 2020–2021", gpa: '3.135' },
+];
+
+const STATS = [
+  { label: 'Degree', value: 'M.S. Data Science & AI' },
+  { label: 'School', value: 'University of Houston' },
+  { label: 'GPA', value: '3.63 / 4.0' },
+  { label: 'Publications', value: '2 · Nature family' },
+  { label: 'Current role', value: 'Research Assistant' },
+  { label: 'Status', value: 'Seeking internship' },
+];
+
+const ROLES = [
+  'Biomedical / health-tech data science',
+  'Research engineering & ML pipelines',
+  'Data visualization & dashboards',
+  'Analytics with clear communication',
+];
+
+const fadeUp = (i: number) => ({
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  transition: { delay: i * 0.07, duration: 0.4 },
+});
+
+// ─── Panels ──────────────────────────────────────────────────────────────────
+function OverviewPanel() {
+  return (
+    <div className="flex flex-col gap-[18px]">
+      <div>
+        <div className="text-[clamp(30px,3.2vw,44px)] font-extralight tracking-[-0.02em] leading-[1.05]">Tu N. (Alex) Tran</div>
+        <div className="text-base text-[var(--mist)] mt-1.5">Houston Methodist · UH Engineering</div>
+      </div>
+      <div className="grid gap-2.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {STATS.map((s, i) => (
+          <motion.div key={s.label} {...fadeUp(i)} className="tile rounded-3xl px-[18px] py-4">
+            <div className="text-[13px] tracking-[.06em] uppercase text-[var(--muted)]">{s.label}</div>
+            <div className="text-[17px] mt-1.5">{s.value}</div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RoleFitPanel() {
+  return (
+    <div className="flex flex-col gap-2.5">
+      <div className="text-[clamp(28px,3vw,40px)] font-extralight tracking-[-0.02em] leading-[1.05] mb-2">Where I fit best</div>
+      {ROLES.map((r, i) => (
+        <motion.div key={r} {...fadeUp(i)} className="tile flex items-center gap-4 rounded-full py-3.5 pr-3.5 pl-[22px]">
+          <span className="font-[family-name:var(--font-display)] font-extrabold text-[15px] text-[var(--muted)] w-6">{String(i + 1).padStart(2, '0')}</span>
+          <span className="flex-1 text-[17px]">{r}</span>
+          <span className="w-10 h-10 rounded-full bg-white/[.08] grid place-items-center"><ArrowUpRight size={16} /></span>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 function SkillsPanel() {
   return (
-    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-96">
-      <div className="text-blue-400 text-base tracking-wider font-bold mb-4 uppercase">Skills</div>
+    <div className="flex flex-col gap-4">
       {SKILLS.map((s, i) => (
-        <div key={s.cat} className="mb-3">
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-white/80">{s.cat}</span>
-            <span className="text-blue-400">{s.pct}%</span>
+        <div key={s.cat}>
+          <div className="flex justify-between items-baseline gap-3 text-base mb-2">
+            <span>{s.cat}</span>
+            <span className="font-[family-name:var(--font-display)] font-extrabold text-lg text-[var(--acc)]">{s.pct}%</span>
           </div>
-          <div className="h-[2px] bg-white/10 rounded">
+          <div className="h-2 rounded-full bg-white/[.08] overflow-hidden">
             <motion.div
-              className="h-full rounded"
-              style={{ background: 'linear-gradient(90deg, #c8a06a, #ece3d2)', boxShadow: '0 0 6px #ece3d2' }}
+              className="h-full rounded-full"
+              style={{ background: 'linear-gradient(90deg, var(--g3), var(--acc))', boxShadow: '0 0 14px var(--acc)' }}
               initial={{ width: 0 }}
               animate={{ width: `${s.pct}%` }}
-              transition={{ duration: 0.8, delay: i * 0.08, ease: 'easeOut' }}
+              transition={{ duration: 0.9, delay: i * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
             />
           </div>
         </div>
@@ -143,63 +224,53 @@ function SkillsPanel() {
 
 function ProjectsPanel() {
   return (
-    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[500px]">
-      <div className="text-pink-500 text-base tracking-wider font-bold mb-4 uppercase">Projects</div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {PROJECTS.map((p, i) => (
-          <motion.div
-            key={p.title}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="bg-[#170c11]/80 backdrop-blur-xl rounded-xl border border-white/10 p-4"
-            style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
-          >
-            <div className="flex justify-between items-start mb-1">
-              <span className="text-white text-sm font-semibold">{p.title}</span>
-              <span className="text-pink-400 text-[11px] px-2 py-0.5 bg-pink-500/10 rounded-full font-mono">{p.badge}</span>
-            </div>
-            <div className="text-white/70 text-sm mb-2">{p.sub}</div>
-            <div className="flex flex-wrap gap-1">
-              {p.tags.map(t => (
-                <span key={t} className="text-[11px] px-2 py-0.5 bg-white/5 text-purple-400 rounded-full font-mono">{t}</span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
+    <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
+      {PROJECTS.map((p, i) => (
+        <motion.div key={p.title} {...fadeUp(i)} className="tile rounded-[28px] p-5 flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span
+              className="w-11 h-11 rounded-full grid place-items-center text-[#1a0a10] font-[family-name:var(--font-display)] font-extrabold text-lg shrink-0"
+              style={{ background: p.grad }}
+            >
+              {p.letter}
+            </span>
+            <span className="text-[17px] font-medium leading-tight">{p.title}</span>
+          </div>
+          <div className="text-[15px] text-[var(--mist)] leading-snug">{p.sub}</div>
+          <div className="flex flex-wrap gap-1.5 mt-auto">
+            <span className="px-3 py-1.5 rounded-full bg-white text-[var(--ink)] text-[13px]">{p.badge}</span>
+            {p.tags.map((t) => (
+              <span key={t} className="px-3 py-1.5 rounded-full bg-white/[.08] border border-white/10 text-[13px]">{t}</span>
+            ))}
+          </div>
+        </motion.div>
+      ))}
     </div>
   );
 }
 
 function ResearchPanel() {
   return (
-    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-96">
-      <div className="text-teal-400 text-base tracking-wider font-bold mb-4 uppercase">Publications</div>
+    <div className="flex flex-col gap-3">
       {PAPERS.map((p, i) => (
-        <motion.div
+        <motion.a
           key={p.doi}
-          initial={{ opacity: 0, x: -12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: i * 0.15 }}
-          className="bg-[#170c11]/80 backdrop-blur-xl rounded-xl border border-white/10 p-5 mb-4"
-          style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
+          {...fadeUp(i)}
+          href={`https://doi.org/${p.doi}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="tile flex flex-col gap-2.5 rounded-[30px] px-6 py-[22px] transition-colors hover:border-white/25"
         >
-          <div className="flex justify-between mb-2">
-            <span className="text-teal-400 text-sm tracking-wider font-semibold">{p.journal}</span>
-            <span className="text-teal-700 text-sm font-semibold">{p.year}</span>
+          <div className="flex justify-between items-center gap-3">
+            <span className="text-[15px] font-medium text-[var(--acc)]">{p.journal}</span>
+            <span className="font-[family-name:var(--font-display)] font-extrabold text-lg">{p.year}</span>
           </div>
-          <div className="text-white text-sm leading-relaxed mb-2">{p.title}</div>
-          <div className="text-white/70 text-sm mb-2">{p.authors}</div>
-          <a 
-            href={`https://doi.org/${p.doi}`} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-teal-700/60 hover:text-teal-400 text-[9px] tracking-wider transition-colors inline-block cursor-pointer font-mono"
-          >
-            doi:{p.doi}
-          </a>
-        </motion.div>
+          <div className="text-[clamp(18px,1.8vw,22px)] font-light leading-[1.3] text-pretty">{p.title}</div>
+          <div className="flex justify-between items-center gap-3 flex-wrap">
+            <span className="text-sm text-[var(--mist)]">{p.authors}</span>
+            <span className="text-[13px] text-[var(--muted)]">doi:{p.doi} ↗</span>
+          </div>
+        </motion.a>
       ))}
     </div>
   );
@@ -207,89 +278,23 @@ function ResearchPanel() {
 
 function ExperiencePanel() {
   return (
-    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[460px]">
-      <div className="text-blue-400 text-base tracking-wider font-bold mb-4 uppercase">Experience</div>
-      {EXPERIENCES.map((exp, i) => (
-        <motion.div
-          key={exp.title}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.15 }}
-          className="bg-[#170c11]/80 backdrop-blur-xl rounded-xl border border-white/10 p-5 mb-4"
-          style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
-        >
-          <div className="flex justify-between items-start mb-1">
-            <span className="text-white text-base font-semibold">{exp.title}</span>
-            <span className="text-[11px] px-2 py-0.5 bg-blue-500/10 rounded-full text-blue-400 font-mono">{exp.type}</span>
+    <div className="flex flex-col gap-3">
+      {EXPERIENCES.map((e, i) => (
+        <motion.div key={e.title} {...fadeUp(i)} className="tile rounded-[30px] px-6 py-[22px] flex flex-col gap-3">
+          <div className="flex justify-between items-start gap-3 flex-wrap">
+            <div>
+              <div className="text-xl font-medium">{e.title}</div>
+              <div className="text-[15px] text-[var(--mist)] mt-1">{e.org}</div>
+            </div>
+            <span className="px-3 py-[7px] rounded-full text-[#1a0a10] text-[13px] whitespace-nowrap" style={{ background: e.chipBg }}>
+              {e.dates}
+            </span>
           </div>
-          <div className="text-blue-400 leading-relaxed text-sm mb-0.5">{exp.org}</div>
-          <div className="text-white/50 text-[11px] mb-3">{exp.dept} · {exp.dates}</div>
-          <ul className="space-y-1.5">
-            {exp.highlights.map((h, j) => (
-              <motion.li
-                key={j}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.15 + j * 0.06 }}
-                className="flex gap-2 text-white/80 text-sm leading-relaxed"
-              >
-                <span className="text-blue-700/50 flex-shrink-0 mt-0.5">▸</span>
+          <ul className="flex flex-col gap-2">
+            {e.highlights.map((h) => (
+              <li key={h} className="flex gap-3 text-[15px] leading-[1.45] text-[#d4d6de]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--acc)] mt-2 shrink-0" />
                 <span>{h}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-const EDUCATION: { degree: string; school: string; dates: string; gpa: string; location: string; minors?: string[] }[] = [
-  {
-    degree: 'Master of Science in Engineering Data Science and AI',
-    school: 'University of Houston, Cullen College of Engineering',
-    dates: 'Expected January 2027',
-    gpa: '3.63',
-    location: 'Houston, TX',
-  },
-  {
-    degree: 'Bachelor of Science in Mathematics',
-    school: 'University of Massachusetts Lowell',
-    dates: 'Aug 2017 – Aug 2021',
-    gpa: '3.135',
-    location: 'Lowell, MA',
-    minors: ['Minor: Finance', "Dean's List 2020–2021"]
-  }
-];
-
-function EducationPanel() {
-  return (
-    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[460px]">
-      <div className="text-blue-400 text-base tracking-wider font-bold mb-4 uppercase">Education</div>
-      {EDUCATION.map((edu, i) => (
-        <motion.div
-          key={edu.degree}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.15 }}
-          className="bg-[#170c11]/80 backdrop-blur-xl rounded-xl border border-white/10 p-5 mb-4"
-          style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
-        >
-          <div className="text-white text-base font-semibold mb-1 leading-tight">{edu.degree}</div>
-          <div className="text-blue-400 text-sm mb-1">{edu.school}</div>
-          <div className="flex justify-between items-center text-white/50 text-[11px] mb-3">
-            <span>{edu.location}</span>
-            <span>{edu.dates}</span>
-          </div>
-          <ul className="space-y-1.5 border-t border-white/5 pt-3 mt-1">
-            <li className="flex gap-2 text-white/80 text-sm">
-              <span className="text-blue-700/50 flex-shrink-0 mt-0.5">▸</span>
-              <span><strong>GPA:</strong> {edu.gpa}</span>
-            </li>
-            {edu.minors?.map((m, j) => (
-              <li key={j} className="flex gap-2 text-white/80 text-sm">
-                <span className="text-blue-700/50 flex-shrink-0 mt-0.5">▸</span>
-                <span>{m}</span>
               </li>
             ))}
           </ul>
@@ -299,34 +304,22 @@ function EducationPanel() {
   );
 }
 
-function OverviewPanel() {
-  const stats = [
-    { label: 'Degree', value: 'MS Eng. Data Science & AI' },
-    { label: 'School', value: 'Univ. of Houston' },
-    { label: 'GPA', value: '3.63 / 4.0' },
-    { label: 'Publications', value: '2 (Nature tier)' },
-    { label: 'Current Role', value: 'Research Assistant' },
-    { label: 'Status', value: 'Seeking Internship' },
-  ];
+function EducationPanel() {
   return (
-    <div className="w-full px-4 sm:px-0 max-w-[95vw] md:w-[380px]">
-      <div className="text-purple-400 text-base tracking-wider font-bold mb-1 uppercase">Overview</div>
-      <div className="text-white text-2xl font-bold mb-1">Tu N. (Alex) Tran</div>
-      <div className="text-white/70 text-sm mb-4 font-medium">Houston Methodist · UH Engineering</div>
-      <div className="grid grid-cols-2 gap-2">
-        {stats.map((s, i) => (
-          <motion.div
-            key={s.label}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: i * 0.07 }}
-            className="bg-[#170c11]/60 backdrop-blur-md rounded-lg border border-white/5 p-3"
-          >
-            <div className="text-teal-600 text-[11px] uppercase font-semibold tracking-wider mb-1">{s.label}</div>
-            <div className="text-white text-xs">{s.value}</div>
-          </motion.div>
-        ))}
-      </div>
+    <div className="flex flex-col gap-3">
+      {EDUCATION.map((e, i) => (
+        <motion.div key={e.degree} {...fadeUp(i)} className="tile rounded-[30px] px-6 py-[22px] flex items-center gap-5 flex-wrap">
+          <div className="flex-[1_1_260px] min-w-0">
+            <div className="text-[19px] font-medium leading-tight">{e.degree}</div>
+            <div className="text-[15px] text-[var(--mist)] mt-1.5">{e.school}</div>
+            <div className="text-sm text-[var(--muted)] mt-1.5">{e.meta}</div>
+          </div>
+          <div className="text-right">
+            <div className="text-[13px] tracking-[.06em] text-[var(--muted)]">GPA</div>
+            <div className="text-[56px] font-extralight leading-[.9] tracking-[-0.03em]">{e.gpa}</div>
+          </div>
+        </motion.div>
+      ))}
     </div>
   );
 }
@@ -339,42 +332,33 @@ function DataPanel({ mode }: { mode: string }) {
     experience: <ExperiencePanel />,
     education: <EducationPanel />,
     overview: <OverviewPanel />,
-    role_fit: <OverviewPanel />,
+    role_fit: <RoleFitPanel />,
   };
   return <>{panels[mode] ?? <OverviewPanel />}</>;
 }
 
 // ─── Main App ────────────────────────────────────────────────────────────────
 export default function App() {
-  const { narratorText, mode, isNarrating, updateStateFromAI, setCameraTarget } = useStore();
+  const { narratorText, mode, isNarrating, updateStateFromAI } = useStore();
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
+  const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [isSoundMuted, setIsSoundMuted] = useState(true);
   const [hasAskedWho, setHasAskedWho] = useState(false);
+  const [lastQuery, setLastQuery] = useState('');
 
-  useEffect(() => {
-    if (mode === 'overview') setCameraTarget([0, 0, 0]);
-    else if (mode === 'projects') setCameraTarget([2, 0, 0]);
-    else if (mode === 'skills') setCameraTarget([-2, -1, 0]);
-    else if (mode === 'research') setCameraTarget([0, 2, 0]);
-    else if (mode === 'experience') setCameraTarget([-2, 2, 0]);
-    else if (mode === 'education') setCameraTarget([0, -2, 0]);
-  }, [mode, setCameraTarget]);
+  const modeLabel = MODE_LABELS[mode] ?? 'Overview';
+  const modeNum = String(Math.max(0, MODE_ORDER.indexOf(mode)) + 1).padStart(2, '0');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
-    const query = input;
+  const sendQuery = async (query: string) => {
+    if (!query.trim() || isLoading) return;
     setInput('');
-    const userMessage = { role: 'user', content: query };
-    const newMessages = [...messages, userMessage];
+    setLastQuery(query);
+    const newMessages = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
     if (query.toLowerCase().includes('who is alex')) setHasAskedWho(true);
-    
+
     setIsLoading(true);
-    setHasInteracted(true);
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
@@ -382,9 +366,9 @@ export default function App() {
         body: JSON.stringify({ messages: newMessages }),
       });
       const data = await res.json();
-      
+
       setMessages([...newMessages, { role: 'assistant', content: data.content || 'Processing...' }]);
-      let safeMode = 'overview';
+      let safeMode: AppMode = 'overview';
       if (data.mode && typeof data.mode === 'string') {
         const lowerMode = data.mode.toLowerCase();
         if (lowerMode.includes('skill')) safeMode = 'skills';
@@ -393,140 +377,216 @@ export default function App() {
         else if (lowerMode.includes('experience') || lowerMode.includes('work')) safeMode = 'experience';
         else if (lowerMode.includes('education') || lowerMode.includes('degree') || lowerMode.includes('school')) safeMode = 'education';
         else if (lowerMode.includes('role')) safeMode = 'role_fit';
-        else safeMode = 'overview';
       }
-      updateStateFromAI((safeMode as any), data.focusId || null, data.content || 'Processing...');
+      updateStateFromAI(safeMode, data.focusId || null, data.content || 'Processing...');
     } catch (err) {
       console.error(err);
-      useStore.getState().setNarratorText('Network anomaly. Connection lost.');
+      useStore.getState().setNarratorText('Network error. Connection lost, please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Used by the sections below the chat: scroll back up, then ask.
+  const askFromBelow = (q: string) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    sendQuery(q);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    sendQuery(input);
+  };
+
+  const chips = [
+    { label: 'Who is Alex?', mode: 'overview' },
+    ...(hasAskedWho ? [{ label: 'Show his projects', mode: 'projects' }] : []),
+    { label: 'What are his skills?', mode: 'skills' },
+    { label: 'Research & publications', mode: 'research' },
+    { label: 'Work experience', mode: 'experience' },
+    { label: 'Education background', mode: 'education' },
+  ];
+
+  const statusLabel = isLoading ? 'Thinking' : isNarrating ? 'Answering' : 'Ready';
+
   return (
-    <div className="w-full h-[100dvh] bg-[#0a0609] overflow-hidden relative text-white">
-      {/* WebGL Canvas */}
-      <div className="absolute inset-0 z-0">
-        <Canvas>
-          <NeuralCanvas />
-        </Canvas>
-      </div>
-
-      {/* UI Overlay — grid on mobile keeps input pinned, flex-col on desktop */}
-      <div className="absolute inset-0 z-10 pointer-events-none grid grid-rows-[auto_1fr_auto] md:flex md:flex-col p-4 md:p-6 gap-3">
-        {/* Header */}
-        <div className="flex justify-between items-center text-base font-bold text-purple-400">
-          <div className="flex items-center gap-2">
-            <Terminal size={12} className="animate-pulse text-pink-500" />
-            <span>Digital Assistant</span>
+    <div className="relative min-h-[100dvh] overflow-x-clip bg-[#0b0608] text-white">
+      <HoverFx />
+      {/* Header */}
+      <header className="fixed left-0 right-0 z-50 pointer-events-none top-[max(14px,env(safe-area-inset-top))]">
+        <div className="max-w-[1280px] mx-auto px-[clamp(14px,3vw,32px)] flex items-center justify-between gap-3">
+          <a
+            href="https://alexthefirst99.github.io/web/"
+            target="_top"
+            aria-label="Back to portfolio"
+            data-magnetic
+            className="glass-pill pointer-events-auto w-14 h-14 rounded-full grid place-items-center font-[family-name:var(--font-display)] font-extrabold text-lg shrink-0"
+          >
+            AT
+          </a>
+          <div className="glass-pill pointer-events-auto flex items-center gap-3.5 py-2 pr-2 pl-[22px] rounded-full min-w-0">
+            <span className="text-[17px] font-medium italic tracking-[-0.01em] truncate">Meet AlexB</span>
+            <span className="px-3 py-[7px] rounded-full bg-white/10 text-[13px] whitespace-nowrap">{modeLabel}</span>
           </div>
-          <div>Mode: <span className="text-teal-400">{mode}</span></div>
+          <a
+            href="https://alexthefirst99.github.io/web/"
+            target="_top"
+            data-magnetic
+            className="pointer-events-auto h-14 pl-5 pr-2 rounded-full bg-white text-black flex items-center gap-3 text-[15px] shrink-0 shadow-[0_10px_30px_rgba(0,0,0,.35)]"
+          >
+            <span className="hidden sm:inline">Portfolio</span>
+            <span className="w-10 h-10 rounded-full bg-[#f0f0f2] grid place-items-center"><ArrowUpRight size={16} /></span>
+          </a>
         </div>
+      </header>
 
-        {/* Data + Narrator panels — row 2 fills remaining space */}
-        <div className="flex flex-col md:flex-row md:flex-1 md:items-center gap-3 md:gap-8 min-h-0 w-full overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={mode}
-              initial={{ opacity: 0, x: -24, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, x: -16, filter: 'blur(4px)' }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="pointer-events-auto h-1/2 md:h-full flex-1 overflow-y-auto pr-4 md:pb-12"
-              style={{ scrollbarWidth: 'none' }}
-            >
-              <DataPanel mode={mode} />
-            </motion.div>
-          </AnimatePresence>
+      <main className="relative z-[1] h-[calc(100dvh-28px)] min-h-[560px] pt-[84px] px-[clamp(10px,2vw,24px)] pb-[clamp(10px,1.6vw,20px)]">
+        <div className="max-w-[1320px] h-full mx-auto">
+          <div className="glass-shell h-full rounded-[clamp(36px,5vw,72px)]" data-tilt>
+            {/* Glow */}
+            <div aria-hidden data-depth="40" className="blob w-[55%] -left-[15%] -top-[10%] blur-[60px] opacity-45" style={{ background: 'radial-gradient(circle, var(--g2), transparent 65%)' }} />
+            <div aria-hidden data-depth="-30" className="blob w-[55%] -right-[15%] top-[20%] blur-[60px] opacity-70" style={{ background: 'radial-gradient(circle, var(--g3), transparent 65%)' }} />
+            <div aria-hidden data-depth="20" className="blob w-[70%] left-[10%] -bottom-[45%] blur-[60px] opacity-85" style={{ background: 'radial-gradient(circle, var(--g4), transparent 62%)' }} />
+            <div aria-hidden className="absolute inset-x-0 top-0 h-[45%] pointer-events-none bg-gradient-to-b from-black/60 to-transparent" />
+            <div
+              aria-hidden
+              className="absolute inset-0 rounded-[inherit] pointer-events-none"
+              style={{ background: 'linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0) 7%,rgba(255,255,255,0) 93%,rgba(255,255,255,.12)),radial-gradient(45% 14% at 50% 100%,rgba(255,255,255,.22),transparent 70%)' }}
+            />
 
-          {/* Narration Text — right side terminal readout, always visible */}
-          <AnimatePresence mode="wait">
-            {narratorText && (
-              <motion.div
-                key={narratorText}
-                initial={{ opacity: 0, x: 24, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, x: 16, filter: 'blur(4px)' }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="pointer-events-none md:ml-auto w-full md:max-w-sm h-1/2 md:h-full flex-1 min-h-0"
-              >
-                <div className="border border-white/10 flex flex-col h-full max-h-full min-h-0 py-2 bg-[#0a0609]/92 md:bg-transparent backdrop-blur-[48px] md:backdrop-blur-none rounded-xl md:rounded-none px-3 md:px-0 md:border-0 md:border-l md:border-white/10 md:pl-4">
-                  <div className="flex items-center justify-between mb-3 flex-shrink-0 mt-2 md:mt-0">
-                    <div className="text-purple-400 text-xs tracking-wider font-bold uppercase">System Narration</div>
-                    <button 
-                      onClick={() => setIsSoundMuted(!isSoundMuted)}
-                      className="text-teal-700 hover:text-teal-400 transition-colors pointer-events-auto"
-                      title={isSoundMuted ? "Unmute AI Voice" : "Mute AI Voice"}
-                    >
-                      {isSoundMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                    </button>
+            <div className="relative z-[2] h-full flex flex-col gap-[clamp(14px,2.2vh,26px)] p-[clamp(18px,3vw,40px)]">
+              {/* Title row */}
+              <div className="shrink-0 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+                <div className="flex flex-col gap-3.5">
+                  <div className="self-start flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[.14] backdrop-blur-md text-[15px]">
+                    <span className="pulse-dot w-2 h-2 rounded-full bg-[var(--acc)] shadow-[0_0_12px_var(--acc)]" />
+                    Online · grounded on 4 source files
                   </div>
-                  <div className="overflow-y-auto pr-2 pointer-events-auto min-h-0 flex-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#ece3d2 transparent' }}>
-                    <p className="text-white text-sm leading-relaxed whitespace-pre-wrap font-medium">
+                  <h1 className="m-0 font-[family-name:var(--font-display)] font-extrabold text-[clamp(40px,min(7vw,9vh),96px)] leading-[.86] tracking-[-0.01em] [text-shadow:0_0_50px_rgba(255,255,255,.3)]">
+                    ASK ALEXB
+                  </h1>
+                </div>
+                <p className="hidden sm:block m-0 max-w-[420px] text-[clamp(17px,1.6vw,20px)] leading-[1.45] font-light text-white/90 text-pretty">
+                  A small RAG assistant that answers only from my résumé, bio, projects and skills. Pick a topic or type a question.
+                </p>
+              </div>
+
+              {/* Panels */}
+              <div className="thin-scroll flex-1 min-h-0 flex flex-wrap gap-4 items-stretch overflow-y-auto">
+                {/* Data panel */}
+                <div data-spot className="thin-scroll flex-[999_1_520px] min-w-0 min-h-[280px] max-h-full overflow-y-auto rounded-[40px] p-[clamp(20px,2.6vw,30px)] bg-[rgba(10,4,7,.42)] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,.08)] flex flex-col gap-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 text-[15px] text-[var(--mist)]">
+                      <span className="font-[family-name:var(--font-display)] font-extrabold text-[var(--acc)]">{modeNum}</span>
+                      {modeLabel}
+                    </div>
+                    <span className="px-3 py-[7px] rounded-full bg-white/[.08] text-[13px] text-[var(--mist)]">Data panel</span>
+                  </div>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={mode}
+                      initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
+                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+                      transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+                    >
+                      <DataPanel mode={mode} />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                {/* Narration card */}
+                <div className="max-lg:order-first flex-[1_1_340px] min-w-0 min-h-[280px] max-h-full rounded-[40px] p-[clamp(20px,2.6vw,30px)] bg-white text-[var(--ink)] shadow-[0_30px_60px_rgba(40,0,30,.45)] flex flex-col gap-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-[clamp(24px,2.4vw,30px)] font-light tracking-[-0.02em]">Narration</div>
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center gap-2 px-3 py-[7px] rounded-full bg-[#f0f0f2] text-[13px] text-[#4a4b53]">
+                        <span className={`w-[7px] h-[7px] rounded-full bg-[var(--ink)] ${isLoading || isNarrating ? 'pulse-dot' : ''}`} />
+                        {statusLabel}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setIsSoundMuted(!isSoundMuted)}
+                        data-magnetic
+                        aria-label={isSoundMuted ? 'Unmute AI voice' : 'Mute AI voice'}
+                        title={isSoundMuted ? 'Unmute AI voice' : 'Mute AI voice'}
+                        className="w-9 h-9 rounded-full bg-[#f0f0f2] grid place-items-center text-[#4a4b53] hover:text-[var(--ink)] transition-colors"
+                      >
+                        {isSoundMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                      </button>
+                    </div>
+                  </div>
+                  {lastQuery && (
+                    <div className="self-end max-w-[90%] px-4 py-2.5 rounded-[20px_20px_6px_20px] bg-[var(--ink)] text-white text-[15px]">
+                      {lastQuery}
+                    </div>
+                  )}
+                  <div className="thin-scroll-dark flex-1 min-h-0 overflow-y-auto pr-1.5">
+                    <p className="m-0 text-base leading-relaxed text-[#2a2b31] whitespace-pre-wrap">
                       <TypewriterText text={narratorText} isMuted={isSoundMuted} />
                     </p>
                   </div>
+                  <div className="flex items-center gap-2.5 pt-3 border-t border-[#ececef] text-[13px] text-[#6a6b73]">
+                    <span className="w-7 h-7 rounded-full bg-[#f0f0f2] grid place-items-center font-[family-name:var(--font-display)] font-extrabold text-[11px] text-[var(--ink)]">AT</span>
+                    Answers come only from my files.
+                    <Link href="/architecture" className="ml-auto whitespace-nowrap underline-offset-2 hover:underline">How it works</Link>
+                  </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              </div>
 
-        {/* Bottom bar — row 3, always visible */}
-        <div className="pointer-events-auto space-y-2 max-w-xl mx-auto w-full">
-
-          {/* Quick prompt chips */}
-          <div className="flex flex-wrap gap-2 justify-center mb-1">
-            {[
-              'Who is Alex?',
-              ...(hasAskedWho ? ['Show his projects'] : []),
-              'What are his skills?',
-              'Research & publications',
-              'Work experience',
-              'Education background'
-            ].map((prompt) => (
-              <button
-                key={prompt}
-                onClick={() => {
-                  setInput(prompt);
-                  // auto-submit
-                  setTimeout(() => {
-                    const form = document.getElementById('chat-form') as HTMLFormElement;
-                    form?.requestSubmit();
-                  }, 50);
-                }}
-                disabled={isLoading}
-                className="text-[11px] uppercase font-semibold px-3 py-1.5 border border-white/10 rounded-full text-white/70 hover:border-blue-500/50 hover:text-blue-400 hover:bg-[#170c11]/80 transition-all disabled:opacity-30"
-              >
-                {prompt}
-              </button>
-            ))}
+              {/* Chips + input */}
+              <div className="shrink-0 flex flex-col gap-3.5 max-w-[1100px] w-full mx-auto">
+                <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] -mx-1 px-1 justify-[safe_center]">
+                  {chips.map((c) => {
+                    const on = c.mode === mode && !!lastQuery;
+                    return (
+                      <button
+                        key={c.label}
+                        type="button"
+                        onClick={() => sendQuery(c.label)}
+                        disabled={isLoading}
+                        className={`shrink-0 whitespace-nowrap px-4 py-2.5 rounded-full border text-[14px] transition-colors disabled:opacity-40 ${
+                          on ? 'bg-white text-[var(--ink)] border-white' : 'bg-white/[.06] text-white border-white/15 hover:bg-white/[.12]'
+                        }`}
+                      >
+                        {c.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <form
+                  id="chat-form"
+                  onSubmit={handleSubmit}
+                  className="w-full max-w-[880px] mx-auto flex items-center gap-2.5 py-1.5 pr-1.5 pl-2 rounded-full bg-[rgba(34,20,26,.6)] backdrop-blur-xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,.45)]"
+                >
+                  <label htmlFor="chat-input" className="sr-only">Ask a question about Alex</label>
+                  <input
+                    id="chat-input"
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    disabled={isLoading}
+                    autoComplete="off"
+                    placeholder={isLoading ? 'Thinking…' : 'Ask anything… try projects, skills, research'}
+                    className="flex-1 min-w-0 h-[52px] px-4 bg-transparent border-0 text-base outline-none placeholder:text-white/55"
+                  />
+                  <button
+                    type="submit"
+                    data-magnetic
+                    disabled={isLoading || !input.trim()}
+                    className="flex items-center gap-3 pl-5 pr-2 h-[52px] rounded-full bg-white text-[var(--ink)] text-base shrink-0 disabled:opacity-50 transition-opacity"
+                  >
+                    Ask
+                    <span className="w-[38px] h-[38px] rounded-full bg-[#f0f0f2] grid place-items-center"><ArrowRight size={16} /></span>
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
-          {isLoading && (
-            <p className="text-purple-500/60 text-xs tracking-widest text-center animate-pulse">
-              PROCESSING QUERY...
-            </p>
-          )}
-          <form id="chat-form" onSubmit={handleSubmit} className="relative">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={isLoading}
-              placeholder="Ask me anything... try 'projects', 'skills', 'research'..."
-              className="w-full bg-[#170c11]/80 backdrop-blur-2xl border border-white/10 rounded-xl mb-4 text-white placeholder-white/30 px-4 py-3 focus:outline-none focus:border-pink-500/60 focus:ring-1 focus:ring-pink-500/30 transition-all text-sm shadow-xl"
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !input.trim()}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-pink-700/60 hover:text-pink-500 disabled:opacity-0 transition-colors"
-            >
-              <Send size={14} />
-            </button>
-          </form>
         </div>
-      </div>
+      </main>
+
+      <AboutSections onAsk={askFromBelow} />
     </div>
   );
 }
