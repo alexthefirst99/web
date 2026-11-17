@@ -34,7 +34,7 @@ const playTechBeep = () => {
   oscillator.stop(audioCtx.currentTime + 0.03);
 };
 
-function TypewriterText({ text, isMuted }: { text: string; isMuted: boolean }) {
+function TypewriterText({ text, isMuted, scrollRef }: { text: string; isMuted: boolean; scrollRef?: React.RefObject<HTMLDivElement | null> }) {
   const [displayedText, setDisplayedText] = useState('');
   const { isNarrating, setIsNarrating } = useStore();
   const mutedRef = useRef(isMuted);
@@ -64,6 +64,17 @@ function TypewriterText({ text, isMuted }: { text: string; isMuted: boolean }) {
       setIsNarrating(false);
     };
   }, [text, setIsNarrating]);
+
+  // New answer: start at the top. While typing: keep the newest line in view,
+  // unless the reader has scrolled up to re-read something.
+  useEffect(() => {
+    if (scrollRef?.current) scrollRef.current.scrollTop = 0;
+  }, [text, scrollRef]);
+  useEffect(() => {
+    const el = scrollRef?.current;
+    if (!el) return;
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 60) el.scrollTop = el.scrollHeight;
+  }, [displayedText, scrollRef]);
 
   return (
     <>
@@ -346,6 +357,7 @@ export default function App() {
   const [isSoundMuted, setIsSoundMuted] = useState(true);
   const [hasAskedWho, setHasAskedWho] = useState(false);
   const [lastQuery, setLastQuery] = useState('');
+  const narrRef = useRef<HTMLDivElement>(null);
 
   const modeLabel = MODE_LABELS[mode] ?? 'Overview';
   const modeNum = String(Math.max(0, MODE_ORDER.indexOf(mode)) + 1).padStart(2, '0');
@@ -440,7 +452,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="relative z-[1] h-[calc(100dvh-28px)] min-h-[560px] pt-[84px] px-[clamp(10px,2vw,24px)] pb-[clamp(10px,1.6vw,20px)]">
+      <main className="relative z-[1] h-[max(calc(100dvh-28px),720px)] pt-[84px] px-[clamp(10px,2vw,24px)] pb-[clamp(10px,1.6vw,20px)]">
         <div className="max-w-[1320px] h-full mx-auto">
           <div className="glass-shell h-full rounded-[clamp(36px,5vw,72px)]" data-tilt>
             {/* Glow */}
@@ -455,52 +467,54 @@ export default function App() {
             />
 
             <div className="relative z-[2] h-full flex flex-col gap-[clamp(14px,2.2vh,26px)] p-[clamp(18px,3vw,40px)]">
-              {/* Title row */}
-              <div className="shrink-0 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-                <div className="flex flex-col gap-3.5">
-                  <div className="self-start flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[.14] backdrop-blur-md text-[15px]">
-                    <span className="pulse-dot w-2 h-2 rounded-full bg-[var(--acc)] shadow-[0_0_12px_var(--acc)]" />
-                    Online · grounded on 4 source files
-                  </div>
-                  <h1 className="m-0 font-[family-name:var(--font-display)] font-extrabold text-[clamp(40px,min(7vw,9vh),96px)] leading-[.86] tracking-[-0.01em] [text-shadow:0_0_50px_rgba(255,255,255,.3)]">
-                    ASK ALEXB
-                  </h1>
-                </div>
-                <p className="hidden sm:block m-0 max-w-[420px] text-[clamp(17px,1.6vw,20px)] leading-[1.45] font-light text-white/90 text-pretty">
-                  A small RAG assistant that answers only from my résumé, bio, projects and skills. Pick a topic or type a question.
-                </p>
-              </div>
-
-              {/* Panels */}
-              <div className="thin-scroll flex-1 min-h-0 flex flex-wrap gap-4 items-stretch overflow-y-auto">
-                {/* Data panel */}
-                <div data-spot className="thin-scroll flex-[999_1_520px] min-w-0 min-h-[280px] max-h-full overflow-y-auto rounded-[40px] p-[clamp(20px,2.6vw,30px)] bg-[rgba(10,4,7,.42)] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,.08)] flex flex-col gap-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 text-[15px] text-[var(--mist)]">
-                      <span className="font-[family-name:var(--font-display)] font-extrabold text-[var(--acc)]">{modeNum}</span>
-                      {modeLabel}
+              {/* Top area. Desktop: left column = title + data panel, right column = narration
+                  at full height so long answers have room. Phones: one scrolling column
+                  (title, then the answer, then the data panel). */}
+              <div className="thin-scroll flex-1 min-h-0 grid gap-4 grid-cols-1 content-start max-lg:auto-rows-max overflow-y-auto lg:overflow-visible lg:content-stretch lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+                <div className="max-lg:contents lg:min-h-0 lg:flex lg:flex-col lg:gap-[clamp(14px,2.2vh,22px)]">
+                  {/* Title */}
+                  <div className="shrink-0 flex flex-col gap-3">
+                    <div className="self-start flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[.14] backdrop-blur-md text-[15px] [@media(max-height:820px)]:hidden">
+                      <span className="pulse-dot w-2 h-2 rounded-full bg-[var(--acc)] shadow-[0_0_12px_var(--acc)]" />
+                      Online · grounded on 4 source files
                     </div>
-                    <span className="px-3 py-[7px] rounded-full bg-white/[.08] text-[13px] text-[var(--mist)]">Data panel</span>
+                    <h1 className="m-0 font-[family-name:var(--font-display)] font-extrabold text-[clamp(40px,min(7vw,9vh),96px)] leading-[.86] tracking-[-0.01em] [text-shadow:0_0_50px_rgba(255,255,255,.3)]">
+                      ASK ALEXB
+                    </h1>
+                    <p className="hidden sm:block m-0 max-w-[560px] text-[clamp(15px,1.3vw,18px)] leading-[1.45] font-light text-white/85 text-pretty [@media(max-height:720px)]:hidden">
+                      A small RAG assistant that answers only from my résumé, bio, projects and skills. Pick a topic or type a question.
+                    </p>
                   </div>
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={mode}
-                      initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
-                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                      exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
-                      transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
-                    >
-                      <DataPanel mode={mode} />
-                    </motion.div>
-                  </AnimatePresence>
+
+                  {/* Data panel */}
+                  <div data-spot className="max-lg:order-3 thin-scroll lg:flex-1 min-w-0 min-h-[280px] lg:min-h-0 overflow-y-auto rounded-[40px] p-[clamp(20px,2.6vw,30px)] bg-[rgba(10,4,7,.42)] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,.08)] flex flex-col gap-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 text-[15px] text-[var(--mist)]">
+                        <span className="font-[family-name:var(--font-display)] font-extrabold text-[var(--acc)]">{modeNum}</span>
+                        {modeLabel}
+                      </div>
+                      <span className="px-3 py-[7px] rounded-full bg-white/[.08] text-[13px] text-[var(--mist)]">Data panel</span>
+                    </div>
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={mode}
+                        initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
+                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+                        transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+                      >
+                        <DataPanel mode={mode} />
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
                 </div>
 
-                {/* Narration card */}
-                <div className="max-lg:order-first flex-[1_1_340px] min-w-0 min-h-[280px] max-h-full rounded-[40px] p-[clamp(20px,2.6vw,30px)] bg-white text-[var(--ink)] shadow-[0_30px_60px_rgba(40,0,30,.45)] flex flex-col gap-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="text-[clamp(24px,2.4vw,30px)] font-light tracking-[-0.02em]">Narration</div>
+                {/* Narration card: full height on desktop; compact header/footer so the answer gets the space */}
+                <div className="max-lg:order-2 min-w-0 min-h-[320px] lg:min-h-0 rounded-[36px] p-[clamp(18px,2vw,26px)] bg-white text-[var(--ink)] shadow-[0_30px_60px_rgba(40,0,30,.45)] flex flex-col gap-3">
+                  <div className="shrink-0 flex items-center justify-between gap-3">
+                    <div className="text-[clamp(22px,2vw,28px)] font-light tracking-[-0.02em]">Narration</div>
                     <div className="flex items-center gap-2">
-                      <span className="flex items-center gap-2 px-3 py-[7px] rounded-full bg-[#f0f0f2] text-[13px] text-[#4a4b53]">
+                      <span className="flex items-center gap-2 px-3 py-[6px] rounded-full bg-[#f0f0f2] text-[13px] text-[#4a4b53]">
                         <span className={`w-[7px] h-[7px] rounded-full bg-[var(--ink)] ${isLoading || isNarrating ? 'pulse-dot' : ''}`} />
                         {statusLabel}
                       </span>
@@ -517,17 +531,17 @@ export default function App() {
                     </div>
                   </div>
                   {lastQuery && (
-                    <div className="self-end max-w-[90%] px-4 py-2.5 rounded-[20px_20px_6px_20px] bg-[var(--ink)] text-white text-[15px]">
+                    <div className="shrink-0 self-end max-w-[90%] px-3.5 py-2 rounded-[18px_18px_6px_18px] bg-[var(--ink)] text-white text-[14px]">
                       {lastQuery}
                     </div>
                   )}
-                  <div className="thin-scroll-dark flex-1 min-h-0 overflow-y-auto pr-1.5">
-                    <p className="m-0 text-base leading-relaxed text-[#2a2b31] whitespace-pre-wrap">
-                      <TypewriterText text={narratorText} isMuted={isSoundMuted} />
+                  <div ref={narrRef} className="thin-scroll-dark flex-1 min-h-0 overflow-y-auto pr-1.5 max-lg:flex-none max-lg:overflow-visible">
+                    <p className="m-0 text-[17px] leading-[1.65] text-[#2a2b31] whitespace-pre-wrap">
+                      <TypewriterText text={narratorText} isMuted={isSoundMuted} scrollRef={narrRef} />
                     </p>
                   </div>
-                  <div className="flex items-center gap-2.5 pt-3 border-t border-[#ececef] text-[13px] text-[#6a6b73]">
-                    <span className="w-7 h-7 rounded-full bg-[#f0f0f2] grid place-items-center font-[family-name:var(--font-display)] font-extrabold text-[11px] text-[var(--ink)]">AT</span>
+                  <div className="shrink-0 flex items-center gap-2 pt-2.5 border-t border-[#ececef] text-[12px] text-[#6a6b73]">
+                    <span className="w-6 h-6 rounded-full bg-[#f0f0f2] grid place-items-center font-[family-name:var(--font-display)] font-extrabold text-[10px] text-[var(--ink)]">AT</span>
                     Answers come only from my files.
                     <Link href="/architecture" className="ml-auto whitespace-nowrap underline-offset-2 hover:underline">How it works</Link>
                   </div>
